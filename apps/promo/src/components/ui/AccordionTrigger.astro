@@ -1,0 +1,118 @@
+---
+import { ChevronDown } from '@lucide/astro';
+
+interface Props {
+  class?: string;
+}
+
+const {
+  class: className = ''
+} = Astro.props;
+
+const triggerClasses = [
+  'accordion-trigger',
+  className
+].filter(Boolean).join(' ');
+---
+
+<button
+  type="button"
+  class={triggerClasses}
+  data-accordion-trigger
+>
+  <span class="accordion-trigger-content">
+    <slot />
+  </span>
+  <ChevronDown class="accordion-trigger-icon" size={20} />
+</button>
+
+<style>
+  /* Accordion Trigger */
+  .accordion-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-6);
+    background: transparent;
+    border: none;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-out);
+    outline: none;
+  }
+
+  .accordion-trigger:hover {
+    background: var(--color-background-tertiary);
+  }
+
+  .accordion-trigger:focus-visible {
+    outline: 2px solid var(--color-primary-blue);
+    outline-offset: -2px;
+  }
+
+  /* Trigger Content */
+  .accordion-trigger-content {
+    flex: 1;
+    line-height: 1.5;
+  }
+
+  /* Trigger Icon */
+  .accordion-trigger-icon {
+    flex-shrink: 0;
+    margin-left: var(--space-4);
+    color: var(--color-text-secondary);
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  /* Open State */
+  [data-state="open"] .accordion-trigger {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  [data-state="open"] .accordion-trigger-icon {
+    transform: rotate(180deg);
+  }
+
+  /* Disabled State */
+  [data-disabled="true"] .accordion-trigger {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  [data-disabled="true"] .accordion-trigger:hover {
+    background: transparent;
+  }
+
+  /* Dark Mode Adjustments */
+  [data-theme="dark"] .accordion-trigger:hover {
+    background: var(--color-background-quaternary);
+  }
+
+  [data-theme="dark"] [data-state="open"] .accordion-trigger {
+    border-color: var(--color-border);
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .accordion-trigger,
+    .accordion-trigger-icon {
+      transition: none;
+    }
+  }
+
+  /* Mobile Optimization */
+  @media (max-width: 768px) {
+    .accordion-trigger {
+      padding: var(--space-3) var(--space-4);
+      font-size: 15px;
+    }
+
+    .accordion-trigger-icon {
+      margin-left: var(--space-3);
+    }
+  }
+</style>

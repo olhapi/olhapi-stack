@@ -1,0 +1,574 @@
+---
+import { useTranslations } from '../../utils/i18n';
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import Card from '../ui/Card.astro';
+
+interface Props {
+  lang: string;
+}
+
+const { lang } = Astro.props;
+
+const translations = {
+  en: {
+    overline: 'The Future of Web Development',
+    headline: 'Build blazing fast websites with modern tools',
+    subheadline: 'Create lightning-fast, content-focused websites with Astro\'s revolutionary architecture. Ship less JavaScript, load instantly, and delight your users.',
+    primaryCta: 'Start Building',
+    secondaryCta: 'View Demo',
+    watchDemo: 'Watch Demo',
+    trustedBy: 'Trusted by developers at',
+    socialProof: [
+      'Over 100,000+ developers',
+      '50+ Fortune 500 companies',
+      '99.9% uptime guaranteed'
+    ],
+    features: [
+      {
+        icon: '⚡',
+        title: 'Lightning Fast',
+        description: 'Zero JavaScript runtime by default. Ship only what you need.'
+      },
+      {
+        icon: '🎯',
+        title: 'SEO Ready',
+        description: 'Built-in optimizations for search engines and performance.'
+      },
+      {
+        icon: '🛠️',
+        title: 'Developer First',
+        description: 'Use your favorite framework: React, Vue, Svelte, or vanilla JS.'
+      }
+    ]
+  },
+  de: {
+    overline: 'Die Zukunft der Webentwicklung',
+    headline: 'Erstellen Sie blitzschnelle Websites mit modernen Tools',
+    subheadline: 'Erstellen Sie blitzschnelle, inhaltsorientierte Websites mit Astros revolutionärer Architektur. Versenden Sie weniger JavaScript, laden Sie sofort und begeistern Sie Ihre Nutzer.',
+    primaryCta: 'Jetzt Starten',
+    secondaryCta: 'Demo Ansehen',
+    watchDemo: 'Demo Ansehen',
+    trustedBy: 'Vertraut von Entwicklern bei',
+    socialProof: [
+      'Über 100.000+ Entwickler',
+      '50+ Fortune 500 Unternehmen',
+      '99,9% Verfügbarkeit garantiert'
+    ],
+    features: [
+      {
+        icon: '⚡',
+        title: 'Blitzschnell',
+        description: 'Standardmäßig keine JavaScript-Laufzeit. Versenden Sie nur das Nötige.'
+      },
+      {
+        icon: '🎯',
+        title: 'SEO Bereit',
+        description: 'Eingebaute Optimierungen für Suchmaschinen und Performance.'
+      },
+      {
+        icon: '🛠️',
+        title: 'Entwickler Zuerst',
+        description: 'Verwenden Sie Ihr Lieblings-Framework: React, Vue, Svelte oder Vanilla JS.'
+      }
+    ]
+  },
+};
+
+const $t = useTranslations(translations, lang);
+
+// Get APP_URL from environment variables
+const appUrl = import.meta.env.PUBLIC_APP_URL || '#';
+---
+
+<section class="hero-section section-lg">
+  <Container size="xl">
+    <div class="hero-content">
+      <!-- Hero Text Content -->
+      <div class="hero-text">
+        <div class="hero-overline">
+          <span class="text-overline gradient-text">{$t('overline')}</span>
+        </div>
+
+        <h1 class="hero-headline">
+          {$t('headline')}
+        </h1>
+
+        <p class="hero-subheadline text-body-large">
+          {$t('subheadline')}
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="hero-cta">
+          <Button variant="primary" size="lg" href={appUrl} glow>
+            {$t('primaryCta')}
+          </Button>
+          <Button variant="ghost" size="lg" href="#demo">
+            {$t('secondaryCta')}
+          </Button>
+        </div>
+
+        <!-- Social Proof -->
+        <div class="social-proof">
+          <p class="social-proof-label text-caption">{$t('trustedBy')}</p>
+          <div class="social-proof-items">
+            {$t('socialProof').map((item: string) => (
+              <span class="social-proof-item">{item}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual -->
+      <div class="hero-visual">
+        <div class="hero-image-container">
+          <!-- Glassmorphism Dashboard Preview -->
+          <div class="dashboard-preview glass">
+            <div class="dashboard-header">
+              <div class="dashboard-dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+              <div class="dashboard-title">
+                <span>Astro Dashboard</span>
+              </div>
+            </div>
+            <div class="dashboard-content">
+              <div class="metric-card">
+                <div class="metric-value gradient-text" data-counter>10,000</div>
+                <div class="metric-label">Active Users</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-value gradient-text" data-counter>99.9%</div>
+                <div class="metric-label">Uptime %</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-value gradient-text" data-counter>2.1s</div>
+                <div class="metric-label">Load Time (s)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating Elements -->
+          <div class="floating-elements" aria-hidden="true">
+            <div class="floating-card card-1">
+              <div class="floating-icon">⚡</div>
+            </div>
+            <div class="floating-card card-2">
+              <div class="floating-icon">🚀</div>
+            </div>
+            <div class="floating-card card-3">
+              <div class="floating-icon">✨</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature Cards -->
+    <div class="hero-features">
+      {$t('features').map((feature: any) => (
+        <Card variant="glass" class="feature-card hover-lift">
+          <div class="feature-icon">{feature.icon}</div>
+          <h3 class="feature-title text-heading-small">{feature.title}</h3>
+          <p class="feature-description text-body-small">{feature.description}</p>
+        </Card>
+      ))}
+    </div>
+  </Container>
+
+  <!-- Background Elements -->
+  <div class="hero-background" aria-hidden="true">
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+    <div class="gradient-mesh"></div>
+  </div>
+</section>
+
+<style>
+  /* Hero Section */
+  .hero-section {
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: var(--color-background-primary);
+  }
+
+  .hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Hero Text */
+  .hero-text {
+    max-width: 600px;
+  }
+
+  .hero-overline {
+    margin-bottom: var(--space-6);
+  }
+
+  .hero-headline {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: var(--space-6);
+    color: var(--color-text-primary);
+  }
+
+  .hero-subheadline {
+    margin-bottom: var(--space-8);
+    color: var(--color-text-secondary);
+    max-width: 540px;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: var(--space-4);
+    margin-bottom: var(--space-12);
+    flex-wrap: wrap;
+  }
+
+  /* Social Proof */
+  .social-proof {
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-6);
+  }
+
+  .social-proof-label {
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--space-3);
+    text-transform: uppercase;
+  }
+
+  .social-proof-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+  }
+
+  .social-proof-item {
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* Hero Visual */
+  .hero-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-image-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  /* Dashboard Preview */
+  .dashboard-preview {
+    border-radius: var(--radius-2xl);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-2xl);
+    background: var(--glass-background);
+    border: 1px solid var(--glass-border);
+  }
+
+  .dashboard-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .dashboard-dots {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .dot.red { background-color: #EF4444; }
+  .dot.yellow { background-color: #FACC15; }
+  .dot.green { background-color: #84CC16; }
+
+  .dashboard-title {
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .dashboard-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+
+  .metric-card {
+    text-align: center;
+    padding: var(--space-4);
+    background: var(--color-background-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+  }
+
+  .metric-value {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: var(--space-2);
+  }
+
+  .metric-label {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Floating Elements */
+  .floating-elements {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .floating-card {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: var(--glass-background);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .floating-icon {
+    font-size: 24px;
+  }
+
+  .card-1 {
+    top: -20px;
+    right: -20px;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .card-2 {
+    bottom: -30px;
+    left: -30px;
+    animation: float 6s ease-in-out infinite 2s;
+  }
+
+  .card-3 {
+    top: 50%;
+    left: -40px;
+    transform: translateY(-50%);
+    animation: float 6s ease-in-out infinite 4s;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+
+  /* Feature Cards */
+  .hero-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-6);
+    margin-top: var(--space-20);
+  }
+
+  .feature-card {
+    text-align: center;
+    padding: var(--space-8);
+  }
+
+  .feature-icon {
+    font-size: 3rem;
+    margin-bottom: var(--space-4);
+  }
+
+  .feature-title {
+    margin-bottom: var(--space-3);
+    color: var(--color-text-primary);
+  }
+
+  .feature-description {
+    color: var(--color-text-secondary);
+  }
+
+  /* Background Elements */
+  .hero-background {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .gradient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.6;
+    animation: pulse 8s ease-in-out infinite;
+  }
+
+  .orb-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--gradient-primary);
+    top: -200px;
+    right: -200px;
+    animation-delay: 0s;
+  }
+
+  .orb-2 {
+    width: 300px;
+    height: 300px;
+    background: var(--gradient-secondary);
+    bottom: -150px;
+    left: -150px;
+    animation-delay: 4s;
+  }
+
+  .gradient-mesh {
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-mesh);
+    opacity: 0.02;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .hero-content {
+      grid-template-columns: 1fr;
+      gap: var(--space-12);
+      text-align: center;
+    }
+
+    .hero-text {
+      order: 1;
+    }
+
+    .hero-visual {
+      order: 2;
+    }
+
+    .dashboard-content {
+      grid-template-columns: 1fr;
+      gap: var(--space-3);
+    }
+
+    .hero-features {
+      grid-template-columns: 1fr;
+      margin-top: var(--space-16);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-section {
+      min-height: auto;
+      padding-top: var(--space-16);
+      padding-bottom: var(--space-16);
+    }
+
+    .hero-cta {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-cta > * {
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .social-proof-items {
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .floating-card {
+      width: 40px;
+      height: 40px;
+    }
+
+    .floating-icon {
+      font-size: 18px;
+    }
+
+    /* Adjust floating card positions for mobile */
+    .card-1 {
+      top: 10px;
+      right: 10px;
+    }
+
+    .card-2 {
+      bottom: 10px;
+      left: 10px;
+    }
+
+    .card-3 {
+      top: 50%;
+      left: -15px;
+      transform: translateY(-50%);
+    }
+
+    .orb-1, .orb-2 {
+      width: 200px;
+      height: 200px;
+    }
+  }
+
+  /* Dark Mode Adjustments */
+  [data-theme="dark"] .dashboard-preview {
+    background: rgba(31, 41, 55, 0.8);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  [data-theme="dark"] .gradient-orb {
+    opacity: 0.4;
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .floating-card,
+    .gradient-orb {
+      animation: none;
+    }
+
+    .hero-background {
+      display: none;
+    }
+  }
+
+  /* Focus States */
+  .feature-card:focus-within {
+    outline: 2px solid var(--color-primary-blue);
+    outline-offset: 2px;
+  }
+</style>
+
+<!-- Animations handled by GSAP ScrollTrigger through centralized animation system -->

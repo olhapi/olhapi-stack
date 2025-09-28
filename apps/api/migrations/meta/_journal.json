@@ -1,0 +1,34 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1757757833117,
+      "tag": "0000_zippy_black_cat",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1757764842760,
+      "tag": "0001_melodic_amazoness",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1757769126979,
+      "tag": "0002_stormy_jamie_braddock",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1757837887135,
+      "tag": "0003_spotty_mimic",
+      "breakpoints": true
+    }
+  ]
+}

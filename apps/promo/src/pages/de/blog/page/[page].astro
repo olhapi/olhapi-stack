@@ -1,0 +1,65 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import BlogListSection from '../../../../components/sections/BlogListSection.astro';
+import { getCollection } from 'astro:content';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../../../consts';
+
+export async function getStaticPaths() {
+  const currentLang = 'de';
+  const pageSize = 10;
+
+  // Get all blog posts for German
+  const allPosts = await getCollection('blog');
+  const posts = allPosts
+    .filter(post => post.id.startsWith(`${currentLang}/`))
+    .filter(post => !post.data.draft)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+  const totalPages = Math.ceil(posts.length / pageSize);
+
+  // Generate paths for pages 2 and onwards (page 1 is handled by index.astro)
+  return Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => {
+    const pageNum = i + 2; // Start from page 2
+    const startIndex = (pageNum - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    const pagePosts = posts.slice(startIndex, endIndex);
+
+    return {
+      params: { page: pageNum.toString() },
+      props: {
+        posts: pagePosts,
+        currentPage: pageNum,
+        totalPages,
+      },
+    };
+  });
+}
+
+const { posts, currentPage, totalPages } = Astro.props;
+
+// Create pagination object
+const pagination = {
+  currentPage,
+  lastPage: totalPages,
+  url: {
+    prev: currentPage === 2 ? '/de/blog' : `/de/blog/page/${currentPage - 1}`,
+    next: currentPage < totalPages ? `/de/blog/page/${currentPage + 1}` : undefined,
+  },
+};
+
+const pageTitle = `${SITE_TITLE} - Blog (Seite ${currentPage})`;
+const pageDescription = `${SITE_DESCRIPTION} - Seite ${currentPage}`;
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Pagination SEO Meta Tags -->
+  {pagination.url.prev && <link slot="head" rel="prev" href={pagination.url.prev} />}
+  {pagination.url.next && <link slot="head" rel="next" href={pagination.url.next} />}
+  <meta slot="head" name="robots" content="noindex, follow" />
+
+  <BlogListSection
+    lang="de"
+    posts={posts}
+    pagination={pagination}
+  />
+</Layout>

@@ -1,0 +1,327 @@
+---
+// Animation Provider - GSAP setup and utilities
+---
+
+<script>
+  // Remove no-js class as soon as possible
+  document.documentElement.classList.remove('no-js');
+  document.body.classList.remove('no-js');
+
+  import { animations, gsap, ScrollTrigger } from '../../utils/animations';
+
+  // Expose GSAP to global scope
+  window.gsap = gsap;
+  window.ScrollTrigger = ScrollTrigger;
+
+  // Mobile detection
+  function isMobileDevice() {
+    return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
+  // Initialize animations when DOM is ready with performance optimization
+  function initializeAnimations() {
+    console.log('Initializing animations...');
+
+    // Check if mobile device
+    const isMobile = isMobileDevice();
+    if (isMobile) {
+      console.log('Mobile device detected - skipping reveal animations, enabling counters only');
+      document.body.classList.add('mobile-device');
+      // Only initialize counter animations on mobile
+      animations.initCountersOnly();
+    } else {
+      // Initialize the full animation controller on desktop
+      animations.init();
+    }
+
+    // Mark body as animation-ready after initialization
+    setTimeout(() => {
+      document.body.classList.add('animation-ready');
+      console.log('Added animation-ready class to body');
+    }, 100);
+
+    // Add fallback to show elements if animations fail
+    setTimeout(() => {
+      const hiddenElements = document.querySelectorAll('[data-animate], [data-stagger] > *, [data-counter]');
+      const visibleCount = Array.from(hiddenElements).filter(el => {
+        const styles = window.getComputedStyle(el);
+        return styles.opacity !== '0';
+      }).length;
+
+      console.log(`Animation check: ${visibleCount}/${hiddenElements.length} elements visible`);
+
+      if (visibleCount < hiddenElements.length / 2) {
+        console.warn('Many animations failed, activating fallback...');
+        document.body.classList.add('animation-fallback');
+        hiddenElements.forEach(el => {
+          const styles = window.getComputedStyle(el);
+          if (styles.opacity === '0') {
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+          }
+        });
+      }
+    }, 2000); // 2 second fallback check
+
+
+    console.log('Animations initialized');
+  }
+
+  // Multiple initialization strategies for better reliability
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(initializeAnimations, 50);
+    });
+  } else {
+    // DOM already loaded
+    setTimeout(initializeAnimations, 50);
+  }
+
+  // Additional initialization on window load for extra safety
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      // Only re-init if not already initialized
+      if (!animations.isInitialized) {
+        console.log('Re-initializing animations on window load...');
+        initializeAnimations();
+      }
+    }, 100);
+  });
+
+  // Refresh animations on route changes (for SPA-like behavior)
+  document.addEventListener('astro:page-load', () => {
+    // Delay refresh for better performance on route changes
+    setTimeout(() => {
+      console.log('Refreshing animations on route change...');
+      animations.refresh();
+    }, 100);
+  });
+
+  // Clean up on page unload
+  window.addEventListener('beforeunload', () => {
+    animations.destroy();
+  });
+
+  // ScrollTrigger handles visibility detection and performance optimization automatically
+
+  // Global animation utilities available on window
+  declare global {
+    interface Window {
+      animations: typeof animations;
+    }
+  }
+
+  // Make animations available globally
+  window.animations = animations;
+
+  // Legacy compatibility layer for existing code
+  class AnimationProvider {
+    private static instance: AnimationProvider;
+
+    constructor() {
+      if (AnimationProvider.instance) {
+        return AnimationProvider.instance;
+      }
+      AnimationProvider.instance = this;
+    }
+
+    // Legacy methods for backward compatibility
+    public async animateHeroText(element: HTMLElement): Promise<void> {
+      return new Promise((resolve) => {
+        const timeline = animations.revealText(element);
+        if (timeline.eventCallback) {
+          timeline.eventCallback('onComplete', resolve);
+        } else {
+          setTimeout(resolve, 1000); // Fallback timeout
+        }
+      });
+    }
+
+    public async animateFadeUp(elements: NodeListOf<Element> | Element[]): Promise<void> {
+      return new Promise((resolve) => {
+        const elementsArray = Array.from(elements);
+        if (elementsArray.length === 1) {
+          // Single element fade up
+          const timeline = animations.fadeIn(elementsArray[0]);
+          if (timeline.eventCallback) {
+            timeline.eventCallback('onComplete', resolve);
+          } else {
+            setTimeout(resolve, 800); // Fallback timeout
+          }
+        } else {
+          // Multiple elements stagger
+          const timeline = animations.staggerIn(elementsArray);
+          if (timeline.eventCallback) {
+            timeline.eventCallback('onComplete', resolve);
+          } else {
+            setTimeout(resolve, 800 + (elementsArray.length * 100)); // Fallback timeout
+          }
+        }
+      });
+    }
+
+    public async animateCounter(element: HTMLElement, endValue: number): Promise<void> {
+      return new Promise((resolve) => {
+        // Set the end value as text content for the counter animation
+        element.textContent = endValue.toString();
+        const timeline = animations.animateCounter(element);
+        if (timeline.eventCallback) {
+          timeline.eventCallback('onComplete', resolve);
+        } else {
+          setTimeout(resolve, 2000); // Fallback timeout
+        }
+      });
+    }
+
+    public refresh(): void {
+      animations.refresh();
+    }
+
+    public async cleanup(): Promise<void> {
+      animations.destroy();
+    }
+
+    // Static method to get instance
+    public static getInstance(): AnimationProvider {
+      if (!AnimationProvider.instance) {
+        AnimationProvider.instance = new AnimationProvider();
+      }
+      return AnimationProvider.instance;
+    }
+  }
+
+  // Initialize legacy provider on page load for backward compatibility
+  document.addEventListener('DOMContentLoaded', () => {
+    window.animationProvider = AnimationProvider.getInstance();
+  });
+
+  // Global TypeScript declarations
+  declare global {
+    interface Window {
+      animationProvider: AnimationProvider;
+      gsap: typeof gsap;
+      ScrollTrigger: typeof ScrollTrigger;
+    }
+  }
+</script>
+
+<style is:global>
+  /* Performance optimizations for animated elements */
+  [data-animate],
+  [data-stagger] > *,
+  [data-counter],
+  [data-parallax],
+  [data-reveal-text] {
+    /* Force hardware acceleration */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* Progressive enhancement: Hide animated elements when JS is enabled */
+  body:not(.no-js) [data-animate],
+  body:not(.no-js) [data-stagger] > *,
+  body:not(.no-js) [data-counter],
+  body:not(.no-js) [data-reveal-text] {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Mobile: Show all elements immediately except counters */
+  @media (max-width: 768px) {
+    body:not(.no-js) [data-animate],
+    body:not(.no-js) [data-stagger] > *,
+    body:not(.no-js) [data-reveal-text] {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+
+    /* Keep counters hidden on mobile until animated */
+    body:not(.no-js) [data-counter] {
+      opacity: 0;
+    }
+  }
+
+  /* Animation state classes for better control */
+  .animation-ready [data-animate],
+  .animation-ready [data-stagger] > *,
+  .animation-ready [data-counter],
+  .animation-ready [data-reveal-text] {
+    opacity: 1;
+  }
+
+  /* Fallback: Show all elements if animations fail */
+  .animation-fallback [data-animate],
+  .animation-fallback [data-stagger] > *,
+  .animation-fallback [data-counter],
+  .animation-fallback [data-reveal-text] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+
+  /* When JS is disabled, ensure all elements are visible */
+  body.no-js [data-animate],
+  body.no-js [data-stagger] > *,
+  body.no-js [data-counter],
+  body.no-js [data-parallax],
+  body.no-js [data-reveal-text] {
+    opacity: 1 !important;
+    transform: none !important;
+    will-change: auto !important;
+  }
+
+  /* Dynamic will-change optimization - only when animating */
+  .animating {
+    will-change: transform, opacity;
+  }
+
+  .animation-complete {
+    will-change: auto;
+  }
+
+  /* Reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    [data-animate],
+    [data-stagger] > *,
+    [data-counter],
+    [data-parallax],
+    [data-reveal-text] {
+      /* Disable transforms and transitions */
+      transform: none !important;
+      transition: none !important;
+      animation: none !important;
+    }
+
+    /* Ensure content is visible */
+    [data-animate] {
+      opacity: 1 !important;
+    }
+
+    [data-stagger] > * {
+      opacity: 1 !important;
+    }
+  }
+
+  /* Loading states */
+  .animation-loading {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .animation-ready {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Smooth scrolling for better animation performance */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+</style>

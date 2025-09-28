@@ -1,0 +1,14 @@
+---
+import SolutionTemplate from '../../../components/templates/SolutionTemplate.astro';
+
+const currentLang = Astro.currentLocale || 'de';
+---
+
+<SolutionTemplate
+  lang={currentLang}
+  industry="healthcare"
+  seo={{
+    title: "Gesundheitswesen-Lösungen - HIPAA-konforme Plattform",
+    description: "Sichere, konforme Gesundheitswesen-Lösungen für medizinische Organisationen. HIPAA-konform mit BAA-Vereinbarungen und Unternehmenssicherheit."
+  }}
+/>

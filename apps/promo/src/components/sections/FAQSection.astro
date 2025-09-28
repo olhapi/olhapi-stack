@@ -1,0 +1,609 @@
+---
+import { Plus, Minus, MessageCircle, ExternalLink } from '@lucide/astro';
+import StructuredData from "../StructuredData.astro";
+
+interface Props {
+    lang: string;
+}
+
+const { lang } = Astro.props;
+
+const translations = {
+    en: {
+        sectionTitle: "Frequently Asked Questions",
+        subtitle: "Everything you need to know about our platform",
+        faqs: [
+            {
+                id: "getting-started",
+                question: "How quickly can I get started?",
+                answer: "You can be up and running in under 5 minutes. Simply sign up for a free trial, connect your existing tools with our one-click integrations, and start automating your workflows immediately. No setup fees or long onboarding required.",
+            },
+            {
+                id: "data-security",
+                question: "Is my data secure and compliant?",
+                answer: "Absolutely. We're SOC 2 Type II certified, GDPR compliant, and use enterprise-grade encryption for all data. Your information is stored in secure, redundant data centers with 99.9% uptime. We also offer HIPAA compliance for healthcare organizations.",
+            },
+            {
+                id: "integrations",
+                question: "What tools can I integrate?",
+                answer: "We support 500+ integrations including popular tools like Slack, Microsoft 365, Salesforce, HubSpot, Jira, GitHub, and many more. If we don't have a built-in integration, our robust API and webhook system allows you to connect virtually any tool.",
+            },
+            {
+                id: "pricing-plans",
+                question: "Can I change my plan anytime?",
+                answer: "Yes, you can upgrade, downgrade, or cancel your subscription at any time. When you upgrade, you'll immediately get access to new features. When you downgrade, changes take effect at your next billing cycle. No long-term contracts required.",
+            },
+            {
+                id: "team-collaboration",
+                question: "How does team collaboration work?",
+                answer: "Our platform includes advanced permission management, real-time collaboration features, team dashboards, and audit logs. You can invite unlimited team members, assign roles and permissions, and track everyone's progress in real-time.",
+            },
+            {
+                id: "support-training",
+                question: "What support and training do you provide?",
+                answer: "We offer 24/7 support via chat and email, comprehensive documentation, video tutorials, webinar training sessions, and dedicated customer success managers for Enterprise plans. Our average response time is under 2 hours.",
+            },
+            {
+                id: "scalability",
+                question: "Will it scale as my business grows?",
+                answer: "Absolutely. Our platform is built on cloud infrastructure that automatically scales with your needs. Whether you're a 5-person startup or a 10,000+ enterprise, we can handle your growth without any performance degradation.",
+            },
+            {
+                id: "trial-migration",
+                question: "What happens after my free trial?",
+                answer: "During your 14-day free trial, you have full access to all Professional features. After the trial, you can choose to continue with a paid plan or your account will be paused (not deleted) so you won't lose any data. You can reactivate anytime.",
+            },
+        ],
+        viewAllText: "View All FAQs",
+        contactText: "Still have questions?",
+        contactCTA: "Contact Support",
+    },
+    de: {
+        sectionTitle: "Häufig gestellte Fragen",
+        subtitle: "Alles, was Sie über unsere Plattform wissen müssen",
+        faqs: [
+            {
+                id: "getting-started",
+                question: "Wie schnell kann ich loslegen?",
+                answer: "Sie können in weniger als 5 Minuten betriebsbereit sein. Melden Sie sich einfach für eine kostenlose Testversion an, verbinden Sie Ihre bestehenden Tools mit unseren Ein-Klick-Integrationen und beginnen Sie sofort mit der Automatisierung Ihrer Arbeitsabläufe.",
+            },
+            {
+                id: "data-security",
+                question: "Sind meine Daten sicher und konform?",
+                answer: "Absolut. Wir sind SOC 2 Type II zertifiziert, DSGVO-konform und verwenden Verschlüsselung auf Unternehmensebene für alle Daten. Ihre Informationen werden in sicheren, redundanten Rechenzentren mit 99,9% Verfügbarkeit gespeichert.",
+            },
+            {
+                id: "integrations",
+                question: "Welche Tools kann ich integrieren?",
+                answer: "Wir unterstützen 500+ Integrationen einschließlich beliebter Tools wie Slack, Microsoft 365, Salesforce, HubSpot, Jira, GitHub und viele mehr. Wenn wir keine integrierte Integration haben, ermöglicht unser robustes API- und Webhook-System, praktisch jedes Tool zu verbinden.",
+            },
+            {
+                id: "pricing-plans",
+                question: "Kann ich meinen Plan jederzeit ändern?",
+                answer: "Ja, Sie können Ihr Abonnement jederzeit upgraden, downgraden oder kündigen. Beim Upgrade erhalten Sie sofort Zugang zu neuen Funktionen. Beim Downgrade werden Änderungen zu Ihrem nächsten Abrechnungszyklus wirksam.",
+            },
+            {
+                id: "team-collaboration",
+                question: "Wie funktioniert die Teamzusammenarbeit?",
+                answer: "Unsere Plattform umfasst erweiterte Berechtigungsverwaltung, Echtzeit-Kollaborationsfunktionen, Team-Dashboards und Audit-Logs. Sie können unbegrenzt Teammitglieder einladen, Rollen und Berechtigungen zuweisen.",
+            },
+            {
+                id: "support-training",
+                question: "Welchen Support und welche Schulungen bieten Sie?",
+                answer: "Wir bieten 24/7-Support via Chat und E-Mail, umfassende Dokumentation, Video-Tutorials, Webinar-Schulungen und dedizierte Customer Success Manager für Enterprise-Pläne. Unsere durchschnittliche Antwortzeit beträgt unter 2 Stunden.",
+            },
+            {
+                id: "scalability",
+                question: "Wird es mit meinem Unternehmenswachstum skalieren?",
+                answer: "Absolut. Unsere Plattform basiert auf Cloud-Infrastruktur, die automatisch mit Ihren Bedürfnissen skaliert. Ob Sie ein 5-Personen-Startup oder ein 10.000+ Unternehmen sind, wir können Ihr Wachstum ohne Leistungseinbußen bewältigen.",
+            },
+            {
+                id: "trial-migration",
+                question: "Was passiert nach meiner kostenlosen Testversion?",
+                answer: "Während Ihrer 14-tägigen kostenlosen Testversion haben Sie vollen Zugang zu allen Professional-Funktionen. Nach der Testversion können Sie mit einem bezahlten Plan fortfahren oder Ihr Konto wird pausiert (nicht gelöscht).",
+            },
+        ],
+        viewAllText: "Alle FAQs anzeigen",
+        contactText: "Haben Sie noch Fragen?",
+        contactCTA: "Support kontaktieren",
+    },
+};
+
+import { useTranslations } from "../../utils/i18n";
+const $t = useTranslations(translations, lang);
+---
+
+<section class="faq-section section" data-faq-section>
+    <StructuredData type="faq" data={$t("faqs")} />
+    <div class="container">
+        <!-- Section Header -->
+        <div class="section-header text-center">
+            <h2 class="text-display-medium gradient-text">
+                {$t("sectionTitle")}
+            </h2>
+            <p class="section-subtitle text-body-large">
+                {$t("subtitle")}
+            </p>
+        </div>
+
+        <!-- FAQ Accordion -->
+        <div class="faq-accordion" data-faq-accordion>
+            {
+                $t("faqs").map((faq: any, index: number) => (
+                    <div class="faq-item" data-faq-item data-faq-id={faq.id} data-animate-delay={index * 50}>
+                        <button
+                            type="button"
+                            class="faq-question"
+                            data-faq-trigger
+                            aria-expanded="false"
+                            id={`faq-button-${faq.id}`}
+                            aria-controls={`faq-content-${faq.id}`}
+                        >
+                            <span class="question-text text-heading-medium">{faq.question}</span>
+                            <div class="question-icon">
+                                <Plus size={24} class="icon-plus" />
+                                <Minus size={24} class="icon-minus" />
+                            </div>
+                        </button>
+
+                        <div
+                            class="faq-answer"
+                            data-faq-content
+                            id={`faq-content-${faq.id}`}
+                            aria-labelledby={`faq-button-${faq.id}`}
+                            role="region"
+                        >
+                            <div class="answer-content">
+                                <p class="text-body-medium">{faq.answer}</p>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+
+        <!-- Additional Support CTA -->
+        <div class="support-cta">
+            <div class="support-card">
+                <div class="support-content">
+                    <h3 class="support-title text-heading-large">{$t("contactText")}</h3>
+                    <p class="support-description text-body-medium">
+                        Our support team is here to help with any questions you might have.
+                    </p>
+                </div>
+                <div class="support-actions">
+                    <a href="#" class="btn btn-primary">
+                        {$t("contactCTA")}
+                        <MessageCircle size={20} />
+                    </a>
+                    <a href="#" class="btn btn-ghost">
+                        {$t("viewAllText")}
+                        <ExternalLink size={16} />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .faq-section {
+        background: var(--color-background-primary);
+        position: relative;
+    }
+
+    .section-header {
+        margin-bottom: var(--space-16);
+    }
+
+    .section-subtitle {
+        margin-top: var(--space-4);
+        color: var(--color-text-secondary);
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* FAQ Accordion */
+    .faq-accordion {
+        max-width: 800px;
+        margin: 0 auto var(--space-16);
+    }
+
+    .faq-item {
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        margin-bottom: var(--space-4);
+        background: var(--color-surface);
+        overflow: hidden;
+    }
+
+    .faq-item:hover {
+        border-color: var(--color-primary-blue);
+        box-shadow: var(--shadow-md);
+    }
+
+    .faq-item.open {
+        border-color: var(--color-primary-blue);
+        box-shadow: 0 4px 20px rgba(0, 102, 255, 0.1);
+    }
+
+    .faq-item.animate {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .faq-question {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--space-6) var(--space-8);
+        background: transparent;
+        border: none;
+        text-align: left;
+        cursor: pointer;
+        transition: all var(--duration-fast) var(--ease-out);
+        position: relative;
+    }
+
+    .faq-question:hover {
+        background: var(--color-background-secondary);
+    }
+
+    .faq-question:focus-visible {
+        outline: 2px solid var(--color-primary-blue);
+        outline-offset: -2px;
+    }
+
+    .question-text {
+        color: var(--color-text-primary);
+        font-weight: 600;
+        margin-right: var(--space-4);
+        line-height: 1.4;
+    }
+
+    .question-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: var(--radius-full);
+        background: var(--color-background-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-text-secondary);
+        transition: all var(--duration-normal) var(--ease-out);
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .question-icon .icon-minus {
+        position: absolute;
+        opacity: 0;
+        transform: rotate(90deg);
+        transition: all var(--duration-normal) var(--ease-out);
+    }
+
+    .question-icon .icon-plus {
+        opacity: 1;
+        transform: rotate(0deg);
+        transition: all var(--duration-normal) var(--ease-out);
+    }
+
+    .faq-item.open .question-icon {
+        background: var(--color-primary-blue);
+        color: white;
+        transform: rotate(180deg);
+    }
+
+    .faq-item.open .question-icon .icon-plus {
+        opacity: 0;
+        transform: rotate(90deg);
+    }
+
+    .faq-item.open .question-icon .icon-minus {
+        opacity: 1;
+        transform: rotate(0deg);
+    }
+
+    .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height var(--duration-slow) var(--ease-out);
+    }
+
+    .faq-item.open .faq-answer {
+        max-height: 500px; /* Large enough to accommodate content */
+    }
+
+    .answer-content {
+        padding: 0 var(--space-8) var(--space-6);
+        border-top: 1px solid var(--color-border);
+        padding-top: var(--space-6);
+    }
+
+    .answer-content p {
+        color: var(--color-text-secondary);
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    /* Support CTA */
+    .support-cta {
+        margin-top: var(--space-20);
+    }
+
+    .support-card {
+        background: var(--gradient-primary);
+        border-radius: var(--radius-xl);
+        padding: var(--space-10);
+        color: white;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .support-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .support-content {
+        position: relative;
+        z-index: 2;
+        margin-bottom: var(--space-6);
+    }
+
+    .support-title {
+        color: white;
+        margin-bottom: var(--space-3);
+    }
+
+    .support-description {
+        color: rgba(255, 255, 255, 0.9);
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .support-actions {
+        display: flex;
+        gap: var(--space-4);
+        justify-content: center;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 2;
+    }
+
+    .support-actions .btn {
+        flex-shrink: 0;
+    }
+
+    .support-actions .btn-primary {
+        background: white;
+        color: var(--color-primary-blue);
+        border-color: white;
+    }
+
+    .support-actions .btn-primary:hover {
+        background: var(--color-background-secondary);
+        transform: translateY(-2px);
+    }
+
+    .support-actions .btn-ghost {
+        color: white;
+        border-color: rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .support-actions .btn-ghost:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .faq-question {
+            padding: var(--space-5) var(--space-6);
+        }
+
+        .question-text {
+            font-size: 16px;
+        }
+
+        .answer-content {
+            padding: 0 var(--space-6) var(--space-5);
+            padding-top: var(--space-5);
+        }
+
+        .support-card {
+            padding: var(--space-8);
+        }
+
+        .support-actions {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .support-actions .btn {
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .question-icon {
+            width: 28px;
+            height: 28px;
+        }
+    }
+
+    /* Animations */
+    @media (prefers-reduced-motion: reduce) {
+        .faq-item {
+            opacity: 1;
+            transform: none;
+        }
+
+        .faq-answer {
+            transition: none;
+        }
+
+        .question-icon,
+        .question-icon .icon-plus,
+        .question-icon .icon-minus {
+            transition: none;
+        }
+    }
+
+    /* Accessibility improvements */
+    .faq-item:has(:focus-visible) {
+        outline: 2px solid var(--color-primary-blue);
+        outline-offset: 2px;
+    }
+
+    @media (forced-colors: active) {
+        .faq-item {
+            border: 1px solid ButtonText;
+        }
+
+        .faq-question:hover {
+            background: Highlight;
+            color: HighlightText;
+        }
+    }
+</style>
+
+<script>
+    (function initializeFAQSection() {
+        const faqSections = document.querySelectorAll("[data-faq-section]");
+
+        faqSections.forEach((section) => {
+            const accordion = section.querySelector("[data-faq-accordion]");
+            const faqItems = section.querySelectorAll("[data-faq-item]");
+
+            if (!accordion || !faqItems.length) return;
+
+            function setupAccordion() {
+                faqItems.forEach((item) => {
+                    const trigger = item.querySelector("[data-faq-trigger]") as HTMLButtonElement;
+                    const content = item.querySelector("[data-faq-content]") as HTMLElement;
+
+                    if (!trigger || !content) return;
+
+                    trigger.addEventListener("click", () => {
+                        toggleFAQ(item as HTMLElement, trigger, content);
+                    });
+
+                    // Set initial ARIA states
+                    trigger.setAttribute("aria-expanded", "false");
+                    content.setAttribute("aria-hidden", "true");
+                });
+            }
+
+            function toggleFAQ(item: HTMLElement, trigger: HTMLButtonElement, content: HTMLElement) {
+                const isOpen = item.classList.contains("open");
+
+                if (isOpen) {
+                    closeFAQ(item, trigger, content);
+                } else {
+                    // Close all other FAQs (accordion behavior)
+                    closeAllFAQs();
+                    openFAQ(item, trigger, content);
+                }
+            }
+
+            function openFAQ(item: HTMLElement, trigger: HTMLButtonElement, content: HTMLElement) {
+                item.classList.add("open");
+                trigger.setAttribute("aria-expanded", "true");
+                content.setAttribute("aria-hidden", "false");
+
+                // Set max-height to content height for smooth animation
+                const contentHeight = content.scrollHeight;
+                content.style.maxHeight = `${contentHeight}px`;
+
+                // Scroll into view if needed
+                setTimeout(() => {
+                    const rect = item.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+
+                    if (rect.bottom > windowHeight) {
+                        item.scrollIntoView({
+                            behavior: "smooth",
+                            block: "end",
+                            inline: "nearest",
+                        });
+                    }
+                }, 300);
+            }
+
+            function closeFAQ(item: HTMLElement, trigger: HTMLButtonElement, content: HTMLElement) {
+                item.classList.remove("open");
+                trigger.setAttribute("aria-expanded", "false");
+                content.setAttribute("aria-hidden", "true");
+                content.style.maxHeight = "0";
+            }
+
+            function closeAllFAQs() {
+                faqItems.forEach((item) => {
+                    const trigger = item.querySelector("[data-faq-trigger]") as HTMLButtonElement;
+                    const content = item.querySelector("[data-faq-content]") as HTMLElement;
+
+                    if (trigger && content && item.classList.contains("open")) {
+                        closeFAQ(item as HTMLElement, trigger, content);
+                    }
+                });
+            }
+
+            function setupKeyboardNavigation() {
+                faqItems.forEach((item, index) => {
+                    const trigger = item.querySelector("[data-faq-trigger]") as HTMLButtonElement;
+                    if (!trigger) return;
+
+                    trigger.addEventListener("keydown", (e) => {
+                        let targetIndex: number | null = null;
+
+                        switch (e.key) {
+                            case "ArrowDown":
+                                e.preventDefault();
+                                targetIndex = index + 1;
+                                break;
+                            case "ArrowUp":
+                                e.preventDefault();
+                                targetIndex = index - 1;
+                                break;
+                            case "Home":
+                                e.preventDefault();
+                                targetIndex = 0;
+                                break;
+                            case "End":
+                                e.preventDefault();
+                                targetIndex = faqItems.length - 1;
+                                break;
+                        }
+
+                        if (targetIndex !== null) {
+                            // Wrap around
+                            if (targetIndex >= faqItems.length) targetIndex = 0;
+                            if (targetIndex < 0) targetIndex = faqItems.length - 1;
+
+                            const targetTrigger = faqItems[targetIndex].querySelector(
+                                "[data-faq-trigger]",
+                            ) as HTMLButtonElement;
+                            if (targetTrigger) {
+                                targetTrigger.focus();
+                            }
+                        }
+                    });
+                });
+            }
+
+            // Initialize the FAQ section
+            setupAccordion();
+            setupKeyboardNavigation();
+        });
+    })();
+</script>

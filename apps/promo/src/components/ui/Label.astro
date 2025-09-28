@@ -1,0 +1,126 @@
+---
+interface Props {
+  for?: string;
+  required?: boolean;
+  class?: string;
+  size?: 'sm' | 'md' | 'lg';
+  weight?: 'normal' | 'medium' | 'semibold' | 'bold';
+}
+
+const {
+  for: htmlFor,
+  required = false,
+  class: className = '',
+  size = 'md',
+  weight = 'medium'
+} = Astro.props;
+
+const baseClasses = 'label';
+const sizeClasses = {
+  sm: 'label-sm',
+  md: 'label-md',
+  lg: 'label-lg'
+};
+
+const weightClasses = {
+  normal: 'label-normal',
+  medium: 'label-medium',
+  semibold: 'label-semibold',
+  bold: 'label-bold'
+};
+
+const classes = [
+  baseClasses,
+  sizeClasses[size],
+  weightClasses[weight],
+  className
+].filter(Boolean).join(' ');
+---
+
+<label class={classes} for={htmlFor}>
+  <slot />
+  {required && <span class="label-required" aria-label="required">*</span>}
+</label>
+
+<style>
+  /* Base Label Styles */
+  .label {
+    display: inline-block;
+    color: var(--color-text-primary);
+    font-family: inherit;
+    line-height: 1.5;
+    cursor: pointer;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .label:hover {
+    color: var(--color-text-secondary);
+  }
+
+  /* Size Variants */
+  .label-sm {
+    font-size: 13px;
+    margin-bottom: var(--space-1);
+  }
+
+  .label-md {
+    font-size: 14px;
+    margin-bottom: var(--space-2);
+  }
+
+  .label-lg {
+    font-size: 16px;
+    margin-bottom: var(--space-2);
+  }
+
+  /* Weight Variants */
+  .label-normal {
+    font-weight: 400;
+  }
+
+  .label-medium {
+    font-weight: 500;
+  }
+
+  .label-semibold {
+    font-weight: 600;
+  }
+
+  .label-bold {
+    font-weight: 700;
+  }
+
+  /* Required Indicator */
+  .label-required {
+    color: var(--color-accent-red);
+    margin-left: var(--space-1);
+    font-weight: 600;
+  }
+
+  /* Focus States for Associated Inputs */
+  .label:focus-within {
+    color: var(--color-primary-blue);
+  }
+
+  /* Dark Mode Adjustments */
+  [data-theme="dark"] .label {
+    color: var(--color-text-primary);
+  }
+
+  [data-theme="dark"] .label:hover {
+    color: var(--color-text-secondary);
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .label {
+      transition: none;
+    }
+  }
+
+  /* Accessibility */
+  .label[aria-disabled="true"] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+</style>

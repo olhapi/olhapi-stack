@@ -1,0 +1,16 @@
+{
+  "rules": {
+    "correctness": "warn",
+    "nursery": "warn",
+    "perf": "warn",
+    "restriction": "warn",
+    "style": "warn",
+    "suspicious": "warn"
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2024": true
+  },
+  "plugins": ["react", "unicorn", "typescript"]
+}

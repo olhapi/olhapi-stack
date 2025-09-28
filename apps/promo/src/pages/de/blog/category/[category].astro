@@ -1,0 +1,65 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import BlogListSection from '../../../../components/sections/BlogListSection.astro';
+import { getCollection } from 'astro:content';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../../../consts';
+
+export async function getStaticPaths() {
+  const currentLang = 'de';
+
+  // Get all blog posts for German
+  const allPosts = await getCollection('blog');
+  const posts = allPosts
+    .filter(post => post.id.startsWith(`${currentLang}/`))
+    .filter(post => !post.data.draft);
+
+  // Get unique categories
+  const categories = [...new Set(posts.map(post => post.data.category).filter(Boolean))];
+
+  // Create paths for each category
+  return categories.map(category => ({
+    params: {
+      category: category.toLowerCase().replace(/\s+/g, '-')
+    },
+    props: {
+      categoryName: category,
+      currentLang
+    }
+  }));
+}
+
+const { category } = Astro.params;
+const { categoryName, currentLang } = Astro.props;
+const pageSize = 10;
+
+// Get all blog posts for German
+const allPosts = await getCollection('blog');
+const posts = allPosts
+  .filter(post => post.id.startsWith(`${currentLang}/`))
+  .filter(post => !post.data.draft)
+  .filter(post => post.data.category === categoryName)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Get first page of posts
+const firstPagePosts = posts.slice(0, pageSize);
+const totalPages = Math.ceil(posts.length / pageSize);
+
+// Create pagination object
+const pagination = {
+  currentPage: 1,
+  lastPage: totalPages,
+  url: {
+    prev: undefined,
+    next: totalPages > 1 ? `/de/blog/category/${category}/page/2` : undefined,
+  },
+};
+---
+
+<Layout title={`${SITE_TITLE} - ${categoryName}`} description={SITE_DESCRIPTION}>
+  <BlogListSection
+    lang={currentLang}
+    posts={firstPagePosts}
+    pagination={totalPages > 1 ? pagination : undefined}
+    activeCategory={categoryName}
+  />
+</Layout>

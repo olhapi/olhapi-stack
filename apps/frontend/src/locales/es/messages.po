@@ -1,0 +1,324 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-09-12 15:48+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: es\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/layouts/public-layout.tsx
+#: src/layouts/secured-layout.tsx
+msgid "© {currentYear} Your App. All rights reserved."
+msgstr "© {currentYear} Tu App. Todos los derechos reservados."
+
+#: src/pages/dashboard.tsx
+msgid "✅ Enabled"
+msgstr "✅ Habilitado"
+
+#: src/pages/dashboard.tsx
+msgid "❌ Disabled"
+msgstr "❌ Deshabilitado"
+
+#: src/pages/welcome.tsx
+msgid "Account Settings"
+msgstr "Configuración de Cuenta"
+
+#: src/components/ui/avatar-crop-dialog.tsx
+msgid "Adjust the crop area, zoom, and rotation to get the perfect avatar"
+msgstr "Ajusta el área de recorte, zoom y rotación para obtener el avatar perfecto"
+
+#: src/components/ui/avatar-upload.tsx
+msgid "Avatar uploaded successfully"
+msgstr "Avatar subido exitosamente"
+
+#: src/pages/dashboard.tsx
+msgid "Beta Features"
+msgstr "Funciones Beta"
+
+#. placeholder {0}: showBetaFeatures ? _(t`✅ Enabled`) : _(t`❌ Disabled`)
+#: src/pages/dashboard.tsx
+msgid "Beta Features: {0}"
+msgstr "Funciones Beta: {0}"
+
+#: src/pages/dashboard.tsx
+msgid "Button Style: {buttonStyle}"
+msgstr "Estilo de Botón: {buttonStyle}"
+
+#. placeholder {0}: result.error.statusText
+#: src/features/auth/auth-form.tsx
+msgid "Can't send magic link: {0}"
+msgstr "No se puede enviar el enlace mágico: {0}"
+
+#: src/components/ui/avatar-crop-dialog.tsx
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: src/features/auth/auth-form.tsx
+msgid "Check your email for login link"
+msgstr "Revisa tu correo para el enlace de acceso"
+
+#: src/components/ui/avatar-crop-dialog.tsx
+msgid "Crop & Upload"
+msgstr "Recortar y Subir"
+
+#: src/components/ui/avatar-crop-dialog.tsx
+msgid "Crop Avatar"
+msgstr "Recortar Avatar"
+
+#: src/layouts/secured-layout.tsx
+#: src/pages/dashboard.tsx
+msgid "Dashboard"
+msgstr "Panel"
+
+#: src/features/settings/user-settings-form.tsx
+msgid "Display Name"
+msgstr "Nombre para Mostrar"
+
+#: src/features/auth/auth-form.tsx
+msgid "Email"
+msgstr "Correo electrónico"
+
+#: src/features/auth/auth-form.tsx
+msgid "Email is required"
+msgstr "El correo es obligatorio"
+
+#: src/features/auth/auth-form.tsx
+msgid "Email with link to login link has been sent to your email"
+msgstr "Se ha enviado un correo con el enlace de acceso a tu email"
+
+#: src/features/settings/user-settings-form.tsx
+msgid "Enter your display name"
+msgstr "Ingresa tu nombre para mostrar"
+
+#: src/features/auth/auth-form.tsx
+#~ msgid "Enter your email below to login to your account"
+#~ msgstr ""
+
+#: src/features/auth/auth-form.tsx
+msgid "Enter your email below. We'll send you a magic link to sign in or create your account."
+msgstr "Introduce tu email. Te enviaremos un enlace mágico para iniciar sesión o crear tu cuenta."
+
+#: src/features/settings/user-settings-form.tsx
+msgid "Enter your username"
+msgstr "Ingresa tu nombre de usuario"
+
+#: src/hooks/use-username-check.ts
+msgid "Error checking username availability"
+msgstr "Error al verificar la disponibilidad del nombre de usuario"
+
+#: src/pages/dashboard.tsx
+msgid "Explore Beta Features"
+msgstr "Explorar Funciones Beta"
+
+#: src/components/ui/avatar-crop-dialog.tsx
+msgid "Failed to crop image"
+msgstr "Error al recortar la imagen"
+
+#: src/contexts/growthbook-context.tsx
+msgid "Failed to load feature flags. Using default values."
+msgstr "Error al cargar las banderas de funciones. Usando valores por defecto."
+
+#: src/contexts/auth-context.tsx
+#: src/contexts/auth-context.tsx
+msgid "Failed to update profile"
+msgstr "Error al actualizar el perfil"
+
+#: src/pages/dashboard.tsx
+msgid "Feature Flags Status:"
+msgstr "Estado de Banderas de Funciones:"
+
+#: src/pages/error.tsx
+msgid "Go Home"
+msgstr "Ir al Inicio"
+
+#: src/pages/welcome.tsx
+msgid "Go to Dashboard"
+msgstr "Ir al Panel"
+
+#. placeholder {0}: user?.email || _(t`there`)
+#: src/pages/welcome.tsx
+msgid "Hello {0}, we're excited to have you on board."
+msgstr "Hola {0}, estamos emocionados de tenerte a bordo."
+
+#: src/components/ui/avatar-upload.tsx
+msgid "JPG, PNG or WebP. Max 2MB."
+msgstr "JPG, PNG o WebP. Máximo 2MB."
+
+#: src/pages/welcome.tsx
+msgid "Let's get you started"
+msgstr "Comencemos"
+
+#: src/layouts/secured-layout.tsx
+msgid "Loading..."
+msgstr "Cargando..."
+
+#. placeholder {0}: user?.email || _(t`User`)
+#: src/pages/dashboard.tsx
+msgid "Logged in as: {0}"
+msgstr "Conectado como: {0}"
+
+#: src/features/auth/auth-form.tsx
+#~ msgid "Login to your account"
+#~ msgstr ""
+
+#: src/layouts/secured-layout.tsx
+msgid "Logout"
+msgstr "Cerrar Sesión"
+
+#: src/features/auth/auth-form.tsx
+msgid "mail@example.com"
+msgstr "correo@ejemplo.com"
+
+#: src/pages/settings.tsx
+msgid "Manage your account and application preferences"
+msgstr "Administra tu cuenta y preferencias de la aplicación"
+
+#: src/components/ui/avatar-crop-dialog.tsx
+msgid "Please select an area to crop"
+msgstr "Por favor selecciona un área para recortar"
+
+#: src/pages/error.tsx
+msgid "Please try again or contact support if the problem persists."
+msgstr "Por favor inténtalo de nuevo o contacta soporte si el problema persiste."
+
+#: src/features/auth/auth-form.tsx
+msgid "Please wait"
+msgstr "Por favor espera"
+
+#: src/components/ui/avatar-crop-dialog.tsx
+msgid "Processing..."
+msgstr "Procesando..."
+
+#: src/features/settings/user-settings-form.tsx
+msgid "Profile Settings"
+msgstr "Configuración del Perfil"
+
+#: src/contexts/auth-context.tsx
+msgid "Profile updated successfully"
+msgstr "Perfil actualizado exitosamente"
+
+#: src/features/settings/user-settings-form.tsx
+msgid "Reset"
+msgstr "Restablecer"
+
+#: src/features/settings/user-settings-form.tsx
+msgid "Save Changes"
+msgstr "Guardar Cambios"
+
+#: src/features/settings/user-settings-form.tsx
+msgid "Saving..."
+msgstr "Guardando..."
+
+#: src/features/auth/auth-form.tsx
+msgid "Send login link"
+msgstr "Enviar enlace de acceso"
+
+#: src/layouts/secured-layout.tsx
+#: src/pages/settings.tsx
+msgid "Settings"
+msgstr "Configuración"
+
+#: src/layouts/public-layout.tsx
+msgid "Sign In"
+msgstr "Iniciar Sesión"
+
+#: src/features/auth/auth-form.tsx
+msgid "Sign in to your account"
+msgstr "Inicia sesión en tu cuenta"
+
+#: src/features/auth/auth-form.tsx
+#: src/pages/error.tsx
+msgid "Something went wrong"
+msgstr "Algo salió mal"
+
+#: src/pages/welcome.tsx
+msgid "there"
+msgstr "ahí"
+
+#: src/hooks/use-username-check.ts
+msgid "This is your current username"
+msgstr "Este es tu nombre de usuario actual"
+
+#: src/pages/error.tsx
+msgid "Try Again"
+msgstr "Intentar de Nuevo"
+
+#: src/features/settings/user-settings-form.tsx
+msgid "Update your profile information and avatar"
+msgstr "Actualiza la información de tu perfil y avatar"
+
+#: src/components/ui/avatar-upload.tsx
+msgid "Upload failed"
+msgstr "Error en la subida"
+
+#: src/pages/dashboard.tsx
+msgid "User"
+msgstr "Usuario"
+
+#: src/features/settings/user-settings-form.tsx
+msgid "Username"
+msgstr "Nombre de Usuario"
+
+#: src/hooks/use-username-check.ts
+msgid "Username can only contain letters, numbers, underscores, and hyphens"
+msgstr "El nombre de usuario solo puede contener letras, números, guiones bajos y guiones"
+
+#: src/hooks/use-username-check.ts
+msgid "Username is already taken"
+msgstr "El nombre de usuario ya está en uso"
+
+#: src/hooks/use-username-check.ts
+msgid "Username is available"
+msgstr "El nombre de usuario está disponible"
+
+#: src/hooks/use-username-check.ts
+msgid "Username must be at least 3 characters"
+msgstr "El nombre de usuario debe tener al menos 3 caracteres"
+
+#: src/hooks/use-username-check.ts
+msgid "Username must be less than 30 characters"
+msgstr "El nombre de usuario debe tener menos de 30 caracteres"
+
+#: src/pages/error.tsx
+msgid "We encountered an error while processing your request"
+msgstr "Encontramos un error al procesar tu solicitud"
+
+#: src/pages/dashboard.tsx
+msgid "Welcome Message: \"{welcomeMessage}\""
+msgstr "Mensaje de Bienvenida: \"{welcomeMessage}\""
+
+#: src/pages/welcome.tsx
+msgid "Welcome to Your App!"
+msgstr "¡Bienvenido a Tu App!"
+
+#: src/pages/dashboard.tsx
+msgid "Welcome to your dashboard!"
+msgstr "¡Bienvenido a tu panel!"
+
+#: src/pages/dashboard.tsx
+msgid "You have access to beta features! New experimental functionality will appear here."
+msgstr "¡Tienes acceso a funciones beta! Las nuevas funcionalidades experimentales aparecerán aquí."
+
+#: src/pages/welcome.tsx
+msgid "Your account has been successfully created"
+msgstr "Tu cuenta ha sido creada exitosamente"
+
+#: src/layouts/public-layout.tsx
+#: src/layouts/secured-layout.tsx
+msgid "Your App"
+msgstr "Tu App"
+
+#: src/pages/dashboard.tsx
+msgid "Your dashboard content goes here."
+msgstr "El contenido de tu panel va aquí."
+
+#: src/components/ui/avatar-crop-dialog.tsx
+msgid "Zoom"
+msgstr "Zoom"

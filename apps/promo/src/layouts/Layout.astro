@@ -1,0 +1,114 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import AnimationProvider from '../components/animations/AnimationProvider.astro';
+import StructuredData from '../components/StructuredData.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  class?: string;
+}
+
+const { title, description, class: className } = Astro.props;
+const currentLang = Astro.currentLocale || 'en';
+---
+
+<!doctype html>
+<html lang={currentLang} data-theme="light">
+  <head>
+    <BaseHead title={title} description={description} />
+    <StructuredData type="organization" url={Astro.site?.toString()} />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  </head>
+  <body class={`no-js ${className || ''}`}>
+    <div class="app-container">
+      <Header lang={currentLang} />
+
+      <main class="main-content">
+        <slot />
+      </main>
+
+      <Footer lang={currentLang} />
+    </div>
+
+    <!-- Background Elements -->
+    <div class="background-decorations" aria-hidden="true">
+      <div class="bg-gradient-mesh"></div>
+      <div class="bg-dots-pattern"></div>
+    </div>
+
+    <!-- Animation Provider -->
+    <AnimationProvider />
+  </body>
+</html>
+
+<style>
+  .app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+  }
+
+  .main-content {
+    flex: 1;
+    position: relative;
+  }
+
+  /* Background Decorations */
+  .background-decorations {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .bg-gradient-mesh {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-mesh);
+    opacity: 0.03;
+  }
+
+  .bg-dots-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, var(--color-border) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.5;
+  }
+
+  [data-theme="dark"] .bg-gradient-mesh {
+    opacity: 0.1;
+  }
+
+  [data-theme="dark"] .bg-dots-pattern {
+    opacity: 0.2;
+  }
+
+  /* Smooth transitions for theme changes */
+  .background-decorations > * {
+    transition: opacity var(--duration-normal) var(--ease-out);
+  }
+
+  /* Hide background patterns on reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .bg-gradient-mesh,
+    .bg-dots-pattern {
+      display: none;
+    }
+  }
+</style>

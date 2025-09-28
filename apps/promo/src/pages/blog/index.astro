@@ -1,0 +1,46 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BlogListSection from '../../components/sections/BlogListSection.astro';
+import { getCollection } from 'astro:content';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+
+const currentLang = 'en';
+const pageSize = 10;
+
+// Get category from URL params
+const categoryParam = Astro.url.searchParams.get('category');
+
+// Get all blog posts for English
+const allPosts = await getCollection('blog');
+let posts = allPosts
+  .filter(post => post.id.startsWith(`${currentLang}/`))
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Filter by category if specified
+if (categoryParam) {
+  posts = posts.filter(post => post.data.category === categoryParam);
+}
+
+// Get first page of posts
+const firstPagePosts = posts.slice(0, pageSize);
+const totalPages = Math.ceil(posts.length / pageSize);
+
+// Create pagination object
+const pagination = {
+  currentPage: 1,
+  lastPage: totalPages,
+  url: {
+    prev: undefined,
+    next: totalPages > 1 ? '/blog/page/2' : undefined,
+  },
+};
+---
+
+<Layout title={`${SITE_TITLE} - Blog`} description={SITE_DESCRIPTION}>
+  <BlogListSection
+    lang={currentLang}
+    posts={firstPagePosts}
+    pagination={totalPages > 1 ? pagination : undefined}
+  />
+</Layout>

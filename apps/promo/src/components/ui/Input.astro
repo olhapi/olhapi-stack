@@ -1,0 +1,182 @@
+---
+interface Props {
+  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search';
+  placeholder?: string;
+  value?: string;
+  name?: string;
+  id?: string;
+  required?: boolean;
+  disabled?: boolean;
+  readonly?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'error' | 'success';
+  class?: string;
+  autocomplete?: string;
+  maxlength?: number;
+  minlength?: number;
+  pattern?: string;
+  'aria-label'?: string;
+  'aria-describedby'?: string;
+}
+
+const {
+  type = 'text',
+  placeholder,
+  value,
+  name,
+  id,
+  required = false,
+  disabled = false,
+  readonly = false,
+  size = 'md',
+  variant = 'default',
+  class: className = '',
+  autocomplete,
+  maxlength,
+  minlength,
+  pattern,
+  'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedBy
+} = Astro.props;
+
+const baseClasses = 'input';
+const sizeClasses = {
+  sm: 'input-sm',
+  md: 'input-md',
+  lg: 'input-lg'
+};
+
+const variantClasses = {
+  default: '',
+  error: 'input-error',
+  success: 'input-success'
+};
+
+const classes = [
+  baseClasses,
+  sizeClasses[size],
+  variantClasses[variant],
+  disabled && 'input-disabled',
+  readonly && 'input-readonly',
+  className
+].filter(Boolean).join(' ');
+---
+
+<input
+  type={type}
+  class={classes}
+  placeholder={placeholder}
+  value={value}
+  name={name}
+  id={id}
+  required={required}
+  disabled={disabled}
+  readonly={readonly}
+  autocomplete={autocomplete}
+  maxlength={maxlength}
+  minlength={minlength}
+  pattern={pattern}
+  aria-label={ariaLabel}
+  aria-describedby={ariaDescribedBy}
+/>
+
+<style>
+  /* Base Input Styles */
+  .input {
+    width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-background-secondary);
+    color: var(--color-text-primary);
+    font-family: inherit;
+    font-size: 14px;
+    transition: all var(--duration-fast) var(--ease-out);
+    outline: none;
+  }
+
+  .input:focus {
+    border-color: var(--color-primary-blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .input::placeholder {
+    color: var(--color-text-tertiary);
+  }
+
+  /* Size Variants */
+  .input-sm {
+    padding: var(--space-2) var(--space-3);
+    font-size: 13px;
+  }
+
+  .input-md {
+    padding: var(--space-3) var(--space-4);
+    font-size: 14px;
+  }
+
+  .input-lg {
+    padding: var(--space-4) var(--space-5);
+    font-size: 16px;
+  }
+
+  /* State Variants */
+  .input-error {
+    border-color: var(--color-accent-red);
+  }
+
+  .input-error:focus {
+    border-color: var(--color-accent-red);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  }
+
+  .input-success {
+    border-color: var(--color-accent-green);
+  }
+
+  .input-success:focus {
+    border-color: var(--color-accent-green);
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+  }
+
+  .input-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: var(--color-background-tertiary);
+  }
+
+  .input-readonly {
+    background: var(--color-background-tertiary);
+    cursor: default;
+  }
+
+  /* Dark Mode Adjustments */
+  [data-theme="dark"] .input {
+    background: var(--color-background-tertiary);
+    border-color: var(--color-border);
+  }
+
+  [data-theme="dark"] .input:focus {
+    background: var(--color-background-secondary);
+  }
+
+  /* Focus States */
+  .input:focus-visible {
+    outline: 2px solid var(--color-primary-blue);
+    outline-offset: 2px;
+  }
+
+  .input-error:focus-visible {
+    outline-color: var(--color-accent-red);
+  }
+
+  .input-success:focus-visible {
+    outline-color: var(--color-accent-green);
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .input {
+      transition: none;
+    }
+  }
+</style>

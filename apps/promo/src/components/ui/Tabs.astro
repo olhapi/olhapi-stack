@@ -1,0 +1,212 @@
+---
+interface Props {
+  defaultValue?: string;
+  orientation?: 'horizontal' | 'vertical';
+  class?: string;
+}
+
+const {
+  defaultValue,
+  orientation = 'horizontal',
+  class: className = ''
+} = Astro.props;
+
+const tabsClasses = [
+  'tabs',
+  `tabs-${orientation}`,
+  className
+].filter(Boolean).join(' ');
+---
+
+<div
+  class={tabsClasses}
+  data-tabs
+  data-default-value={defaultValue}
+  data-orientation={orientation}
+>
+  <slot />
+</div>
+
+<style>
+  /* Tabs Container */
+  .tabs {
+    display: flex;
+    width: 100%;
+  }
+
+  .tabs-horizontal {
+    flex-direction: column;
+  }
+
+  .tabs-vertical {
+    flex-direction: row;
+    gap: var(--space-6);
+  }
+
+  /* Dark Mode Adjustments */
+  [data-theme="dark"] .tabs {
+    /* Inherits from child components */
+  }
+</style>
+
+<script>
+  // Tabs functionality
+  class TabsController {
+    private tabGroups: Map<HTMLElement, TabsConfig> = new Map();
+
+    constructor() {
+      this.init();
+    }
+
+    private init() {
+      document.querySelectorAll('[data-tabs]').forEach(tabGroup => {
+        this.setupTabGroup(tabGroup as HTMLElement);
+      });
+    }
+
+    private setupTabGroup(tabGroup: HTMLElement) {
+      const defaultValue = tabGroup.dataset.defaultValue;
+      const orientation = (tabGroup.dataset.orientation as 'horizontal' | 'vertical') || 'horizontal';
+
+      this.tabGroups.set(tabGroup, { defaultValue, orientation });
+
+      const tabsList = tabGroup.querySelector('[data-tabs-list]') as HTMLElement;
+      const triggers = tabGroup.querySelectorAll('[data-tabs-trigger]');
+      const contents = tabGroup.querySelectorAll('[data-tabs-content]');
+
+      if (!tabsList) return;
+
+      // Set up ARIA attributes for tabs list
+      tabsList.setAttribute('role', 'tablist');
+      tabsList.setAttribute('aria-orientation', orientation);
+
+      // Set up triggers and contents
+      triggers.forEach((trigger, index) => {
+        this.setupTabTrigger(trigger as HTMLElement, tabGroup, index);
+      });
+
+      contents.forEach(content => {
+        this.setupTabContent(content as HTMLElement);
+      });
+
+      // Set initial active tab
+      this.setActiveTab(tabGroup, defaultValue || (triggers[0] as HTMLElement)?.dataset.value || '');
+    }
+
+    private setupTabTrigger(trigger: HTMLElement, tabGroup: HTMLElement, index: number) {
+      const value = trigger.dataset.value;
+      if (!value) return;
+
+      // Set up ARIA attributes
+      trigger.setAttribute('role', 'tab');
+      trigger.setAttribute('aria-controls', `${value}-content`);
+      trigger.setAttribute('aria-selected', 'false');
+      trigger.setAttribute('tabindex', '-1');
+
+      // Handle click events
+      trigger.addEventListener('click', () => {
+        this.setActiveTab(tabGroup, value);
+      });
+
+      // Handle keyboard navigation
+      trigger.addEventListener('keydown', (e) => {
+        this.handleKeydown(e, tabGroup);
+      });
+    }
+
+    private setupTabContent(content: HTMLElement) {
+      const value = content.dataset.value;
+      if (!value) return;
+
+      content.id = `${value}-content`;
+      content.setAttribute('role', 'tabpanel');
+      content.setAttribute('aria-labelledby', value);
+      content.setAttribute('tabindex', '0');
+      content.style.display = 'none';
+    }
+
+    private setActiveTab(tabGroup: HTMLElement, value: string) {
+      const triggers = tabGroup.querySelectorAll('[data-tabs-trigger]');
+      const contents = tabGroup.querySelectorAll('[data-tabs-content]');
+
+      // Update triggers
+      triggers.forEach(trigger => {
+        const triggerElement = trigger as HTMLElement;
+        const isActive = triggerElement.dataset.value === value;
+
+        triggerElement.setAttribute('aria-selected', isActive.toString());
+        triggerElement.setAttribute('tabindex', isActive ? '0' : '-1');
+
+        if (isActive) {
+          triggerElement.focus();
+        }
+      });
+
+      // Update contents
+      contents.forEach(content => {
+        const contentElement = content as HTMLElement;
+        const isActive = contentElement.dataset.value === value;
+
+        contentElement.style.display = isActive ? 'block' : 'none';
+      });
+
+      // Dispatch event
+      tabGroup.dispatchEvent(new CustomEvent('tabs:change', {
+        detail: { value },
+        bubbles: true
+      }));
+    }
+
+    private handleKeydown(e: KeyboardEvent, tabGroup: HTMLElement) {
+      const config = this.tabGroups.get(tabGroup);
+      if (!config) return;
+
+      const triggers = Array.from(tabGroup.querySelectorAll('[data-tabs-trigger]')) as HTMLElement[];
+      const currentIndex = triggers.findIndex(trigger => trigger === e.target);
+
+      let nextIndex = currentIndex;
+
+      switch (e.key) {
+        case 'ArrowLeft':
+        case 'ArrowUp':
+          e.preventDefault();
+          nextIndex = currentIndex === 0 ? triggers.length - 1 : currentIndex - 1;
+          break;
+
+        case 'ArrowRight':
+        case 'ArrowDown':
+          e.preventDefault();
+          nextIndex = (currentIndex + 1) % triggers.length;
+          break;
+
+        case 'Home':
+          e.preventDefault();
+          nextIndex = 0;
+          break;
+
+        case 'End':
+          e.preventDefault();
+          nextIndex = triggers.length - 1;
+          break;
+
+        default:
+          return;
+      }
+
+      const nextTrigger = triggers[nextIndex];
+      if (nextTrigger?.dataset.value) {
+        this.setActiveTab(tabGroup, nextTrigger.dataset.value);
+      }
+    }
+  }
+
+  interface TabsConfig {
+    defaultValue?: string;
+    orientation: 'horizontal' | 'vertical';
+  }
+
+  // Initialize tabs controller when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    new TabsController();
+  });
+</script>

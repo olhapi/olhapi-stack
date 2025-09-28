@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "composite": false,
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "declaration": true,
+    "outDir": "dist"
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "emails/**/*.tsx"],
+  "exclude": ["node_modules", ".react-email", "dist"]
+}

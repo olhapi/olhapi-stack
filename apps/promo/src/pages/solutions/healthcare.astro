@@ -1,0 +1,14 @@
+---
+import SolutionTemplate from '../../components/templates/SolutionTemplate.astro';
+
+const currentLang = Astro.currentLocale || 'en';
+---
+
+<SolutionTemplate
+  lang={currentLang}
+  industry="healthcare"
+  seo={{
+    title: "Healthcare Solutions - HIPAA Compliant Platform",
+    description: "Secure, compliant healthcare solutions for medical organizations. HIPAA compliant with BAA agreements and enterprise-grade security."
+  }}
+/>

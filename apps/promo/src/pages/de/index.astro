@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import HeroSection from '../../components/sections/HeroSection.astro';
+import ProblemSolutionSection from '../../components/sections/ProblemSolutionSection.astro';
+import FeaturesSection from '../../components/sections/FeaturesSection.astro';
+import HowItWorksSection from '../../components/sections/HowItWorksSection.astro';
+import TestimonialsSection from '../../components/sections/TestimonialsSection.astro';
+import PricingSection from '../../components/sections/PricingSection.astro';
+import FAQSection from '../../components/sections/FAQSection.astro';
+import CTASection from '../../components/sections/CTASection.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+
+const currentLang = Astro.currentLocale || 'de';
+---
+
+<Layout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+	<HeroSection lang={currentLang} />
+	<ProblemSolutionSection lang={currentLang} />
+	<FeaturesSection lang={currentLang} />
+	<HowItWorksSection lang={currentLang} />
+	<TestimonialsSection lang={currentLang} />
+	<PricingSection lang={currentLang} variant="preview" showFeatures={true} />
+	<FAQSection lang={currentLang} />
+	<CTASection lang={currentLang} />
+</Layout>

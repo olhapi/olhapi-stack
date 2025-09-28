@@ -1,0 +1,11 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PricingSection from '../components/sections/PricingSection.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const currentLang = Astro.currentLocale || 'en';
+---
+
+<Layout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+	<PricingSection lang={currentLang} variant="full" showFeatures={false} showComparisonTable={true} showGuarantees={true} />
+</Layout>

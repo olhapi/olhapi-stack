@@ -1,0 +1,250 @@
+---
+import { Check } from '@lucide/astro';
+
+interface Props {
+  name?: string;
+  id?: string;
+  checked?: boolean;
+  disabled?: boolean;
+  required?: boolean;
+  value?: string;
+  class?: string;
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'success' | 'warning' | 'error';
+  'aria-label'?: string;
+  'aria-describedby'?: string;
+}
+
+const {
+  name,
+  id,
+  checked = false,
+  disabled = false,
+  required = false,
+  value,
+  class: className = '',
+  size = 'md',
+  variant = 'default',
+  'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedby,
+  ...rest
+} = Astro.props;
+
+const baseClasses = 'checkbox-wrapper';
+const sizeClasses = {
+  sm: 'checkbox-sm',
+  md: 'checkbox-md',
+  lg: 'checkbox-lg'
+};
+
+const variantClasses = {
+  default: '',
+  success: 'checkbox-success',
+  warning: 'checkbox-warning',
+  error: 'checkbox-error'
+};
+
+const wrapperClasses = [
+  baseClasses,
+  sizeClasses[size],
+  variantClasses[variant],
+  disabled && 'checkbox-disabled',
+  className
+].filter(Boolean).join(' ');
+---
+
+<div class={wrapperClasses}>
+  <input
+    type="checkbox"
+    class="checkbox-input"
+    name={name}
+    id={id}
+    checked={checked}
+    disabled={disabled}
+    required={required}
+    value={value}
+    aria-label={ariaLabel}
+    aria-describedby={ariaDescribedby}
+    {...rest}
+  />
+  <span class="checkbox-box">
+    <Check class="checkbox-icon" size={12} />
+  </span>
+  {Astro.slots.default && <span class="checkbox-label"><slot /></span>}
+</div>
+
+<style>
+  /* Base Checkbox Styles */
+  .checkbox-wrapper {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    gap: var(--space-2);
+  }
+
+  .checkbox-input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .checkbox-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-background-secondary);
+    transition: all var(--duration-fast) var(--ease-out);
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .checkbox-icon {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all var(--duration-fast) var(--ease-out);
+    color: white;
+  }
+
+  .checkbox-label {
+    color: var(--color-text-primary);
+    font-size: 14px;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+
+  /* Size Variants */
+  .checkbox-sm .checkbox-box {
+    width: 16px;
+    height: 16px;
+  }
+
+  .checkbox-sm .checkbox-icon {
+    width: 10px;
+    height: 10px;
+  }
+
+  .checkbox-sm .checkbox-label {
+    font-size: 13px;
+  }
+
+  .checkbox-md .checkbox-box {
+    width: 20px;
+    height: 20px;
+  }
+
+  .checkbox-md .checkbox-icon {
+    width: 12px;
+    height: 12px;
+  }
+
+  .checkbox-md .checkbox-label {
+    font-size: 14px;
+  }
+
+  .checkbox-lg .checkbox-box {
+    width: 24px;
+    height: 24px;
+  }
+
+  .checkbox-lg .checkbox-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .checkbox-lg .checkbox-label {
+    font-size: 16px;
+  }
+
+  /* Checked State */
+  .checkbox-input:checked + .checkbox-box {
+    background: var(--color-primary-blue);
+    border-color: var(--color-primary-blue);
+  }
+
+  .checkbox-input:checked + .checkbox-box .checkbox-icon {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Hover States */
+  .checkbox-wrapper:hover .checkbox-box {
+    border-color: var(--color-primary-blue);
+  }
+
+  .checkbox-input:checked + .checkbox-box:hover {
+    background: var(--color-primary-blue);
+    opacity: 0.9;
+  }
+
+  /* Focus States */
+  .checkbox-input:focus + .checkbox-box {
+    outline: 2px solid var(--color-primary-blue);
+    outline-offset: 2px;
+  }
+
+  /* Disabled State */
+  .checkbox-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .checkbox-disabled .checkbox-box {
+    background: var(--color-background-tertiary);
+    border-color: var(--color-border);
+  }
+
+  .checkbox-disabled .checkbox-label {
+    cursor: not-allowed;
+  }
+
+  /* Variant Styles */
+  .checkbox-success .checkbox-input:checked + .checkbox-box {
+    background: var(--color-accent-green);
+    border-color: var(--color-accent-green);
+  }
+
+  .checkbox-warning .checkbox-input:checked + .checkbox-box {
+    background: var(--color-accent-yellow);
+    border-color: var(--color-accent-yellow);
+  }
+
+  .checkbox-error .checkbox-input:checked + .checkbox-box {
+    background: var(--color-accent-red);
+    border-color: var(--color-accent-red);
+  }
+
+  /* Indeterminate State */
+  .checkbox-input:indeterminate + .checkbox-box {
+    background: var(--color-primary-blue);
+    border-color: var(--color-primary-blue);
+  }
+
+  .checkbox-input:indeterminate + .checkbox-box .checkbox-icon {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Dark Mode Adjustments */
+  [data-theme="dark"] .checkbox-box {
+    background: var(--color-background-tertiary);
+    border-color: var(--color-border);
+  }
+
+  [data-theme="dark"] .checkbox-label {
+    color: var(--color-text-primary);
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .checkbox-box,
+    .checkbox-icon {
+      transition: none;
+    }
+  }
+</style>

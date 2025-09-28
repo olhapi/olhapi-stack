@@ -1,0 +1,894 @@
+---
+import { useTranslations } from '../../utils/i18n';
+import { Search, Clock, Play, Download, Eye, ArrowRight, CheckCircle } from '@lucide/astro';
+
+interface Props {
+  lang: string;
+}
+
+const { lang } = Astro.props;
+
+const translations = {
+  en: {
+    title: 'Resources & Learning Center',
+    description: 'Explore our comprehensive collection of guides, tutorials, and tools to help you succeed',
+    searchPlaceholder: 'Search resources...',
+    allCategories: 'All Categories',
+    categories: {
+      guides: 'Guides',
+      tutorials: 'Tutorials',
+      tools: 'Tools',
+      templates: 'Templates',
+      videos: 'Videos',
+      webinars: 'Webinars'
+    },
+    types: {
+      article: 'Article',
+      video: 'Video',
+      pdf: 'PDF',
+      template: 'Template',
+      tool: 'Tool',
+      webinar: 'Webinar'
+    },
+    readTime: 'min read',
+    watchTime: 'min watch',
+    downloadCount: 'downloads',
+    viewCount: 'views',
+    free: 'Free',
+    premium: 'Premium',
+    readMore: 'Read More',
+    watch: 'Watch',
+    download: 'Download',
+    viewResource: 'View Resource',
+    noResults: 'No resources found',
+    noResultsDesc: 'Try adjusting your search or filters',
+    clearFilters: 'Clear Filters',
+    showingResults: 'Showing {count} of {total} resources',
+    featured: 'Featured',
+    popular: 'Popular',
+    latest: 'Latest'
+  },
+  de: {
+    title: 'Ressourcen & Lernzentrum',
+    description: 'Entdecken Sie unsere umfassende Sammlung von Leitfäden, Tutorials und Tools für Ihren Erfolg',
+    searchPlaceholder: 'Ressourcen suchen...',
+    allCategories: 'Alle Kategorien',
+    categories: {
+      guides: 'Leitfäden',
+      tutorials: 'Tutorials',
+      tools: 'Werkzeuge',
+      templates: 'Vorlagen',
+      videos: 'Videos',
+      webinars: 'Webinare'
+    },
+    types: {
+      article: 'Artikel',
+      video: 'Video',
+      pdf: 'PDF',
+      template: 'Vorlage',
+      tool: 'Werkzeug',
+      webinar: 'Webinar'
+    },
+    readTime: 'Min. Lesezeit',
+    watchTime: 'Min. Anschauen',
+    downloadCount: 'Downloads',
+    viewCount: 'Aufrufe',
+    free: 'Kostenlos',
+    premium: 'Premium',
+    readMore: 'Mehr lesen',
+    watch: 'Anschauen',
+    download: 'Herunterladen',
+    viewResource: 'Ressource anzeigen',
+    noResults: 'Keine Ressourcen gefunden',
+    noResultsDesc: 'Versuchen Sie, Ihre Suche oder Filter anzupassen',
+    clearFilters: 'Filter löschen',
+    showingResults: '{count} von {total} Ressourcen angezeigt',
+    featured: 'Empfohlen',
+    popular: 'Beliebt',
+    latest: 'Neueste'
+  }
+};
+
+const $t = useTranslations(translations, lang);
+
+// Sample resources data
+const resources = [
+  {
+    id: 1,
+    title: 'Getting Started Guide',
+    titleDe: 'Erste Schritte Leitfaden',
+    description: 'Complete beginner\'s guide to using our platform effectively',
+    descriptionDe: 'Vollständiger Leitfaden für Einsteiger zur effektiven Nutzung unserer Plattform',
+    category: 'guides',
+    type: 'article',
+    readTime: 8,
+    downloadCount: 1250,
+    image: '/images/resources/guide-1.jpg',
+    featured: true,
+    free: true,
+    url: '/resources/getting-started'
+  },
+  {
+    id: 2,
+    title: 'Advanced Workflows Tutorial',
+    titleDe: 'Tutorial für erweiterte Workflows',
+    description: 'Learn advanced techniques and best practices',
+    descriptionDe: 'Lernen Sie fortgeschrittene Techniken und bewährte Praktiken',
+    category: 'tutorials',
+    type: 'video',
+    watchTime: 25,
+    viewCount: 3400,
+    image: '/images/resources/tutorial-1.jpg',
+    featured: false,
+    free: true,
+    url: '/resources/advanced-workflows'
+  },
+  {
+    id: 3,
+    title: 'Business Template Pack',
+    titleDe: 'Business Vorlagen Paket',
+    description: 'Professional templates for business documents',
+    descriptionDe: 'Professionelle Vorlagen für Geschäftsdokumente',
+    category: 'templates',
+    type: 'template',
+    downloadCount: 890,
+    image: '/images/resources/template-1.jpg',
+    featured: true,
+    free: false,
+    url: '/resources/business-templates'
+  },
+  {
+    id: 4,
+    title: 'ROI Calculator',
+    titleDe: 'ROI Rechner',
+    description: 'Calculate your return on investment with our tool',
+    descriptionDe: 'Berechnen Sie Ihre Kapitalrendite mit unserem Tool',
+    category: 'tools',
+    type: 'tool',
+    viewCount: 2100,
+    image: '/images/resources/tool-1.jpg',
+    featured: false,
+    free: true,
+    url: '/resources/roi-calculator'
+  },
+  {
+    id: 5,
+    title: 'Scaling Your Business Webinar',
+    titleDe: 'Webinar: Ihr Unternehmen skalieren',
+    description: 'Expert insights on business growth strategies',
+    descriptionDe: 'Experteneinblicke in Wachstumsstrategien für Unternehmen',
+    category: 'webinars',
+    type: 'webinar',
+    watchTime: 45,
+    viewCount: 1800,
+    image: '/images/resources/webinar-1.jpg',
+    featured: true,
+    free: false,
+    url: '/resources/scaling-webinar'
+  },
+  {
+    id: 6,
+    title: 'API Documentation',
+    titleDe: 'API Dokumentation',
+    description: 'Complete reference for our developer API',
+    descriptionDe: 'Vollständige Referenz für unsere Entwickler-API',
+    category: 'guides',
+    type: 'pdf',
+    downloadCount: 650,
+    image: '/images/resources/api-docs.jpg',
+    featured: false,
+    free: true,
+    url: '/resources/api-docs'
+  }
+];
+---
+
+<section class="resources-section">
+  <div class="container">
+    <!-- Header -->
+    <div class="resources-header">
+      <h1 class="resources-title">{$t('title')}</h1>
+      <p class="resources-description">{$t('description')}</p>
+    </div>
+
+    <!-- Filters and Search -->
+    <div class="resources-filters">
+      <div class="search-wrapper">
+        <Search class="search-icon" size={20} />
+        <input
+          type="text"
+          class="search-input"
+          placeholder={$t('searchPlaceholder')}
+          data-search-input
+        />
+      </div>
+
+      <div class="filter-groups">
+        <div class="filter-group">
+          <select class="filter-select" data-category-filter>
+            <option value="">{$t('allCategories')}</option>
+            <option value="guides">{$t('categories.guides')}</option>
+            <option value="tutorials">{$t('categories.tutorials')}</option>
+            <option value="tools">{$t('categories.tools')}</option>
+            <option value="templates">{$t('categories.templates')}</option>
+            <option value="videos">{$t('categories.videos')}</option>
+            <option value="webinars">{$t('categories.webinars')}</option>
+          </select>
+        </div>
+
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">{$t('allCategories')}</button>
+          <button class="filter-btn" data-filter="featured">{$t('featured')}</button>
+          <button class="filter-btn" data-filter="free">{$t('free')}</button>
+          <button class="filter-btn" data-filter="premium">{$t('premium')}</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Count -->
+    <div class="results-info">
+      <span class="results-count" data-results-count></span>
+      <button class="clear-filters-btn" data-clear-filters style="display: none;">
+        {$t('clearFilters')}
+      </button>
+    </div>
+
+    <!-- Resources Grid -->
+    <div class="resources-grid" data-resources-grid>
+      {resources.map((resource) => (
+        <article class="resource-card" data-resource-card data-category={resource.category} data-featured={resource.featured} data-free={resource.free}>
+          <div class="resource-image">
+            <img src={resource.image} alt={lang === 'de' ? resource.titleDe : resource.title} loading="lazy" />
+            <div class="resource-badges">
+              {resource.featured && <span class="badge badge-featured">{$t('featured')}</span>}
+              <span class={`badge badge-type badge-${resource.type}`}>
+                {$t(`types.${resource.type}`)}
+              </span>
+              <span class={`badge badge-price ${resource.free ? 'badge-free' : 'badge-premium'}`}>
+                {resource.free ? $t('free') : $t('premium')}
+              </span>
+            </div>
+          </div>
+
+          <div class="resource-content">
+            <h3 class="resource-title">
+              {lang === 'de' ? resource.titleDe : resource.title}
+            </h3>
+            <p class="resource-description">
+              {lang === 'de' ? resource.descriptionDe : resource.description}
+            </p>
+
+            <div class="resource-meta">
+              {resource.readTime && (
+                <span class="meta-item">
+                  <Clock size={16} />
+                  {resource.readTime} {$t('readTime')}
+                </span>
+              )}
+              {resource.watchTime && (
+                <span class="meta-item">
+                  <Play size={16} />
+                  {resource.watchTime} {$t('watchTime')}
+                </span>
+              )}
+              {resource.downloadCount && (
+                <span class="meta-item">
+                  <Download size={16} />
+                  {resource.downloadCount.toLocaleString()} {$t('downloadCount')}
+                </span>
+              )}
+              {resource.viewCount && (
+                <span class="meta-item">
+                  <Eye size={16} />
+                  {resource.viewCount.toLocaleString()} {$t('viewCount')}
+                </span>
+              )}
+            </div>
+
+            <div class="resource-actions">
+              <a href={resource.url} class="resource-btn btn-primary">
+                {resource.type === 'video' || resource.type === 'webinar' ? $t('watch') :
+                 resource.type === 'template' || resource.type === 'pdf' ? $t('download') :
+                 resource.type === 'tool' ? $t('viewResource') : $t('readMore')}
+                <ArrowRight size={16} />
+              </a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- No Results -->
+    <div class="no-results" data-no-results style="display: none;">
+      <div class="no-results-content">
+        <CheckCircle class="no-results-icon" size={64} />
+        <h3>{$t('noResults')}</h3>
+        <p>{$t('noResultsDesc')}</p>
+        <button class="btn btn-outline" data-clear-filters-main>
+          {$t('clearFilters')}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Resources Section */
+  .resources-section {
+    padding: var(--space-20) 0;
+    background: var(--color-background-primary);
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+  }
+
+  /* Header */
+  .resources-header {
+    text-align: center;
+    margin-bottom: var(--space-16);
+  }
+
+  .resources-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+    line-height: 1.2;
+  }
+
+  .resources-description {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Filters */
+  .resources-filters {
+    margin-bottom: var(--space-12);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .search-wrapper {
+    position: relative;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: var(--space-4);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-tertiary);
+    pointer-events: none;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: var(--space-3) var(--space-4) var(--space-3) var(--space-12);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background: var(--color-background-secondary);
+    color: var(--color-text-primary);
+    font-size: 16px;
+    transition: all var(--duration-fast) var(--ease-out);
+    outline: none;
+  }
+
+  .search-input:focus {
+    border-color: var(--color-primary-blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .search-input::placeholder {
+    color: var(--color-text-tertiary);
+  }
+
+  .filter-groups {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .filter-group {
+    display: flex;
+    gap: var(--space-4);
+  }
+
+  .filter-select {
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-background-secondary);
+    color: var(--color-text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-out);
+    outline: none;
+  }
+
+  .filter-select:focus {
+    border-color: var(--color-primary-blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .filter-buttons {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .filter-btn {
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background: var(--color-background-secondary);
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-out);
+    outline: none;
+  }
+
+  .filter-btn:hover {
+    background: var(--color-background-tertiary);
+    color: var(--color-text-primary);
+  }
+
+  .filter-btn.active {
+    background: var(--color-primary-blue);
+    border-color: var(--color-primary-blue);
+    color: white;
+  }
+
+  /* Results Info */
+  .results-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-8);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .results-count {
+    color: var(--color-text-secondary);
+    font-size: 14px;
+  }
+
+  .clear-filters-btn {
+    background: none;
+    border: none;
+    color: var(--color-primary-blue);
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .clear-filters-btn:hover {
+    text-decoration: none;
+  }
+
+  /* Resources Grid */
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: var(--space-8);
+    margin-bottom: var(--space-12);
+  }
+
+  /* Resource Card */
+  .resource-card {
+    background: var(--color-background-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all var(--duration-fast) var(--ease-out);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .resource-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-border-hover);
+  }
+
+  .resource-image {
+    position: relative;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+  }
+
+  .resource-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-normal) var(--ease-out);
+  }
+
+  .resource-card:hover .resource-image img {
+    transform: scale(1.05);
+  }
+
+  .resource-badges {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .badge {
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .badge-featured {
+    background: rgba(34, 197, 94, 0.9);
+    color: white;
+  }
+
+  .badge-type {
+    background: rgba(59, 130, 246, 0.9);
+    color: white;
+  }
+
+  .badge-free {
+    background: rgba(34, 197, 94, 0.9);
+    color: white;
+  }
+
+  .badge-premium {
+    background: rgba(147, 51, 234, 0.9);
+    color: white;
+  }
+
+  .resource-content {
+    padding: var(--space-6);
+  }
+
+  .resource-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+    line-height: 1.4;
+  }
+
+  .resource-description {
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin-bottom: var(--space-4);
+  }
+
+  .resource-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--color-text-tertiary);
+    font-size: 13px;
+  }
+
+  .meta-item svg {
+    flex-shrink: 0;
+  }
+
+  .resource-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .resource-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-primary-blue);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all var(--duration-fast) var(--ease-out);
+  }
+
+  .resource-btn:hover {
+    background: var(--color-primary-blue-dark);
+    transform: translateX(2px);
+  }
+
+  .resource-btn svg {
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .resource-btn:hover svg {
+    transform: translateX(2px);
+  }
+
+  /* No Results */
+  .no-results {
+    text-align: center;
+    padding: var(--space-16);
+  }
+
+  .no-results-content {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .no-results-icon {
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--space-6);
+  }
+
+  .no-results h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+  }
+
+  .no-results p {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-6);
+    line-height: 1.5;
+  }
+
+  /* Dark Mode */
+  [data-theme="dark"] .resources-section {
+    background: var(--color-background-secondary);
+  }
+
+  [data-theme="dark"] .resource-card {
+    background: var(--color-background-tertiary);
+    border-color: var(--color-border);
+  }
+
+  [data-theme="dark"] .search-input,
+  [data-theme="dark"] .filter-select,
+  [data-theme="dark"] .filter-btn {
+    background: var(--color-background-tertiary);
+    border-color: var(--color-border);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .container {
+      padding: 0 var(--space-4);
+    }
+
+    .resources-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+
+    .filter-groups {
+      align-items: stretch;
+    }
+
+    .filter-buttons {
+      justify-content: flex-start;
+    }
+
+    .results-info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-2);
+    }
+
+    .search-wrapper {
+      max-width: none;
+    }
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .resource-card,
+    .resource-image img,
+    .resource-btn,
+    .search-input,
+    .filter-btn {
+      transition: none;
+    }
+
+    .resource-card:hover {
+      transform: none;
+    }
+
+    .resource-card:hover .resource-image img {
+      transform: none;
+    }
+
+    .resource-btn:hover {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  class ResourcesFilter {
+    private searchInput: HTMLInputElement;
+    private categoryFilter: HTMLSelectElement;
+    private filterButtons: NodeListOf<HTMLButtonElement>;
+    private resourceCards: NodeListOf<HTMLElement>;
+    private resultsCount: HTMLElement;
+    private noResults: HTMLElement;
+    private clearFiltersBtn: HTMLElement;
+    private clearFiltersMainBtn: HTMLElement;
+    private grid: HTMLElement;
+
+    private currentFilters = {
+      search: '',
+      category: '',
+      type: 'all'
+    };
+
+    constructor() {
+      this.initElements();
+      this.bindEvents();
+      this.updateResults();
+    }
+
+    private initElements() {
+      this.searchInput = document.querySelector('[data-search-input]') as HTMLInputElement;
+      this.categoryFilter = document.querySelector('[data-category-filter]') as HTMLSelectElement;
+      this.filterButtons = document.querySelectorAll('[data-filter]');
+      this.resourceCards = document.querySelectorAll('[data-resource-card]');
+      this.resultsCount = document.querySelector('[data-results-count]') as HTMLElement;
+      this.noResults = document.querySelector('[data-no-results]') as HTMLElement;
+      this.clearFiltersBtn = document.querySelector('[data-clear-filters]') as HTMLElement;
+      this.clearFiltersMainBtn = document.querySelector('[data-clear-filters-main]') as HTMLElement;
+      this.grid = document.querySelector('[data-resources-grid]') as HTMLElement;
+    }
+
+    private bindEvents() {
+      // Search input
+      this.searchInput?.addEventListener('input', () => {
+        this.currentFilters.search = this.searchInput.value.toLowerCase();
+        this.updateResults();
+      });
+
+      // Category filter
+      this.categoryFilter?.addEventListener('change', () => {
+        this.currentFilters.category = this.categoryFilter.value;
+        this.updateResults();
+      });
+
+      // Filter buttons
+      this.filterButtons?.forEach(button => {
+        button.addEventListener('click', () => {
+          this.filterButtons.forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
+          this.currentFilters.type = button.dataset.filter || 'all';
+          this.updateResults();
+        });
+      });
+
+      // Clear filters
+      this.clearFiltersBtn?.addEventListener('click', () => {
+        this.clearFilters();
+      });
+
+      this.clearFiltersMainBtn?.addEventListener('click', () => {
+        this.clearFilters();
+      });
+    }
+
+    private clearFilters() {
+      this.currentFilters = {
+        search: '',
+        category: '',
+        type: 'all'
+      };
+
+      // Reset UI
+      this.searchInput.value = '';
+      this.categoryFilter.value = '';
+      this.filterButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === 'all');
+      });
+
+      this.updateResults();
+    }
+
+    private updateResults() {
+      let visibleCount = 0;
+      const totalCount = this.resourceCards.length;
+
+      this.resourceCards.forEach(card => {
+        const isVisible = this.shouldShowCard(card);
+        card.style.display = isVisible ? 'block' : 'none';
+        if (isVisible) visibleCount++;
+      });
+
+      // Update results count
+      if (this.resultsCount) {
+        const countText = `Showing ${visibleCount} of ${totalCount} resources`;
+        this.resultsCount.textContent = countText;
+      }
+
+      // Show/hide no results
+      const hasResults = visibleCount > 0;
+      if (this.noResults) {
+        this.noResults.style.display = hasResults ? 'none' : 'block';
+      }
+      if (this.grid) {
+        this.grid.style.display = hasResults ? 'grid' : 'none';
+      }
+
+      // Show/hide clear filters button
+      const hasActiveFilters = this.currentFilters.search ||
+                              this.currentFilters.category ||
+                              this.currentFilters.type !== 'all';
+
+      if (this.clearFiltersBtn) {
+        this.clearFiltersBtn.style.display = hasActiveFilters ? 'block' : 'none';
+      }
+    }
+
+    private shouldShowCard(card: HTMLElement): boolean {
+      const cardData = {
+        category: card.dataset.category || '',
+        featured: card.dataset.featured === 'true',
+        free: card.dataset.free === 'true',
+        title: card.querySelector('.resource-title')?.textContent?.toLowerCase() || '',
+        description: card.querySelector('.resource-description')?.textContent?.toLowerCase() || ''
+      };
+
+      // Search filter
+      if (this.currentFilters.search) {
+        const searchMatch = cardData.title.includes(this.currentFilters.search) ||
+                           cardData.description.includes(this.currentFilters.search);
+        if (!searchMatch) return false;
+      }
+
+      // Category filter
+      if (this.currentFilters.category && cardData.category !== this.currentFilters.category) {
+        return false;
+      }
+
+      // Type filter
+      switch (this.currentFilters.type) {
+        case 'featured':
+          return cardData.featured;
+        case 'free':
+          return cardData.free;
+        case 'premium':
+          return !cardData.free;
+        case 'all':
+        default:
+          return true;
+      }
+    }
+  }
+
+  // Initialize when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    new ResourcesFilter();
+  });
+</script>

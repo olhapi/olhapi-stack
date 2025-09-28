@@ -1,0 +1,14 @@
+---
+import SolutionTemplate from '../../../components/templates/SolutionTemplate.astro';
+
+const currentLang = Astro.currentLocale || 'de';
+---
+
+<SolutionTemplate
+  lang={currentLang}
+  industry="technology"
+  seo={{
+    title: "Technologie-Lösungen - Entwickler-zentrierte Plattform",
+    description: "Skalierbare Technologie-Lösungen für moderne Tech-Unternehmen. API-First-Architektur mit Multi-Cloud-Unterstützung und Auto-Skalierung."
+  }}
+/>

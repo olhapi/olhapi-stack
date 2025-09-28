@@ -1,0 +1,1489 @@
+---
+import { Star, ArrowRight, Check, X, ShieldCheck, Users, ExternalLink } from '@lucide/astro';
+
+interface Props {
+    lang: string;
+    variant?: 'preview' | 'full';
+    showFeatures?: boolean;
+    showComparisonTable?: boolean;
+    showGuarantees?: boolean;
+}
+
+const {
+    lang,
+    variant = 'preview',
+    showFeatures = true,
+    showComparisonTable = false,
+    showGuarantees = false
+} = Astro.props;
+
+const translations = {
+    en: {
+        sectionTitle: variant === 'preview' ? "Simple, Transparent Pricing" : "Choose Your Perfect Plan",
+        subtitle: variant === 'preview'
+            ? "Choose the perfect plan for your team. All plans include a 14-day free trial."
+            : "Transparent pricing that scales with your business. All plans include a 14-day free trial with full features.",
+        billingToggle: {
+            monthly: "Monthly",
+            yearly: "Yearly",
+            yearlyDiscount: "Save 20%",
+        },
+        plans: [
+            {
+                id: "starter",
+                name: "Starter",
+                description: variant === 'preview'
+                    ? "Perfect for small teams getting started"
+                    : "Perfect for small teams getting started with automation",
+                monthlyPrice: 29,
+                yearlyPrice: 23,
+                currency: "$",
+                period: "per user/month",
+                popular: false,
+                features: variant === 'preview'
+                    ? ["Up to 5 team members", "10 projects", "Basic automation", "Email support", "5GB storage"]
+                    : {
+                        teamMembers: "Up to 5 team members",
+                        projects: "10 projects",
+                        automation: "Basic automation workflows",
+                        storage: "5GB storage",
+                        support: "Email support",
+                        integrations: "20+ integrations",
+                        analytics: "Basic analytics",
+                        security: "Standard security",
+                    },
+                ctaText: "Start Free Trial",
+                ctaLink: "#",
+            },
+            {
+                id: "professional",
+                name: "Professional",
+                description: variant === 'preview'
+                    ? "Advanced features for growing teams"
+                    : "Advanced features for growing teams and businesses",
+                monthlyPrice: 79,
+                yearlyPrice: 63,
+                currency: "$",
+                period: "per user/month",
+                popular: true,
+                features: variant === 'preview'
+                    ? [
+                        "Up to 25 team members",
+                        "Unlimited projects",
+                        "Advanced automation",
+                        "Priority support",
+                        "100GB storage",
+                        "Analytics & reporting",
+                        "API access",
+                    ]
+                    : {
+                        teamMembers: "Up to 25 team members",
+                        projects: "Unlimited projects",
+                        automation: "Advanced automation + AI workflows",
+                        storage: "100GB storage",
+                        support: "Priority support + phone",
+                        integrations: "100+ integrations",
+                        analytics: "Advanced analytics & reporting",
+                        security: "Enhanced security + SSO",
+                    },
+                ctaText: "Start Free Trial",
+                ctaLink: "#",
+            },
+            {
+                id: "enterprise",
+                name: "Enterprise",
+                description: variant === 'preview'
+                    ? "Scalable solution for large organizations"
+                    : "Scalable solution for large organizations with custom needs",
+                monthlyPrice: null,
+                yearlyPrice: null,
+                currency: "$",
+                period: "Custom pricing",
+                popular: false,
+                features: variant === 'preview'
+                    ? [
+                        "Unlimited team members",
+                        "Unlimited everything",
+                        "Custom automation",
+                        "Dedicated support",
+                        "Unlimited storage",
+                        "Advanced security",
+                        "On-premise option",
+                        "Custom integrations",
+                    ]
+                    : {
+                        teamMembers: "Unlimited team members",
+                        projects: "Unlimited projects",
+                        automation: "Custom automation + AI + ML",
+                        storage: "Unlimited storage",
+                        support: "Dedicated support manager",
+                        integrations: "500+ integrations + custom",
+                        analytics: "Enterprise analytics + exports",
+                        security: "Enterprise security + compliance",
+                    },
+                ctaText: "Contact Sales",
+                ctaLink: "#",
+            },
+        ],
+        featureCategories: [
+            {
+                name: "Team & Collaboration",
+                features: [
+                    {
+                        name: "Team members",
+                        starter: "5 users",
+                        professional: "25 users",
+                        enterprise: "Unlimited",
+                        description: "Number of team members that can access the platform",
+                    },
+                    {
+                        name: "Guest access",
+                        starter: false,
+                        professional: true,
+                        enterprise: true,
+                        description: "Allow external users limited access to specific projects",
+                    },
+                    {
+                        name: "Role-based permissions",
+                        starter: "Basic",
+                        professional: "Advanced",
+                        enterprise: "Custom",
+                        description: "Control what team members can see and do",
+                    },
+                    {
+                        name: "Team dashboards",
+                        starter: true,
+                        professional: true,
+                        enterprise: true,
+                        description: "Shared views for team performance and progress",
+                    },
+                ],
+            },
+            {
+                name: "Projects & Workflows",
+                features: [
+                    {
+                        name: "Projects",
+                        starter: "10",
+                        professional: "Unlimited",
+                        enterprise: "Unlimited",
+                        description: "Number of active projects you can manage",
+                    },
+                    {
+                        name: "Workflow automation",
+                        starter: "Basic",
+                        professional: "Advanced",
+                        enterprise: "Custom + AI",
+                        description: "Automate repetitive tasks and processes",
+                    },
+                    {
+                        name: "Custom templates",
+                        starter: false,
+                        professional: true,
+                        enterprise: true,
+                        description: "Create and share custom project templates",
+                    },
+                    {
+                        name: "API access",
+                        starter: false,
+                        professional: "REST API",
+                        enterprise: "REST + GraphQL",
+                        description: "Programmatic access to your data and workflows",
+                    },
+                ],
+            },
+            {
+                name: "Analytics & Reporting",
+                features: [
+                    {
+                        name: "Basic analytics",
+                        starter: true,
+                        professional: true,
+                        enterprise: true,
+                        description: "Core metrics and performance indicators",
+                    },
+                    {
+                        name: "Advanced reporting",
+                        starter: false,
+                        professional: true,
+                        enterprise: true,
+                        description: "Detailed reports with custom filters and exports",
+                    },
+                    {
+                        name: "Real-time dashboards",
+                        starter: false,
+                        professional: true,
+                        enterprise: true,
+                        description: "Live data visualization and monitoring",
+                    },
+                    {
+                        name: "Custom metrics",
+                        starter: false,
+                        professional: false,
+                        enterprise: true,
+                        description: "Define and track your own business metrics",
+                    },
+                ],
+            },
+            {
+                name: "Security & Compliance",
+                features: [
+                    {
+                        name: "Data encryption",
+                        starter: "In transit",
+                        professional: "At rest + in transit",
+                        enterprise: "Enterprise grade",
+                        description: "Protection of your sensitive information",
+                    },
+                    {
+                        name: "Two-factor authentication",
+                        starter: true,
+                        professional: true,
+                        enterprise: true,
+                        description: "Additional security layer for user accounts",
+                    },
+                    {
+                        name: "Single Sign-On (SSO)",
+                        starter: false,
+                        professional: true,
+                        enterprise: true,
+                        description: "Integrate with your existing identity provider",
+                    },
+                    {
+                        name: "Compliance certifications",
+                        starter: false,
+                        professional: "SOC 2",
+                        enterprise: "SOC 2 + HIPAA + more",
+                        description: "Industry standard security and compliance",
+                    },
+                ],
+            },
+            {
+                name: "Support & Training",
+                features: [
+                    {
+                        name: "Email support",
+                        starter: "Business hours",
+                        professional: "24/7",
+                        enterprise: "24/7",
+                        description: "Get help when you need it",
+                    },
+                    {
+                        name: "Priority support",
+                        starter: false,
+                        professional: true,
+                        enterprise: true,
+                        description: "Faster response times for urgent issues",
+                    },
+                    {
+                        name: "Phone support",
+                        starter: false,
+                        professional: true,
+                        enterprise: true,
+                        description: "Direct phone line to support team",
+                    },
+                    {
+                        name: "Dedicated success manager",
+                        starter: false,
+                        professional: false,
+                        enterprise: true,
+                        description: "Personal advisor to help you succeed",
+                    },
+                ],
+            },
+        ],
+        guarantees: ["14-day free trial", "30-day money-back guarantee", "No setup fees", "Cancel anytime"],
+        viewAllPlansText: "View All Plans & Features",
+        guaranteeText: "30-day money-back guarantee",
+        trustedByText: "Trusted by 10,000+ teams worldwide",
+        popularBadgeText: "Most Popular",
+        ui: {
+            mostPopular: "Most Popular",
+            compareFeatures: "Compare All Features",
+        },
+    },
+    de: {
+        sectionTitle: variant === 'preview' ? "Einfache, transparente Preise" : "Wählen Sie Ihren perfekten Plan",
+        subtitle: variant === 'preview'
+            ? "Wählen Sie den perfekten Plan für Ihr Team. Alle Pläne beinhalten eine 14-tägige kostenlose Testversion."
+            : "Transparente Preise, die mit Ihrem Unternehmen skalieren. Alle Pläne beinhalten eine 14-tägige kostenlose Testversion mit allen Funktionen.",
+        billingToggle: {
+            monthly: "Monatlich",
+            yearly: "Jährlich",
+            yearlyDiscount: "20% sparen",
+        },
+        plans: [
+            {
+                id: "starter",
+                name: "Starter",
+                description: variant === 'preview'
+                    ? "Perfekt für kleine Teams, die anfangen"
+                    : "Perfekt für kleine Teams, die mit Automatisierung beginnen",
+                monthlyPrice: 29,
+                yearlyPrice: 23,
+                currency: "€",
+                period: "pro Nutzer/Monat",
+                popular: false,
+                features: variant === 'preview'
+                    ? [
+                        "Bis zu 5 Teammitglieder",
+                        "10 Projekte",
+                        "Basis-Automatisierung",
+                        "E-Mail-Support",
+                        "5GB Speicher",
+                    ]
+                    : {
+                        teamMembers: "Bis zu 5 Teammitglieder",
+                        projects: "10 Projekte",
+                        automation: "Basis-Automatisierung",
+                        storage: "5GB Speicher",
+                        support: "E-Mail-Support",
+                        integrations: "20+ Integrationen",
+                        analytics: "Basis-Analysen",
+                        security: "Standard-Sicherheit",
+                    },
+                ctaText: "Kostenlose Testversion",
+                ctaLink: "#",
+            },
+            {
+                id: "professional",
+                name: "Professional",
+                description: variant === 'preview'
+                    ? "Erweiterte Funktionen für wachsende Teams"
+                    : "Erweiterte Funktionen für wachsende Teams und Unternehmen",
+                monthlyPrice: 79,
+                yearlyPrice: 63,
+                currency: "€",
+                period: "pro Nutzer/Monat",
+                popular: true,
+                features: variant === 'preview'
+                    ? [
+                        "Bis zu 25 Teammitglieder",
+                        "Unbegrenzte Projekte",
+                        "Erweiterte Automatisierung",
+                        "Prioritäts-Support",
+                        "100GB Speicher",
+                        "Analytics & Berichte",
+                        "API-Zugang",
+                    ]
+                    : {
+                        teamMembers: "Bis zu 25 Teammitglieder",
+                        projects: "Unbegrenzte Projekte",
+                        automation: "Erweiterte Automatisierung + KI",
+                        storage: "100GB Speicher",
+                        support: "Prioritäts-Support + Telefon",
+                        integrations: "100+ Integrationen",
+                        analytics: "Erweiterte Analysen & Berichte",
+                        security: "Erweiterte Sicherheit + SSO",
+                    },
+                ctaText: "Kostenlose Testversion",
+                ctaLink: "#",
+            },
+            {
+                id: "enterprise",
+                name: "Enterprise",
+                description: variant === 'preview'
+                    ? "Skalierbare Lösung für große Organisationen"
+                    : "Skalierbare Lösung für große Organisationen mit individuellen Bedürfnissen",
+                monthlyPrice: null,
+                yearlyPrice: null,
+                currency: "€",
+                period: "Individuelle Preise",
+                popular: false,
+                features: variant === 'preview'
+                    ? [
+                        "Unbegrenzte Teammitglieder",
+                        "Alles unbegrenzt",
+                        "Benutzerdefinierte Automatisierung",
+                        "Dedizierter Support",
+                        "Unbegrenzter Speicher",
+                        "Erweiterte Sicherheit",
+                        "On-Premise Option",
+                        "Benutzerdefinierte Integrationen",
+                    ]
+                    : {
+                        teamMembers: "Unbegrenzte Teammitglieder",
+                        projects: "Unbegrenzte Projekte",
+                        automation: "Individuelle Automatisierung + KI + ML",
+                        storage: "Unbegrenzter Speicher",
+                        support: "Dedizierter Support-Manager",
+                        integrations: "500+ Integrationen + individuell",
+                        analytics: "Enterprise-Analysen + Exporte",
+                        security: "Enterprise-Sicherheit + Compliance",
+                    },
+                ctaText: "Vertrieb kontaktieren",
+                ctaLink: "#",
+            },
+        ],
+        featureCategories: [
+            {
+                name: "Team & Zusammenarbeit",
+                features: [
+                    {
+                        name: "Teammitglieder",
+                        starter: "5 Nutzer",
+                        professional: "25 Nutzer",
+                        enterprise: "Unbegrenzt",
+                        description: "Anzahl der Teammitglieder mit Plattformzugang",
+                    },
+                    {
+                        name: "Gastzugang",
+                        starter: false,
+                        professional: true,
+                        enterprise: true,
+                        description: "Externen Nutzern begrenzten Zugang zu bestimmten Projekten gewähren",
+                    },
+                    {
+                        name: "Rollenbasierte Berechtigungen",
+                        starter: "Basis",
+                        professional: "Erweitert",
+                        enterprise: "Individuell",
+                        description: "Kontrollieren Sie, was Teammitglieder sehen und tun können",
+                    },
+                    {
+                        name: "Team-Dashboards",
+                        starter: true,
+                        professional: true,
+                        enterprise: true,
+                        description: "Geteilte Ansichten für Teamleistung und Fortschritt",
+                    },
+                ],
+            },
+            {
+                name: "Projekte & Workflows",
+                features: [
+                    {
+                        name: "Projekte",
+                        starter: "10",
+                        professional: "Unbegrenzt",
+                        enterprise: "Unbegrenzt",
+                        description: "Anzahl aktiver Projekte, die Sie verwalten können",
+                    },
+                    {
+                        name: "Workflow-Automatisierung",
+                        starter: "Basis",
+                        professional: "Erweitert",
+                        enterprise: "Individuell + KI",
+                        description: "Automatisieren Sie sich wiederholende Aufgaben und Prozesse",
+                    },
+                    {
+                        name: "Individuelle Vorlagen",
+                        starter: false,
+                        professional: true,
+                        enterprise: true,
+                        description: "Erstellen und teilen Sie individuelle Projektvorlagen",
+                    },
+                    {
+                        name: "API-Zugang",
+                        starter: false,
+                        professional: "REST API",
+                        enterprise: "REST + GraphQL",
+                        description: "Programmatischer Zugang zu Ihren Daten und Workflows",
+                    },
+                ],
+            },
+            {
+                name: "Analysen & Berichte",
+                features: [
+                    {
+                        name: "Basis-Analysen",
+                        starter: true,
+                        professional: true,
+                        enterprise: true,
+                        description: "Kernmetriken und Leistungsindikatoren",
+                    },
+                    {
+                        name: "Erweiterte Berichte",
+                        starter: false,
+                        professional: true,
+                        enterprise: true,
+                        description: "Detaillierte Berichte mit benutzerdefinierten Filtern und Exporten",
+                    },
+                    {
+                        name: "Echtzeit-Dashboards",
+                        starter: false,
+                        professional: true,
+                        enterprise: true,
+                        description: "Live-Datenvisualisierung und -überwachung",
+                    },
+                    {
+                        name: "Benutzerdefinierte Metriken",
+                        starter: false,
+                        professional: false,
+                        enterprise: true,
+                        description: "Definieren und verfolgen Sie Ihre eigenen Geschäftsmetriken",
+                    },
+                ],
+            },
+            {
+                name: "Sicherheit & Compliance",
+                features: [
+                    {
+                        name: "Datenverschlüsselung",
+                        starter: "In der Übertragung",
+                        professional: "Gespeichert + Übertragung",
+                        enterprise: "Enterprise-Grad",
+                        description: "Schutz Ihrer sensiblen Informationen",
+                    },
+                    {
+                        name: "Zwei-Faktor-Authentifizierung",
+                        starter: true,
+                        professional: true,
+                        enterprise: true,
+                        description: "Zusätzliche Sicherheitsebene für Benutzerkonten",
+                    },
+                    {
+                        name: "Single Sign-On (SSO)",
+                        starter: false,
+                        professional: true,
+                        enterprise: true,
+                        description: "Integration mit Ihrem bestehenden Identitätsanbieter",
+                    },
+                    {
+                        name: "Compliance-Zertifizierungen",
+                        starter: false,
+                        professional: "SOC 2",
+                        enterprise: "SOC 2 + HIPAA + mehr",
+                        description: "Branchenstandard-Sicherheit und -Compliance",
+                    },
+                ],
+            },
+            {
+                name: "Support & Schulung",
+                features: [
+                    {
+                        name: "E-Mail-Support",
+                        starter: "Geschäftszeiten",
+                        professional: "24/7",
+                        enterprise: "24/7",
+                        description: "Hilfe, wenn Sie sie brauchen",
+                    },
+                    {
+                        name: "Prioritäts-Support",
+                        starter: false,
+                        professional: true,
+                        enterprise: true,
+                        description: "Schnellere Antwortzeiten für dringende Probleme",
+                    },
+                    {
+                        name: "Telefon-Support",
+                        starter: false,
+                        professional: true,
+                        enterprise: true,
+                        description: "Direkte Telefonleitung zum Support-Team",
+                    },
+                    {
+                        name: "Dedizierter Success Manager",
+                        starter: false,
+                        professional: false,
+                        enterprise: true,
+                        description: "Persönlicher Berater für Ihren Erfolg",
+                    },
+                ],
+            },
+        ],
+        guarantees: [
+            "14-tägige kostenlose Testversion",
+            "30-tägige Geld-zurück-Garantie",
+            "Keine Einrichtungsgebühren",
+            "Jederzeit kündbar",
+        ],
+        viewAllPlansText: "Alle Pläne & Funktionen anzeigen",
+        guaranteeText: "30 Tage Geld-zurück-Garantie",
+        trustedByText: "Vertraut von 10.000+ Teams weltweit",
+        popularBadgeText: "Am beliebtesten",
+        ui: {
+            mostPopular: "Beliebteste",
+            compareFeatures: "Alle Funktionen vergleichen",
+        },
+    },
+};
+
+import { useTranslations } from "../../utils/i18n";
+const $t = useTranslations(translations, lang);
+---
+
+<section class={`pricing-section section ${variant === 'preview' ? 'pricing-preview' : 'pricing-full'}`} data-pricing-section>
+    <div class="container">
+        <!-- Section Header -->
+        <div class="section-header text-center">
+            <h2 class={variant === 'preview' ? "text-display-medium gradient-text" : "text-display-large gradient-text"}>
+                {$t("sectionTitle")}
+            </h2>
+            <p class="section-subtitle text-body-large">
+                {$t("subtitle")}
+            </p>
+        </div>
+
+        <!-- Billing Toggle -->
+        <div class="billing-toggle-container">
+            <div class="billing-toggle" data-billing-toggle>
+                <button type="button" class="toggle-option active" data-billing="yearly">
+                    {$t("billingToggle.yearly")}
+                    <span class="discount-badge">{$t("billingToggle.yearlyDiscount")}</span>
+                </button>
+                <button type="button" class="toggle-option" data-billing="monthly">
+                    {$t("billingToggle.monthly")}
+                </button>
+                <div class="toggle-slider" data-toggle-slider></div>
+            </div>
+        </div>
+
+        <!-- Pricing Cards -->
+        <div class="pricing-cards-grid">
+            {
+                [...$t("plans")].map((plan: any, index: number) => (
+                    <div class={`pricing-card ${plan.popular ? "popular" : ""}`} data-plan-id={plan.id}>
+                        {plan.popular && (
+                            <div class="popular-badge">
+                                {variant === 'full' && <Star size={16} />}
+                                {$t(variant === 'preview' ? "popularBadgeText" : "ui.mostPopular")}
+                            </div>
+                        )}
+
+                        <div class="plan-header">
+                            <h3 class={variant === 'preview' ? "plan-name text-heading-large" : "plan-name text-heading-xl"}>{plan.name}</h3>
+                            <p class="plan-description text-body-medium">{plan.description}</p>
+                        </div>
+
+                        <div class="plan-pricing">
+                            {plan.monthlyPrice ? (
+                                <div class="price-display">
+                                    <span class="currency">{plan.currency}</span>
+                                    <span
+                                        class="price-amount"
+                                        data-monthly-price={plan.monthlyPrice}
+                                        data-yearly-price={plan.yearlyPrice}
+                                    >
+                                        {plan.yearlyPrice}
+                                    </span>
+                                    <span class="price-period">{plan.period}</span>
+                                </div>
+                            ) : (
+                                <div class="price-display custom">
+                                    <span class="custom-price">{plan.period}</span>
+                                </div>
+                            )}
+                        </div>
+
+                        {showFeatures && Array.isArray(plan.features) && (
+                            <div class="plan-features">
+                                <ul class="features-list">
+                                    {plan.features.map((feature: string) => (
+                                        <li class="feature-item">
+                                            <Check size={20} />
+                                            <span>{feature}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        <div class="plan-cta">
+                            <a
+                                href={plan.ctaLink}
+                                class={`btn ${plan.popular ? "btn-primary" : "btn-secondary"} btn-lg plan-cta-btn`}
+                            >
+                                {plan.ctaText}
+                                <ArrowRight size={20} />
+                            </a>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+
+        {showComparisonTable && (
+            <!-- Feature Comparison Table -->
+            <div class="feature-comparison">
+                <h2 class="comparison-title text-heading-xl text-center">
+                    {$t("ui.compareFeatures")}
+                </h2>
+
+                <div class="comparison-table-container">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th class="feature-column">Features</th>
+                                <th class="plan-column">Starter</th>
+                                <th class="plan-column popular-column" data-popular-text={$t("ui.mostPopular")}
+                                    >Professional</th
+                                >
+                                <th class="plan-column">Enterprise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                $t("featureCategories").map((category: any) => (
+                                    <>
+                                        <tr class="category-row">
+                                            <td colspan="4" class="category-header">
+                                                <h3 class="category-title text-heading-medium">{category.name}</h3>
+                                            </td>
+                                        </tr>
+                                        {category.features.map((feature: any) => (
+                                            <tr class="feature-row">
+                                                <td class="feature-cell">
+                                                    <div class="feature-name text-body-medium">{feature.name}</div>
+                                                    <div class="feature-description text-body-small">
+                                                        {feature.description}
+                                                    </div>
+                                                </td>
+                                                <td class="plan-cell">
+                                                    <div class="feature-value">
+                                                        {typeof feature.starter === "boolean" ? (
+                                                            feature.starter ? (
+                                                                <Check size={20} class="check-icon" />
+                                                            ) : (
+                                                                <X size={20} class="x-icon" />
+                                                            )
+                                                        ) : (
+                                                            <span class="text-value">{feature.starter}</span>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                                <td class="plan-cell popular-cell">
+                                                    <div class="feature-value">
+                                                        {typeof feature.professional === "boolean" ? (
+                                                            feature.professional ? (
+                                                                <Check size={20} class="check-icon" />
+                                                            ) : (
+                                                                <X size={20} class="x-icon" />
+                                                            )
+                                                        ) : (
+                                                            <span class="text-value">{feature.professional}</span>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                                <td class="plan-cell">
+                                                    <div class="feature-value">
+                                                        {typeof feature.enterprise === "boolean" ? (
+                                                            feature.enterprise ? (
+                                                                <Check size={20} class="check-icon" />
+                                                            ) : (
+                                                                <X size={20} class="x-icon" />
+                                                            )
+                                                        ) : (
+                                                            <span class="text-value">{feature.enterprise}</span>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </>
+                                ))
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        )}
+
+        {variant === 'preview' && (
+            <!-- Trust Indicators -->
+            <div class="trust-indicators">
+                <div class="trust-item">
+                    <ShieldCheck size={24} />
+                    <span>{$t("guaranteeText")}</span>
+                </div>
+
+                <div class="trust-item">
+                    <Users size={24} />
+                    <span>{$t("trustedByText")}</span>
+                </div>
+            </div>
+
+            <!-- View All Plans CTA -->
+            <div class="section-cta text-center">
+                <a href="/pricing" class="btn btn-ghost btn-lg">
+                    {$t("viewAllPlansText")}
+                    <ExternalLink size={20} />
+                </a>
+            </div>
+        )}
+
+        {showGuarantees && (
+            <!-- Guarantees -->
+            <div class="guarantees-section">
+                <div class="guarantees-grid">
+                    {
+                        $t("guarantees").map((guarantee: string) => (
+                            <div class="guarantee-item">
+                                <ShieldCheck size={24} />
+                                <span>{guarantee}</span>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        )}
+    </div>
+</section>
+
+<style>
+    .pricing-section {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pricing-preview {
+        background: var(--color-background-secondary);
+    }
+
+    .pricing-full {
+        background: var(--color-background-primary);
+    }
+
+    .section-header {
+        margin-bottom: var(--space-12);
+    }
+
+    .pricing-full .section-header {
+        margin-bottom: var(--space-16);
+    }
+
+    .section-subtitle {
+        margin-top: var(--space-4);
+        color: var(--color-text-secondary);
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .pricing-full .section-subtitle {
+        margin-top: var(--space-6);
+        max-width: 700px;
+    }
+
+    /* Billing Toggle */
+    .billing-toggle-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: var(--space-16);
+    }
+
+    .pricing-full .billing-toggle-container {
+        margin-bottom: var(--space-20);
+    }
+
+    .billing-toggle {
+        display: flex;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-full);
+        padding: var(--space-1);
+        position: relative;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .toggle-option {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        padding: var(--space-3) var(--space-6);
+        border: none;
+        background: transparent;
+        border-radius: var(--radius-full);
+        font-weight: 600;
+        color: var(--color-text-secondary);
+        cursor: pointer;
+        transition: all var(--duration-fast) var(--ease-out);
+        position: relative;
+        z-index: 2;
+    }
+
+    .toggle-option.active {
+        color: white;
+    }
+
+    .toggle-slider {
+        position: absolute;
+        top: var(--space-1);
+        left: var(--space-1);
+        height: calc(100% - var(--space-2));
+        background: var(--gradient-primary);
+        border-radius: var(--radius-full);
+        transition: all var(--duration-normal) var(--ease-out);
+        z-index: 1;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .discount-badge {
+        background: var(--color-accent-green);
+        color: white;
+        font-size: 11px;
+        font-weight: 700;
+        padding: var(--space-1) var(--space-2);
+        border-radius: var(--radius-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Pricing Cards */
+    .pricing-cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: var(--space-8);
+        margin-bottom: var(--space-16);
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .pricing-full .pricing-cards-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        margin-bottom: var(--space-20);
+    }
+
+    .pricing-card {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        padding: var(--space-8);
+        position: relative;
+        transition: all var(--duration-normal) var(--ease-out);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .pricing-full .pricing-card {
+        border-width: 2px;
+        padding: var(--space-10);
+    }
+
+    .pricing-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--color-primary-blue);
+    }
+
+    .pricing-full .pricing-card:hover {
+        transform: translateY(-8px);
+        scale: 1;
+    }
+
+    .pricing-card.popular {
+        border-color: var(--color-primary-blue);
+        box-shadow: 0 8px 32px rgba(0, 102, 255, 0.15);
+        transform: scale(1.05);
+    }
+
+    .pricing-card.popular:hover {
+        transform: translateY(-8px) scale(1.07);
+    }
+
+    .pricing-full .pricing-card.popular:hover {
+        transform: translateY(-8px) scale(1.05);
+    }
+
+    .popular-badge {
+        position: absolute;
+        background: var(--color-text-primary);
+        color: var(--color-background-primary);
+        padding: var(--space-2) var(--space-3);
+        border-radius: var(--radius-sm);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.025em;
+        line-height: 1;
+    }
+
+    .pricing-preview .popular-badge {
+        top: var(--space-2);
+        right: var(--space-2);
+    }
+
+    .pricing-full .popular-badge {
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--gradient-primary);
+        color: white;
+        font-size: 13px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: var(--space-1);
+        box-shadow: var(--shadow-md);
+    }
+
+    .plan-header {
+        margin-bottom: var(--space-6);
+        text-align: center;
+    }
+
+    .pricing-full .plan-header {
+        margin-bottom: var(--space-8);
+    }
+
+    .plan-name {
+        color: var(--color-text-primary);
+        margin-bottom: var(--space-2);
+    }
+
+    .pricing-full .plan-name {
+        margin-bottom: var(--space-3);
+    }
+
+    .plan-description {
+        color: var(--color-text-secondary);
+        line-height: 1.5;
+    }
+
+    .plan-pricing {
+        text-align: center;
+        margin-bottom: var(--space-8);
+    }
+
+    .pricing-full .plan-pricing {
+        margin-bottom: var(--space-10);
+    }
+
+    .price-display {
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+        gap: var(--space-1);
+    }
+
+    .currency {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--color-text-secondary);
+    }
+
+    .price-amount {
+        font-size: 48px;
+        font-weight: 800;
+        color: var(--color-text-primary);
+        line-height: 1;
+    }
+
+    .pricing-full .price-amount {
+        font-size: 56px;
+    }
+
+    .price-period {
+        font-size: 16px;
+        color: var(--color-text-secondary);
+        margin-left: var(--space-2);
+    }
+
+    .price-display.custom .custom-price {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--color-text-primary);
+    }
+
+    .pricing-full .price-display.custom .custom-price {
+        font-size: 28px;
+    }
+
+    .plan-features {
+        margin-bottom: var(--space-8);
+    }
+
+    .features-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        padding: var(--space-3) 0;
+        color: var(--color-text-secondary);
+        font-size: 14px;
+    }
+
+    .feature-item svg {
+        color: var(--color-accent-green);
+        flex-shrink: 0;
+    }
+
+    .plan-cta {
+        margin-top: auto;
+    }
+
+    .plan-cta-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Trust Indicators */
+    .trust-indicators {
+        display: flex;
+        justify-content: center;
+        gap: var(--space-8);
+        margin-bottom: var(--space-16);
+        flex-wrap: wrap;
+    }
+
+    .trust-item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        color: var(--color-text-secondary);
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .trust-item svg {
+        color: var(--color-accent-green);
+    }
+
+    /* Section CTA */
+    .section-cta {
+        margin-top: var(--space-16);
+    }
+
+    /* Feature Comparison Table */
+    .feature-comparison {
+        margin-top: var(--space-24);
+        margin-bottom: var(--space-20);
+    }
+
+    .comparison-title {
+        margin-bottom: var(--space-16);
+        color: var(--color-text-primary);
+    }
+
+    .comparison-table-container {
+        overflow-x: auto;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--color-border);
+    }
+
+    .comparison-table {
+        width: 100%;
+        margin-bottom: 0;
+        border-collapse: collapse;
+        background: var(--color-surface);
+    }
+
+    .comparison-table th {
+        background: var(--color-background-secondary);
+        padding: var(--space-6);
+        text-align: left;
+        font-weight: 700;
+        color: var(--color-text-primary);
+        border-bottom: 2px solid var(--color-border);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .comparison-table th.popular-column {
+        background: var(--gradient-primary);
+        color: white;
+        position: relative;
+    }
+
+    .comparison-table th.popular-column::after {
+        content: attr(data-popular-text);
+        position: absolute;
+        top: var(--space-2);
+        right: var(--space-3);
+        background: var(--color-text-primary);
+        color: var(--color-background-primary);
+        font-size: 10px;
+        padding: var(--space-1) var(--space-2);
+        border-radius: var(--radius-sm);
+        font-weight: 600;
+        letter-spacing: 0.025em;
+        line-height: 1;
+    }
+
+    .feature-column {
+        min-width: 300px;
+    }
+
+    .plan-column {
+        min-width: 150px;
+        text-align: center;
+    }
+
+    .category-row {
+        background: var(--color-background-secondary);
+    }
+
+    .category-header {
+        padding: var(--space-6);
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .category-title {
+        color: var(--color-text-primary);
+        margin: 0;
+    }
+
+    .feature-row {
+        border-bottom: 1px solid var(--color-border);
+        transition: background-color var(--duration-fast) var(--ease-out);
+    }
+
+    .feature-row:hover {
+        background: var(--color-background-secondary);
+    }
+
+    .feature-cell {
+        padding: var(--space-6);
+    }
+
+    .feature-name {
+        font-weight: 600;
+        color: var(--color-text-primary);
+        margin-bottom: var(--space-1);
+    }
+
+    .feature-description {
+        color: var(--color-text-tertiary);
+        line-height: 1.4;
+    }
+
+    .plan-cell {
+        padding: var(--space-6);
+        text-align: center;
+        border-left: 1px solid var(--color-border);
+    }
+
+    .plan-cell.popular-cell {
+        background: rgba(0, 102, 255, 0.05);
+        border-left-color: var(--color-primary-blue);
+        border-right: 1px solid var(--color-primary-blue);
+    }
+
+    .feature-value {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .check-icon {
+        color: var(--color-accent-green);
+    }
+
+    .x-icon {
+        color: var(--color-text-tertiary);
+    }
+
+    .text-value {
+        font-weight: 600;
+        color: var(--color-text-primary);
+    }
+
+    /* Guarantees */
+    .guarantees-section {
+        background: var(--color-background-secondary);
+        border-radius: var(--radius-xl);
+        padding: var(--space-10);
+        margin-top: var(--space-16);
+    }
+
+    .guarantees-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: var(--space-8);
+    }
+
+    .guarantee-item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        color: var(--color-text-secondary);
+        font-weight: 500;
+    }
+
+    .guarantee-item svg {
+        color: var(--color-accent-green);
+        flex-shrink: 0;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .pricing-cards-grid {
+            grid-template-columns: 1fr;
+            gap: var(--space-6);
+        }
+
+        .pricing-card {
+            padding: var(--space-6);
+        }
+
+        .pricing-full .pricing-card {
+            padding: var(--space-8);
+        }
+
+        .pricing-card.popular {
+            transform: none;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .price-amount {
+            font-size: 40px;
+        }
+
+        .pricing-full .price-amount {
+            font-size: 48px;
+        }
+
+        .trust-indicators {
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-4);
+        }
+
+        .billing-toggle {
+            max-width: 320px;
+        }
+
+        .toggle-option {
+            justify-content: center;
+            padding: var(--space-2) var(--space-4);
+            font-size: 14px;
+        }
+
+        .discount-badge {
+            font-size: 10px;
+            padding: 2px var(--space-1);
+        }
+
+        .feature-column {
+            min-width: 250px;
+        }
+
+        .plan-column {
+            min-width: 120px;
+        }
+
+        .guarantees-grid {
+            grid-template-columns: 1fr;
+            gap: var(--space-4);
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const pricingSections = document.querySelectorAll('[data-pricing-section]');
+        const sectionHandlers = new Map();
+
+        // Shared resize handler for all pricing sections
+        let resizeTimeout;
+        const handleResize = () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                sectionHandlers.forEach((handler) => {
+                    if (handler.updateToggleSlider) {
+                        handler.updateToggleSlider();
+                    }
+                });
+            }, 100);
+        };
+
+        pricingSections.forEach((section) => {
+            const billingToggle = section.querySelector('[data-billing-toggle]');
+            const toggleSlider = section.querySelector('[data-toggle-slider]');
+            const priceAmounts = section.querySelectorAll('[data-monthly-price]');
+            // Always start with yearly pricing selected
+
+            function setupBillingToggle() {
+                if (!billingToggle) return;
+
+                const toggleOptions = billingToggle.querySelectorAll('[data-billing]');
+
+                toggleOptions.forEach((option) => {
+                    option.addEventListener('click', () => {
+                        const billing = option.getAttribute('data-billing');
+                        switchBilling(billing === 'yearly');
+
+                        // Update active states
+                        toggleOptions.forEach((opt) => opt.classList.remove('active'));
+                        option.classList.add('active');
+
+                        updateToggleSlider();
+                    });
+                });
+            }
+
+            function switchBilling(yearly) {
+                if (!priceAmounts) return;
+
+                priceAmounts.forEach((priceElement) => {
+                    const monthlyPrice = priceElement.getAttribute('data-monthly-price');
+                    const yearlyPrice = priceElement.getAttribute('data-yearly-price');
+
+                    if (monthlyPrice && yearlyPrice) {
+                        const targetPrice = yearly ? yearlyPrice : monthlyPrice;
+                        animatePrice(priceElement, parseInt(targetPrice));
+                    }
+                });
+            }
+
+            function animatePrice(element, targetPrice) {
+                const currentPrice = parseInt(element.textContent || '0');
+                const duration = 300;
+                const steps = 20;
+                const stepSize = (targetPrice - currentPrice) / steps;
+                const stepDuration = duration / steps;
+
+                let currentStep = 0;
+
+                const animate = () => {
+                    currentStep++;
+                    const newPrice = Math.round(currentPrice + stepSize * currentStep);
+                    element.textContent = newPrice.toString();
+
+                    if (currentStep < steps) {
+                        setTimeout(animate, stepDuration);
+                    } else {
+                        element.textContent = targetPrice.toString();
+                    }
+                };
+
+                animate();
+            }
+
+            function updateToggleSlider() {
+                if (!toggleSlider || !billingToggle) return;
+
+                const activeOption = billingToggle.querySelector('.toggle-option.active');
+                if (!activeOption) return;
+
+                const containerPadding = 4; // var(--space-1) = 4px padding on container
+                const left = activeOption.offsetLeft - containerPadding;
+                const width = activeOption.offsetWidth;
+
+                toggleSlider.style.width = `${width}px`;
+                toggleSlider.style.transform = `translateX(${left}px)`;
+            }
+
+            // Store handler for this section
+            sectionHandlers.set(section, { updateToggleSlider });
+
+            // Initialize
+            setupBillingToggle();
+
+            // Ensure CSS is applied before calculating positions
+            requestAnimationFrame(() => {
+                updateToggleSlider();
+            });
+        });
+
+        // Add single resize listener for all sections
+        if (sectionHandlers.size > 0) {
+            window.addEventListener('resize', handleResize);
+        }
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            window.removeEventListener('resize', handleResize);
+            sectionHandlers.clear();
+        });
+    });
+</script>

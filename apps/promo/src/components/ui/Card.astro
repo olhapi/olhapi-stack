@@ -1,0 +1,137 @@
+---
+interface Props {
+  variant?: 'default' | 'glass' | 'elevated' | 'bordered';
+  hover?: boolean;
+  padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
+  class?: string;
+  href?: string;
+  target?: string;
+}
+
+const {
+  variant = 'default',
+  hover = true,
+  padding = 'md',
+  class: className = '',
+  href,
+  target
+} = Astro.props;
+
+const Component = href ? 'a' : 'div';
+
+const baseClasses = 'card';
+const variantClasses = {
+  default: '',
+  glass: 'card-glass',
+  elevated: 'card-elevated',
+  bordered: 'card-bordered'
+};
+
+const paddingClasses = {
+  none: 'p-0',
+  sm: 'p-4',
+  md: 'p-6',
+  lg: 'p-8',
+  xl: 'p-10'
+};
+
+const classes = [
+  baseClasses,
+  variantClasses[variant],
+  paddingClasses[padding],
+  hover && 'hover-lift',
+  href && 'card-link',
+  className
+].filter(Boolean).join(' ');
+---
+
+<Component
+  class={classes}
+  href={href}
+  target={target}
+>
+  <slot />
+</Component>
+
+<style>
+  .card-glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-glass:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  [data-theme="dark"] .card-glass {
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  [data-theme="dark"] .card-glass:hover {
+    background: rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .card-elevated {
+    box-shadow: var(--shadow-lg);
+  }
+
+  .card-elevated:hover {
+    box-shadow: var(--shadow-2xl);
+  }
+
+  .card-bordered {
+    border: 2px solid var(--color-border);
+    box-shadow: none;
+  }
+
+  .card-bordered:hover {
+    border-color: var(--color-primary-blue);
+    box-shadow: var(--shadow-md);
+  }
+
+  .card-link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: all var(--duration-normal) var(--ease-out);
+  }
+
+  .card-link:hover {
+    color: inherit;
+  }
+
+  .card-link:focus-visible {
+    outline: 2px solid var(--color-primary-blue);
+    outline-offset: 2px;
+  }
+
+  /* Card content spacing */
+  .card > :first-child {
+    margin-top: 0;
+  }
+
+  .card > :last-child {
+    margin-bottom: 0;
+  }
+
+  /* Responsive padding utilities */
+  .p-0 { padding: 0; }
+  .p-4 { padding: var(--space-4); }
+  .p-6 { padding: var(--space-6); }
+  .p-8 { padding: var(--space-8); }
+  .p-10 { padding: var(--space-10); }
+
+  @media (max-width: 768px) {
+    .p-6 { padding: var(--space-4); }
+    .p-8 { padding: var(--space-6); }
+    .p-10 { padding: var(--space-8); }
+  }
+</style>

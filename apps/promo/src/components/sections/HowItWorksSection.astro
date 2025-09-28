@@ -1,0 +1,636 @@
+---
+interface Props {
+    lang: string;
+}
+
+const { lang } = Astro.props;
+
+const translations = {
+    en: {
+        sectionTitle: "How It Works",
+        subtitle: "Get started in minutes with our simple 4-step process",
+        steps: [
+            {
+                number: "01",
+                title: "Connect Your Data",
+                description:
+                    "Seamlessly integrate with your existing tools and import your data with our one-click connectors.",
+                details: "Supports 100+ integrations including Slack, Google Workspace, Salesforce, and more.",
+                icon: "link",
+            },
+            {
+                number: "02",
+                title: "Configure Workflows",
+                description:
+                    "Set up automated workflows using our intuitive drag-and-drop interface. No coding required.",
+                details: "Pre-built templates for common use cases or create custom workflows from scratch.",
+                icon: "settings",
+            },
+            {
+                number: "03",
+                title: "Collaborate & Monitor",
+                description:
+                    "Invite your team, assign roles, and track progress with real-time dashboards and notifications.",
+                details: "Advanced permissions, audit logs, and comprehensive reporting included.",
+                icon: "users",
+            },
+            {
+                number: "04",
+                title: "Scale & Optimize",
+                description:
+                    "Analyze performance metrics and scale your operations with AI-powered insights and recommendations.",
+                details: "Machine learning algorithms continuously optimize your workflows for maximum efficiency.",
+                icon: "trending-up",
+            },
+        ],
+        ctaText: "Start Your Free Trial",
+        learnMoreText: "Learn More",
+        videoText: "Watch Demo Video",
+    },
+    de: {
+        sectionTitle: "So funktioniert es",
+        subtitle: "Starten Sie in wenigen Minuten mit unserem einfachen 4-Schritte-Prozess",
+        steps: [
+            {
+                number: "01",
+                title: "Daten verbinden",
+                description:
+                    "Integrieren Sie nahtlos Ihre bestehenden Tools und importieren Sie Daten mit unseren Ein-Klick-Konnektoren.",
+                details: "Unterstützt 100+ Integrationen einschließlich Slack, Google Workspace, Salesforce und mehr.",
+                icon: "link",
+            },
+            {
+                number: "02",
+                title: "Workflows konfigurieren",
+                description:
+                    "Richten Sie automatisierte Workflows mit unserer intuitiven Drag-and-Drop-Oberfläche ein. Keine Programmierung erforderlich.",
+                details:
+                    "Vorgefertigte Vorlagen für häufige Anwendungsfälle oder erstellen Sie benutzerdefinierte Workflows von Grund auf.",
+                icon: "settings",
+            },
+            {
+                number: "03",
+                title: "Zusammenarbeiten & Überwachen",
+                description:
+                    "Laden Sie Ihr Team ein, weisen Sie Rollen zu und verfolgen Sie den Fortschritt mit Echtzeit-Dashboards und Benachrichtigungen.",
+                details: "Erweiterte Berechtigungen, Audit-Logs und umfassendes Reporting inklusive.",
+                icon: "users",
+            },
+            {
+                number: "04",
+                title: "Skalieren & Optimieren",
+                description:
+                    "Analysieren Sie Leistungsmetriken und skalieren Sie Ihre Abläufe mit KI-gestützten Einblicken und Empfehlungen.",
+                details:
+                    "Machine-Learning-Algorithmen optimieren kontinuierlich Ihre Workflows für maximale Effizienz.",
+                icon: "trending-up",
+            },
+        ],
+        ctaText: "Kostenlose Testversion starten",
+        learnMoreText: "Mehr erfahren",
+        videoText: "Demo-Video ansehen",
+    },
+};
+
+import { useTranslations } from "../../utils/i18n";
+import { Link, Settings, Users, TrendingUp, ArrowUpRight, ArrowRight, Play } from '@lucide/astro';
+const $t = useTranslations(translations, lang);
+---
+
+<section class="how-it-works-section section" id="how-it-works" data-how-it-works>
+    <div class="container">
+        <!-- Section Header -->
+        <div class="section-header text-center">
+            <h2 class="text-display-medium gradient-text">
+                {$t("sectionTitle")}
+            </h2>
+            <p class="section-subtitle text-body-large">
+                {$t("subtitle")}
+            </p>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-container">
+            <div class="timeline-line" data-timeline-line></div>
+
+            {
+                $t("steps").map((step: any, index: number) => (
+                    <div class="timeline-step" data-step-index={index} data-timeline-step>
+                        <div class="step-connector">
+                            <div class="step-number">
+                                <span class="number-text">{step.number}</span>
+                            </div>
+                            <div class="connector-line" />
+                        </div>
+
+                        <div class="step-content">
+                            <div class="step-card">
+                                <div class="step-icon">
+                                    {step.icon === "link" && <Link size={32} />}
+                                    {step.icon === "settings" && <Settings size={32} />}
+                                    {step.icon === "users" && <Users size={32} />}
+                                    {step.icon === "trending-up" && <TrendingUp size={32} />}
+                                </div>
+
+                                <div class="step-text">
+                                    <h3 class="step-title text-heading-large">{step.title}</h3>
+                                    <p class="step-description text-body-medium">{step.description}</p>
+                                    <p class="step-details text-body-small">{step.details}</p>
+                                </div>
+
+                                <div class="step-actions">
+                                    <button
+                                        type="button"
+                                        class="btn btn-ghost btn-sm learn-more-btn"
+                                        data-step-learn-more
+                                    >
+                                        {$t("learnMoreText")}
+                                        <ArrowUpRight size={16} />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+
+        <!-- CTA Section -->
+        <div class="section-cta text-center">
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary btn-lg">
+                    {$t("ctaText")}
+                    <ArrowRight size={20} />
+                </a>
+                <button type="button" class="btn btn-secondary btn-lg video-trigger" data-video-modal>
+                    <Play size={20} />
+                    {$t("videoText")}
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .how-it-works-section {
+        background: var(--color-background-secondary);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .how-it-works-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--bg-grid);
+        opacity: 0.3;
+        pointer-events: none;
+    }
+
+    .section-header {
+        margin-bottom: var(--space-20);
+        position: relative;
+        z-index: 2;
+    }
+
+    .section-subtitle {
+        margin-top: var(--space-4);
+        color: var(--color-text-secondary);
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Timeline Container */
+    .timeline-container {
+        position: relative;
+        max-width: 900px;
+        margin: 0 auto var(--space-16);
+    }
+
+    .timeline-line {
+        position: absolute;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: calc(100% - 160px);
+        background: linear-gradient(
+            180deg,
+            var(--color-primary-blue) 0%,
+            var(--color-secondary-gradient-start) 50%,
+            var(--color-secondary-gradient-end) 100%
+        );
+        border-radius: var(--radius-full);
+        opacity: 0.3;
+    }
+
+    .timeline-line::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 0%;
+        background: linear-gradient(
+            180deg,
+            var(--color-primary-blue) 0%,
+            var(--color-secondary-gradient-start) 50%,
+            var(--color-secondary-gradient-end) 100%
+        );
+        border-radius: var(--radius-full);
+        transition: height var(--duration-slower) var(--ease-out);
+    }
+
+    .timeline-line.animate {
+        opacity: 1;
+    }
+
+    .timeline-line.animate::after {
+        height: 100%;
+    }
+
+    /* Timeline Steps */
+    .timeline-step {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: var(--space-20);
+        position: relative;
+    }
+
+    .timeline-step:nth-child(even) {
+        flex-direction: row-reverse;
+    }
+
+    .timeline-step:nth-child(even) .step-content {
+        text-align: right;
+    }
+
+    .timeline-step:nth-child(even) .step-card {
+        margin-right: var(--space-8);
+        margin-left: 0;
+    }
+
+    .timeline-step.animate {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Step Connector */
+    .step-connector {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-shrink: 0;
+        z-index: 3;
+        position: relative;
+    }
+
+    .step-number {
+        width: 80px;
+        height: 80px;
+        border-radius: var(--radius-full);
+        background: var(--gradient-primary);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 20px;
+        box-shadow: var(--shadow-lg);
+        position: relative;
+        z-index: 4;
+        transition: all var(--duration-normal) var(--ease-out);
+    }
+
+    .step-number:hover {
+        transform: scale(1.1);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .number-text {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Step Content */
+    .step-content {
+        flex: 1;
+        margin-left: var(--space-8);
+        margin-top: var(--space-2);
+    }
+
+    .step-card {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        padding: var(--space-8);
+        box-shadow: var(--shadow-sm);
+        transition: all var(--duration-normal) var(--ease-out);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .step-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--color-primary-blue);
+    }
+
+    .step-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: var(--radius-lg);
+        background: rgba(0, 102, 255, 0.1);
+        color: var(--color-primary-blue);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: var(--space-6);
+        transition: all var(--duration-normal) var(--ease-out);
+    }
+
+    .step-card:hover .step-icon {
+        background: var(--gradient-primary);
+        color: white;
+        transform: rotate(5deg) scale(1.05);
+    }
+
+    .step-title {
+        margin-bottom: var(--space-3);
+        color: var(--color-text-primary);
+    }
+
+    .step-description {
+        margin-bottom: var(--space-4);
+        color: var(--color-text-secondary);
+        line-height: 1.6;
+    }
+
+    .step-details {
+        color: var(--color-text-tertiary);
+        font-style: italic;
+        margin-bottom: var(--space-6);
+        line-height: 1.5;
+    }
+
+    .step-actions {
+        margin-top: var(--space-6);
+    }
+
+    .learn-more-btn {
+    }
+
+    .step-card:hover .learn-more-btn {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* CTA Section */
+    .section-cta {
+        margin-top: var(--space-16);
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: var(--space-4);
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .timeline-line {
+            left: 30px;
+            transform: none;
+            top: 30px;
+            height: calc(100% - 60px);
+        }
+
+        .timeline-step {
+            flex-direction: row !important;
+            margin-bottom: var(--space-12);
+            position: relative;
+        }
+
+        .timeline-step:nth-child(even) {
+            flex-direction: row !important;
+        }
+
+        .timeline-step:nth-child(even) .step-content {
+            text-align: left;
+        }
+
+        .timeline-step:nth-child(even) .step-card {
+            margin-right: 0;
+            margin-left: 0;
+        }
+
+        .step-connector {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 3;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            font-size: 16px;
+            margin-left: 0;
+        }
+
+        .step-content {
+            margin-left: var(--space-20);
+            margin-top: 0;
+            flex: 1;
+        }
+
+        .step-card {
+            padding: var(--space-6);
+            margin-left: 0;
+        }
+
+        .cta-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cta-buttons .btn {
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+        .timeline-step,
+        .step-number,
+        .step-card,
+        .learn-more-btn {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+        }
+
+        .timeline-line::after {
+            height: 100% !important;
+        }
+    }
+
+    /* Fallback for no-JS environments */
+    .no-js .timeline-step {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    /* Ensure content becomes visible even if animations fail */
+    .timeline-step:not(.animate) {
+        animation: fallback-reveal 0.1s ease-out 3s forwards;
+    }
+
+    @keyframes fallback-reveal {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script is:inline>
+    // Initialize How It Works animations immediately
+    (function () {
+        "use strict";
+
+        function initHowItWorksAnimations() {
+            const section = document.querySelector("[data-how-it-works]");
+            if (!section) return;
+
+            // Animations now handled by GSAP ScrollTrigger through centralized animation system
+            // Ensure content is visible for reduced motion preferences
+            const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (prefersReducedMotion) {
+                const steps = section.querySelectorAll("[data-timeline-step]");
+                steps.forEach((step) => {
+                    step.style.opacity = "1";
+                    step.style.transform = "none";
+                });
+            }
+
+            // Learn more button handlers
+            const learnMoreButtons = section.querySelectorAll("[data-step-learn-more]");
+            learnMoreButtons.forEach((button) => {
+                button.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    console.log("Learn more clicked");
+                });
+            });
+
+            // Video modal handler
+            const videoButton = section.querySelector("[data-video-modal]");
+            if (videoButton) {
+                videoButton.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    console.log("Video modal requested");
+                });
+            }
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initHowItWorksAnimations);
+        } else {
+            initHowItWorksAnimations();
+        }
+
+        // Also initialize on Astro page loads for SPA navigation
+        document.addEventListener("astro:page-load", initHowItWorksAnimations);
+    })();
+
+    class HowItWorksSection extends HTMLElement {
+        constructor() {
+            super();
+            this.stepObserver = null;
+            this.currentStep = 1;
+            this.totalSteps = 0;
+        }
+
+        connectedCallback() {
+            this.totalSteps = this.querySelectorAll("[data-timeline-step]").length;
+            this.setupStepTracking();
+        }
+
+        disconnectedCallback() {
+            if (this.stepObserver) {
+                this.stepObserver.disconnect();
+            }
+        }
+
+        setupStepTracking() {
+            // Track current step for progress indicator using minimal IntersectionObserver for functional purposes
+            this.stepObserver = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            const stepIndex = parseInt(entry.target.getAttribute("data-step-index") || "0");
+                            this.updateProgress(stepIndex + 1);
+                        }
+                    });
+                },
+                {
+                    threshold: 0.5,
+                    rootMargin: "-50% 0px -50% 0px",
+                },
+            );
+
+            const steps = this.querySelectorAll("[data-timeline-step]");
+            steps.forEach((step) => {
+                this.stepObserver?.observe(step);
+            });
+
+            // Learn more button handlers
+            const learnMoreButtons = this.querySelectorAll("[data-step-learn-more]");
+            learnMoreButtons.forEach((button) => {
+                button.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    // Implement learn more functionality
+                    console.log("Learn more clicked");
+                });
+            });
+
+            // Video modal handler
+            const videoButton = this.querySelector("[data-video-modal]");
+            if (videoButton) {
+                videoButton.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    // Implement video modal functionality
+                    console.log("Video modal requested");
+                });
+            }
+        }
+
+        updateProgress(step) {
+            this.currentStep = step;
+
+            const progressFill = this.querySelector("[data-progress-fill]");
+            const currentStepDisplay = this.querySelector("[data-current-step]");
+
+            if (progressFill) {
+                const progressPercent = (step / this.totalSteps) * 100;
+                progressFill.style.width = `${progressPercent}%`;
+            }
+
+            if (currentStepDisplay) {
+                currentStepDisplay.textContent = step.toString();
+            }
+        }
+    }
+
+    // Register the custom element (legacy support)
+    if (!customElements.get("how-it-works-section")) {
+        customElements.define("how-it-works-section", HowItWorksSection);
+    }
+</script>

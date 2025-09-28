@@ -1,0 +1,34 @@
+{
+  "name": "olhapi-stack",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "pnpm dev:services && turbo run dev --filter='!@olhapi/email-templates'",
+    "dev:services": "docker-compose -f docker-compose.dev.yml up -d",
+    "dev:apps": "turbo run dev",
+    "dev:stop": "docker-compose -f docker-compose.dev.yml down",
+    "lint": "oxlint .",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check:types": "turbo run check:types",
+    "verify": "turbo run lint check:types --parallel",
+    "start": "docker-compose up",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:clean": "docker-compose down -v",
+    "billing:push": "cd packages/billing && pnpm atmn:push",
+    "billing:pull": "cd packages/billing && pnpm atmn:pull",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "oxlint": "^1.15.0",
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.6",
+    "typescript": "5.9.2"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=18"
+  }
+}

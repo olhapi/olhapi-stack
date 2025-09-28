@@ -1,0 +1,629 @@
+---
+import { useTranslations } from '../utils/i18n';
+import Container from './ui/Container.astro';
+import Button from './ui/Button.astro';
+import { Twitter, Github, Linkedin } from '@lucide/astro';
+
+interface Props {
+  lang: string;
+}
+
+const { lang } = Astro.props;
+const today = new Date();
+
+const translations = {
+  en: {
+    companyName: 'DevPlatform',
+    companyTagline: 'Build faster, deploy smarter, scale effortlessly.',
+    companyDescription: 'The complete platform for modern web development. From idea to production in minutes.',
+    productTitle: 'Product',
+    companyTitle: 'Company',
+    resourcesTitle: 'Resources',
+    legalTitle: 'Legal',
+    newsletterTitle: 'Stay Updated',
+    newsletterDescription: 'Get the latest updates, tips, and insights delivered to your inbox.',
+    newsletterPlaceholder: 'Enter your email',
+    newsletterSubscribe: 'Subscribe',
+    newsletterSubscribing: 'Subscribing...',
+    socialTitle: 'Follow Us',
+    socialTwitter: 'Follow us on Twitter',
+    socialGithub: 'View our GitHub',
+    socialLinkedin: 'Connect on LinkedIn',
+    socialDiscord: 'Join our Discord',
+    copyright: '© {year} DevPlatform. All rights reserved.',
+    builtWith: 'Built with ❤️ using Astro'
+  },
+  de: {
+    companyName: 'DevPlatform',
+    companyTagline: 'Schneller entwickeln, intelligenter bereitstellen, mühelos skalieren.',
+    companyDescription: 'Die komplette Plattform für moderne Webentwicklung. Von der Idee zur Produktion in Minuten.',
+    productTitle: 'Produkt',
+    companyTitle: 'Unternehmen',
+    resourcesTitle: 'Ressourcen',
+    legalTitle: 'Rechtliches',
+    newsletterTitle: 'Bleiben Sie informiert',
+    newsletterDescription: 'Erhalten Sie die neuesten Updates, Tipps und Einblicke in Ihren Posteingang.',
+    newsletterPlaceholder: 'E-Mail-Adresse eingeben',
+    newsletterSubscribe: 'Abonnieren',
+    newsletterSubscribing: 'Abonnieren...',
+    socialTitle: 'Folgen Sie uns',
+    socialTwitter: 'Folgen Sie uns auf Twitter',
+    socialGithub: 'Sehen Sie unser GitHub',
+    socialLinkedin: 'Verbinden Sie sich auf LinkedIn',
+    socialDiscord: 'Treten Sie unserem Discord bei',
+    copyright: '© {year} DevPlatform. Alle Rechte vorbehalten.',
+    builtWith: 'Mit ❤️ erstellt mit Astro'
+  }
+};
+
+// Define navigation links separately since they're static
+const navigationLinks = {
+  product: [
+    { label: lang === 'de' ? 'Funktionen' : 'Features', href: lang === 'de' ? '/de/features' : '/features' },
+    { label: lang === 'de' ? 'Preise' : 'Pricing', href: lang === 'de' ? '/de/pricing' : '/pricing' },
+    { label: lang === 'de' ? 'Dokumentation' : 'Documentation', href: lang === 'de' ? '/de/docs' : '/docs' },
+    { label: lang === 'de' ? 'API-Referenz' : 'API Reference', href: lang === 'de' ? '/de/api' : '/api' },
+    { label: lang === 'de' ? 'Änderungsprotokoll' : 'Changelog', href: lang === 'de' ? '/de/changelog' : '/changelog' }
+  ],
+  company: [
+    { label: lang === 'de' ? 'Über uns' : 'About', href: lang === 'de' ? '/de/about' : '/about' },
+    { label: lang === 'de' ? 'Blog' : 'Blog', href: lang === 'de' ? '/de/blog' : '/blog' },
+    { label: lang === 'de' ? 'Karriere' : 'Careers', href: lang === 'de' ? '/de/careers' : '/careers' },
+    { label: lang === 'de' ? 'Presse' : 'Press', href: lang === 'de' ? '/de/press' : '/press' },
+    { label: lang === 'de' ? 'Partner' : 'Partners', href: lang === 'de' ? '/de/partners' : '/partners' }
+  ],
+  resources: [
+    { label: lang === 'de' ? 'Community' : 'Community', href: lang === 'de' ? '/de/community' : '/community' },
+    { label: lang === 'de' ? 'Hilfe-Center' : 'Help Center', href: lang === 'de' ? '/de/help' : '/help' },
+    { label: lang === 'de' ? 'Tutorials' : 'Tutorials', href: lang === 'de' ? '/de/tutorials' : '/tutorials' },
+    { label: lang === 'de' ? 'Vorlagen' : 'Templates', href: lang === 'de' ? '/de/templates' : '/templates' },
+    { label: lang === 'de' ? 'Status' : 'Status', href: lang === 'de' ? '/de/status' : '/status' }
+  ],
+  legal: [
+    { label: lang === 'de' ? 'Datenschutz' : 'Privacy Policy', href: lang === 'de' ? '/de/privacy' : '/privacy' },
+    { label: lang === 'de' ? 'Nutzungsbedingungen' : 'Terms of Service', href: lang === 'de' ? '/de/terms' : '/terms' },
+    { label: lang === 'de' ? 'Cookie-Richtlinie' : 'Cookie Policy', href: lang === 'de' ? '/de/cookies' : '/cookies' },
+    { label: lang === 'de' ? 'DSGVO' : 'GDPR', href: lang === 'de' ? '/de/gdpr' : '/gdpr' }
+  ]
+};
+
+const $t = useTranslations(translations, lang);
+---
+
+<footer class="footer" data-section="footer">
+  <Container size="xl">
+    <div class="footer-content">
+      <!-- Footer Main -->
+      <div class="footer-main">
+        <!-- Company Info -->
+        <div class="footer-brand">
+          <div class="brand-info">
+            <h3 class="brand-name">{$t('companyName')}</h3>
+            <p class="brand-tagline text-body-small">{$t('companyTagline')}</p>
+            <p class="brand-description text-body-small">{$t('companyDescription')}</p>
+          </div>
+
+          <!-- Social Links -->
+          <div class="social-section">
+            <h4 class="social-title text-heading-small">{$t('socialTitle')}</h4>
+            <div class="social-links">
+              <a href="https://twitter.com/devplatform" target="_blank" class="social-link" aria-label={$t('socialTwitter')}>
+                <Twitter size={20} />
+              </a>
+              <a href="https://github.com/devplatform" target="_blank" class="social-link" aria-label={$t('socialGithub')}>
+                <Github size={20} />
+              </a>
+              <a href="https://linkedin.com/company/devplatform" target="_blank" class="social-link" aria-label={$t('socialLinkedin')}>
+                <Linkedin size={20} />
+              </a>
+              <a href="https://discord.gg/devplatform" target="_blank" class="social-link" aria-label={$t('socialDiscord')}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419-.0002 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9554 2.4189-2.1568 2.4189Z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Sections -->
+        <div class="footer-nav">
+          <!-- Product -->
+          <div class="nav-section">
+            <h4 class="nav-title text-heading-small">{$t('productTitle')}</h4>
+            <ul class="nav-links">
+              {navigationLinks.product.map((link) => (
+                <li>
+                  <a href={link.href} class="nav-link text-body-small">{link.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Company -->
+          <div class="nav-section">
+            <h4 class="nav-title text-heading-small">{$t('companyTitle')}</h4>
+            <ul class="nav-links">
+              {navigationLinks.company.map((link) => (
+                <li>
+                  <a href={link.href} class="nav-link text-body-small">{link.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Resources -->
+          <div class="nav-section">
+            <h4 class="nav-title text-heading-small">{$t('resourcesTitle')}</h4>
+            <ul class="nav-links">
+              {navigationLinks.resources.map((link) => (
+                <li>
+                  <a href={link.href} class="nav-link text-body-small">{link.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Legal -->
+          <div class="nav-section">
+            <h4 class="nav-title text-heading-small">{$t('legalTitle')}</h4>
+            <ul class="nav-links">
+              {navigationLinks.legal.map((link) => (
+                <li>
+                  <a href={link.href} class="nav-link text-body-small">{link.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="newsletter-section">
+          <h4 class="newsletter-title text-heading-small">{$t('newsletterTitle')}</h4>
+          <p class="newsletter-description text-body-small">{$t('newsletterDescription')}</p>
+
+          <form class="newsletter-form" data-newsletter-form>
+            <div class="form-group">
+              <input
+                type="email"
+                class="newsletter-input"
+                placeholder={$t('newsletterPlaceholder')}
+                required
+                aria-label={$t('newsletterPlaceholder')}
+              />
+              <Button type="submit" variant="primary" size="sm" class="newsletter-submit">
+                {$t('newsletterSubscribe')}
+              </Button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <div class="footer-bottom-content">
+          <p class="copyright text-body-small">
+            {$t('copyright', { year: today.getFullYear() })}
+          </p>
+          <p class="built-with text-body-small">
+            {$t('builtWith')}
+          </p>
+        </div>
+      </div>
+    </div>
+  </Container>
+
+  <!-- Background Elements -->
+  <div class="footer-background" aria-hidden="true">
+    <div class="footer-gradient"></div>
+  </div>
+</footer>
+<style>
+  /* Footer Section */
+  .footer {
+    background: var(--color-background-primary);
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .footer-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Footer Main */
+  .footer-main {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: var(--space-12);
+    padding: var(--space-20) 0 var(--space-16);
+    align-items: start;
+  }
+
+  /* Footer Brand */
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .brand-info {
+    margin-bottom: var(--space-6);
+  }
+
+  .brand-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: var(--space-3);
+    color: var(--color-text-primary);
+    background: var(--gradient-primary);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .brand-tagline {
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    margin-bottom: var(--space-3);
+  }
+
+  .brand-description {
+    color: var(--color-text-tertiary);
+    max-width: 280px;
+  }
+
+  /* Social Section */
+  .social-title {
+    margin-bottom: var(--space-4);
+    color: var(--color-text-primary);
+  }
+
+  .social-links {
+    display: flex;
+    gap: var(--space-4);
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-background-secondary);
+    color: var(--color-text-secondary);
+    transition: all var(--duration-normal) var(--ease-out);
+    text-decoration: none;
+  }
+
+  .social-link:hover {
+    background: var(--color-primary-blue);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  /* Footer Navigation */
+  .footer-nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-8);
+  }
+
+  .nav-section {
+    min-width: 0;
+  }
+
+  .nav-title {
+    margin-bottom: var(--space-4);
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+
+  .nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .nav-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+    line-height: 1.5;
+  }
+
+  .nav-link:hover {
+    color: var(--color-primary-blue);
+  }
+
+  /* Newsletter Section */
+  .newsletter-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .newsletter-title {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+
+  .newsletter-description {
+    color: var(--color-text-secondary);
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .newsletter-form {
+    margin-top: var(--space-2);
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .newsletter-input {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-background-secondary);
+    color: var(--color-text-primary);
+    font-size: 14px;
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .newsletter-input:focus {
+    outline: none;
+    border-color: var(--color-primary-blue);
+  }
+
+  .newsletter-input::placeholder {
+    color: var(--color-text-tertiary);
+  }
+
+  .newsletter-submit {
+    width: 100%;
+  }
+
+  /* Footer Bottom */
+  .footer-bottom {
+    border-top: 1px solid var(--color-border);
+    padding: var(--space-6) 0;
+  }
+
+  .footer-bottom-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  .copyright,
+  .built-with {
+    color: var(--color-text-tertiary);
+    margin: 0;
+  }
+
+  /* Background Elements */
+  .footer-background {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .footer-gradient {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .footer-main {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-10);
+    }
+
+    .footer-nav {
+      grid-template-columns: repeat(2, 1fr);
+      grid-column: 1 / -1;
+      margin-top: var(--space-8);
+    }
+
+    .newsletter-section {
+      grid-column: 1 / -1;
+      margin-top: var(--space-8);
+      max-width: 400px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .footer-main {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+      padding: var(--space-16) 0 var(--space-12);
+    }
+
+    .footer-brand {
+      text-align: center;
+    }
+
+    .brand-description {
+      max-width: none;
+    }
+
+    .social-links {
+      justify-content: center;
+    }
+
+    .footer-nav {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+    }
+
+    .newsletter-section {
+      text-align: center;
+      max-width: none;
+    }
+
+    .newsletter-title,
+    .newsletter-description {
+      text-align: center;
+    }
+
+    .form-group {
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    .footer-bottom-content {
+      flex-direction: column;
+      text-align: center;
+      gap: var(--space-2);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .footer-nav {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+
+    .nav-section {
+      text-align: center;
+    }
+  }
+
+  /* Dark Mode Adjustments */
+  [data-theme="dark"] .footer {
+    background: var(--color-background-secondary);
+  }
+
+  [data-theme="dark"] .footer-gradient {
+    background:
+      radial-gradient(circle at 30% 20%, rgba(96, 165, 250, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 70% 80%, rgba(167, 139, 250, 0.03) 0%, transparent 50%);
+  }
+
+  [data-theme="dark"] .social-link {
+    background: var(--color-background-tertiary);
+  }
+
+  [data-theme="dark"] .newsletter-input {
+    background: var(--color-background-tertiary);
+  }
+
+  /* Focus States */
+  .social-link:focus-visible,
+  .nav-link:focus-visible {
+    outline: 2px solid var(--color-primary-blue);
+    outline-offset: 2px;
+  }
+
+  .newsletter-input:focus-visible {
+    outline: 2px solid var(--color-primary-blue);
+    outline-offset: 2px;
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .social-link {
+      transition: none;
+    }
+
+    .nav-link {
+      transition: none;
+    }
+
+    .newsletter-input {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Newsletter Form Handler
+  class NewsletterForm {
+    private form: HTMLFormElement | null = null;
+    private input: HTMLInputElement | null = null;
+    private button: HTMLButtonElement | null = null;
+
+    constructor() {
+      this.form = document.querySelector('[data-newsletter-form]');
+      this.init();
+    }
+
+    private init() {
+      if (!this.form) return;
+
+      this.input = this.form.querySelector('.newsletter-input');
+      this.button = this.form.querySelector('.newsletter-submit');
+
+      this.form.addEventListener('submit', this.handleSubmit.bind(this));
+    }
+
+    private async handleSubmit(event: Event) {
+      event.preventDefault();
+
+      if (!this.input || !this.button) return;
+
+      const email = this.input.value.trim();
+      if (!email || !this.isValidEmail(email)) {
+        this.showError('Please enter a valid email address');
+        return;
+      }
+
+      const originalText = this.button.textContent;
+      this.button.textContent = 'Subscribing...';
+      this.button.disabled = true;
+
+      try {
+        // Simulate API call
+        await this.wait(1000);
+
+        this.showSuccess('Thank you for subscribing!');
+        this.input.value = '';
+      } catch (error) {
+        this.showError('Something went wrong. Please try again.');
+      } finally {
+        this.button.textContent = originalText;
+        this.button.disabled = false;
+      }
+    }
+
+    private isValidEmail(email: string): boolean {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    private showSuccess(message: string) {
+      // You could implement a toast notification here
+      console.log('Success:', message);
+    }
+
+    private showError(message: string) {
+      // You could implement error display here
+      console.warn('Error:', message);
+    }
+
+    private wait(ms: number): Promise<void> {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+  }
+
+  // Initialize when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    new NewsletterForm();
+  });
+</script>

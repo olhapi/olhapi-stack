@@ -1,0 +1,902 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { SITE_TITLE } from "../consts";
+import HeaderLink from "./HeaderLink.astro";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+import ThemeProvider from "./ThemeProvider.astro";
+import Container from "./ui/Container.astro";
+import Button from "./ui/Button.astro";
+import MegaMenu from "./MegaMenu.astro";
+import { useTranslations } from "../utils/i18n";
+import { Menu, X, ChevronDown, Layers } from "@lucide/astro";
+
+interface Props {
+    lang: string;
+}
+
+const { lang } = Astro.props;
+
+const translations = {
+    en: {
+        home: "Home",
+        product: "Product",
+        solutions: "Solutions",
+        resources: "Resources",
+        blog: "Blog",
+        about: "About",
+        pricing: "Pricing",
+        getStarted: "Get Started",
+        toggleMenu: "Toggle menu",
+    },
+    de: {
+        home: "Startseite",
+        product: "Produkt",
+        solutions: "Lösungen",
+        resources: "Ressourcen",
+        blog: "Blog",
+        about: "Über",
+        pricing: "Preise",
+        getStarted: "Loslegen",
+        toggleMenu: "Menü umschalten",
+    },
+};
+
+const $t = useTranslations(translations, lang);
+
+// Check if we have PUBLIC_APP_URL for the CTA button
+const appUrl = import.meta.env.PUBLIC_APP_URL || "#";
+---
+
+<!-- Announcement Bar -->
+<div class="announcement-bar">
+    <Container size="xl">
+        <div class="announcement-content">
+            <span class="announcement-text"> 🚀 New features available! Check out our latest updates. </span>
+            <a href={getRelativeLocaleUrl(lang, "blog")} class="announcement-link"> Learn more → </a>
+        </div>
+    </Container>
+</div>
+
+<!-- Main Navigation -->
+<header class="header" data-header>
+    <nav class="main-nav" aria-label="Main navigation">
+        <Container size="xl">
+            <div class="nav-content">
+                <!-- Logo -->
+                <div class="logo">
+                    <a href={getRelativeLocaleUrl(lang, "/")} class="logo-link">
+                        <div class="logo-icon">
+                            <Layers size={32} />
+                        </div>
+                        <span class="logo-text">{SITE_TITLE}</span>
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <div class="nav-links" data-nav-links>
+                    <HeaderLink href={getRelativeLocaleUrl(lang, "/")}>{$t("home")}</HeaderLink>
+
+                    <!-- Product Mega Menu -->
+                    <div class="nav-dropdown" data-mega-menu-trigger="product">
+                        <button class="nav-dropdown-trigger" aria-expanded="false" data-mega-toggle="product">
+                            {$t("product")}
+                            <ChevronDown size={16} />
+                        </button>
+                        <MegaMenu type="product" lang={lang} />
+                    </div>
+
+                    <!-- Solutions Mega Menu -->
+                    <div class="nav-dropdown" data-mega-menu-trigger="solutions">
+                        <button class="nav-dropdown-trigger" aria-expanded="false" data-mega-toggle="solutions">
+                            {$t("solutions")}
+                            <ChevronDown size={16} />
+                        </button>
+                        <MegaMenu type="solutions" lang={lang} />
+                    </div>
+
+                    <!-- Resources Mega Menu -->
+                    <div class="nav-dropdown" data-mega-menu-trigger="resources">
+                        <button class="nav-dropdown-trigger" aria-expanded="false" data-mega-toggle="resources">
+                            {$t("resources")}
+                            <ChevronDown size={16} />
+                        </button>
+                        <MegaMenu type="resources" lang={lang} />
+                    </div>
+
+                    <HeaderLink href={getRelativeLocaleUrl(lang, "pricing")}>{$t("pricing")}</HeaderLink>
+                    <HeaderLink href={getRelativeLocaleUrl(lang, "blog")}>{$t("blog")}</HeaderLink>
+                </div>
+
+                <!-- Right side actions -->
+                <div class="nav-actions">
+                    <LanguageSwitcher lang={lang} />
+
+                    <!-- Theme Switcher -->
+                    <ThemeProvider lang={lang} />
+
+                    <!-- CTA Buttons -->
+                    <div class="cta-buttons">
+                        <Button variant="primary" size="sm" href={appUrl}>
+                            {$t("getStarted")}
+                        </Button>
+                    </div>
+
+                    <!-- Mobile Menu Button -->
+                    <button class="mobile-menu-button" aria-label={$t("toggleMenu")} data-mobile-menu-toggle>
+                        <Menu class="menu-icon" size={24} />
+                        <X class="close-icon hidden" size={24} />
+                    </button>
+                </div>
+            </div>
+        </Container>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" data-mobile-menu>
+            <Container size="xl">
+                <div class="mobile-menu-content">
+                    <div class="mobile-nav-links">
+                        <HeaderLink href={getRelativeLocaleUrl(lang, "/")}>{$t("home")}</HeaderLink>
+
+                        <!-- Product Mobile Menu -->
+                        <div class="mobile-nav-dropdown" data-mobile-dropdown="product">
+                            <button class="mobile-nav-dropdown-trigger" data-mobile-toggle="product">
+                                <span>{$t("product")}</span>
+                                <ChevronDown size={16} class="mobile-chevron" />
+                            </button>
+                            <div class="mobile-nav-dropdown-content" data-mobile-dropdown-content="product">
+                                <a href={getRelativeLocaleUrl(lang, "features")} class="mobile-nav-sublink">
+                                    <span class="mobile-nav-icon">👥</span>
+                                    Real-time Collaboration
+                                </a>
+                                <a href={getRelativeLocaleUrl(lang, "features")} class="mobile-nav-sublink">
+                                    <span class="mobile-nav-icon">📊</span>
+                                    Advanced Analytics
+                                </a>
+                                <a href={getRelativeLocaleUrl(lang, "integrations")} class="mobile-nav-sublink">
+                                    <span class="mobile-nav-icon">🔗</span>
+                                    Integrations
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Solutions Mobile Menu -->
+                        <div class="mobile-nav-dropdown" data-mobile-dropdown="solutions">
+                            <button class="mobile-nav-dropdown-trigger" data-mobile-toggle="solutions">
+                                <span>{$t("solutions")}</span>
+                                <ChevronDown size={16} class="mobile-chevron" />
+                            </button>
+                            <div class="mobile-nav-dropdown-content" data-mobile-dropdown-content="solutions">
+                                <a href={getRelativeLocaleUrl(lang, "solutions/healthcare")} class="mobile-nav-sublink">
+                                    <span class="mobile-nav-icon">🏥</span>
+                                    Healthcare
+                                </a>
+                                <a href={getRelativeLocaleUrl(lang, "solutions/finance")} class="mobile-nav-sublink">
+                                    <span class="mobile-nav-icon">🏦</span>
+                                    Finance
+                                </a>
+                                <a href={getRelativeLocaleUrl(lang, "solutions/startups")} class="mobile-nav-sublink">
+                                    <span class="mobile-nav-icon">🚀</span>
+                                    Startups
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Resources Mobile Menu -->
+                        <div class="mobile-nav-dropdown" data-mobile-dropdown="resources">
+                            <button class="mobile-nav-dropdown-trigger" data-mobile-toggle="resources">
+                                <span>{$t("resources")}</span>
+                                <ChevronDown size={16} class="mobile-chevron" />
+                            </button>
+                            <div class="mobile-nav-dropdown-content" data-mobile-dropdown-content="resources">
+                                <a href={getRelativeLocaleUrl(lang, "resources")} class="mobile-nav-sublink">
+                                    <span class="mobile-nav-icon">🚀</span>
+                                    Getting Started
+                                </a>
+                                <a href={getRelativeLocaleUrl(lang, "resources")} class="mobile-nav-sublink">
+                                    <span class="mobile-nav-icon">⭐</span>
+                                    Best Practices
+                                </a>
+                                <a href="https://community.example.com" class="mobile-nav-sublink">
+                                    <span class="mobile-nav-icon">💬</span>
+                                    Community
+                                </a>
+                            </div>
+                        </div>
+
+                        <HeaderLink href={getRelativeLocaleUrl(lang, "pricing")}>{$t("pricing")}</HeaderLink>
+                        <HeaderLink href={getRelativeLocaleUrl(lang, "blog")}>{$t("blog")}</HeaderLink>
+                    </div>
+
+                    <div class="mobile-cta-buttons">
+                        <Button variant="primary" href={appUrl} class="w-full">
+                            {$t("getStarted")}
+                        </Button>
+                    </div>
+                </div>
+            </Container>
+        </div>
+    </nav>
+</header>
+<style>
+    /* Announcement Bar */
+    .announcement-bar {
+        background: var(--gradient-primary);
+        color: white;
+        padding: var(--space-2) 0;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    /* Header Styles */
+    .header {
+        position: sticky;
+        top: 0;
+        z-index: 9998;
+        background: var(--color-background-primary);
+        border-bottom: 1px solid var(--color-border);
+        transition: all var(--duration-normal) var(--ease-out);
+        --header-height: 80px;
+    }
+
+    .announcement-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-4);
+    }
+
+    .announcement-link {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: opacity var(--duration-fast) var(--ease-out);
+    }
+
+    .announcement-link:hover {
+        opacity: 0.8;
+        color: white;
+    }
+
+    /* Main Navigation */
+    .main-nav {
+        padding: var(--space-4) 0;
+        background: inherit;
+    }
+
+    .nav-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-8);
+    }
+
+    /* Logo */
+    .logo-link {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        text-decoration: none;
+        color: var(--color-text-primary);
+        font-weight: 600;
+        font-size: 18px;
+        transition: color var(--duration-fast) var(--ease-out);
+    }
+
+    .logo-link:hover {
+        color: var(--color-primary-blue);
+    }
+
+    .logo-icon {
+        color: var(--color-primary-blue);
+    }
+
+    .logo-text {
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* Navigation Links */
+    .nav-links {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+        position: relative;
+    }
+
+    /* Dropdown */
+    .nav-dropdown {
+        position: relative;
+        z-index: 10000;
+    }
+
+    .nav-dropdown-trigger {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        background: none;
+        border: none;
+        color: var(--color-text-secondary);
+        font-weight: 500;
+        cursor: pointer;
+        padding: var(--space-2) var(--space-3);
+        border-radius: var(--radius-md);
+        transition: all var(--duration-fast) var(--ease-out);
+    }
+
+    .nav-dropdown-trigger:hover {
+        color: var(--color-primary-blue);
+        background-color: var(--color-background-secondary);
+    }
+
+    .nav-dropdown-content {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 200px;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        padding: var(--space-2);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all var(--duration-normal) var(--ease-out);
+        z-index: 50;
+    }
+
+    .nav-dropdown:hover .nav-dropdown-content {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .nav-dropdown-content a {
+        display: block;
+        padding: var(--space-3) var(--space-4);
+        color: var(--color-text-secondary);
+        text-decoration: none;
+        border-radius: var(--radius-md);
+        transition: all var(--duration-fast) var(--ease-out);
+    }
+
+    .nav-dropdown-content a:hover {
+        background-color: var(--color-background-secondary);
+        color: var(--color-primary-blue);
+    }
+
+    /* Navigation Actions */
+    .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+    }
+
+    .cta-buttons {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+    }
+
+    /* Mobile Menu Button */
+    .mobile-menu-button {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: none;
+        border: none;
+        color: var(--color-text-secondary);
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all var(--duration-fast) var(--ease-out);
+    }
+
+    .mobile-menu-button:hover {
+        background-color: var(--color-background-secondary);
+        color: var(--color-primary-blue);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+        display: none;
+        background: var(--color-surface);
+        border-top: 1px solid var(--color-border);
+        padding: var(--space-6) 0;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .mobile-menu-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-6);
+    }
+
+    .mobile-nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-1);
+    }
+
+    .mobile-cta-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-3);
+        padding-top: var(--space-4);
+        border-top: 1px solid var(--color-border);
+    }
+
+    /* Mobile Navigation Dropdowns */
+    .mobile-nav-dropdown {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mobile-nav-dropdown-trigger {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: var(--space-3) var(--space-3);
+        background: none;
+        border: none;
+        color: var(--color-text-secondary);
+        font-weight: 500;
+        font-size: 16px;
+        text-align: left;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all var(--duration-fast) var(--ease-out);
+    }
+
+    .mobile-nav-dropdown-trigger:hover {
+        background-color: var(--color-background-secondary);
+        color: var(--color-primary-blue);
+    }
+
+    .mobile-chevron {
+        transition: transform var(--duration-fast) var(--ease-out);
+        color: var(--color-text-tertiary);
+    }
+
+    .mobile-nav-dropdown.active .mobile-chevron {
+        transform: rotate(180deg);
+        color: var(--color-primary-blue);
+    }
+
+    .mobile-nav-dropdown.active .mobile-nav-dropdown-trigger {
+        background-color: var(--color-background-secondary);
+        color: var(--color-primary-blue);
+    }
+
+    .mobile-nav-dropdown-content {
+        display: none;
+        flex-direction: column;
+        gap: var(--space-1);
+        padding-left: var(--space-4);
+        padding-top: var(--space-2);
+        padding-bottom: var(--space-2);
+    }
+
+    .mobile-nav-dropdown.active .mobile-nav-dropdown-content {
+        display: flex;
+    }
+
+    .mobile-nav-sublink {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        padding: var(--space-2) var(--space-3);
+        color: var(--color-text-secondary);
+        text-decoration: none;
+        font-size: 14px;
+        border-radius: var(--radius-md);
+        transition: all var(--duration-fast) var(--ease-out);
+    }
+
+    .mobile-nav-sublink:hover {
+        background-color: var(--color-background-secondary);
+        color: var(--color-primary-blue);
+    }
+
+    .mobile-nav-icon {
+        font-size: 16px;
+        width: 20px;
+        text-align: center;
+        flex-shrink: 0;
+    }
+
+    /* Utility Classes */
+    .w-full {
+        width: 100%;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .nav-links {
+            display: none;
+        }
+
+        .cta-buttons {
+            display: none;
+        }
+
+        .mobile-menu-button {
+            display: flex;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .announcement-content {
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+
+        .announcement-text {
+            font-size: 13px;
+        }
+
+        .main-nav {
+            padding: var(--space-3) 0;
+        }
+    }
+
+    /* Header Scroll Effects */
+    .header.scrolled {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    [data-theme="dark"] .header.scrolled {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .header.scrolled .main-nav {
+        padding: var(--space-3) 0;
+    }
+
+    /* Active mobile menu state */
+    .mobile-menu.active {
+        display: block;
+    }
+
+    .mobile-menu-button.active .menu-icon {
+        display: none;
+    }
+
+    .mobile-menu-button.active .close-icon {
+        display: block;
+    }
+
+    /* Focus States */
+    .nav-dropdown-trigger:focus-visible,
+    .mobile-menu-button:focus-visible {
+        outline: 2px solid var(--color-primary-blue);
+        outline-offset: 2px;
+    }
+
+    /* Reduced Motion Support */
+    @media (prefers-reduced-motion: reduce) {
+        .nav-dropdown-content {
+            transition: none;
+        }
+
+        .header {
+            transition: none;
+        }
+    }
+</style>
+
+<script>
+    // Header scroll effects, mobile menu, and mega menu functionality
+    class Header {
+        private header: HTMLElement | null = null;
+        private mobileMenuButton: HTMLElement | null = null;
+        private mobileMenu: HTMLElement | null = null;
+        private megaMenuTriggers: NodeListOf<Element> | null = null;
+        private megaMenus: NodeListOf<Element> | null = null;
+        private scrollThreshold = 100;
+        private currentOpenMega: string | null = null;
+        private megaMenuTimeout: number | null = null;
+        private clickInteractionMode = false;
+        private hoverDisabledUntil = 0;
+
+        constructor() {
+            this.init();
+        }
+
+        private init() {
+            this.header = document.querySelector("[data-header]");
+            this.mobileMenuButton = document.querySelector("[data-mobile-menu-toggle]");
+            this.mobileMenu = document.querySelector("[data-mobile-menu]");
+            this.megaMenuTriggers = document.querySelectorAll("[data-mega-toggle]");
+            this.megaMenus = document.querySelectorAll("[data-mega-menu]");
+
+            if (!this.header) return;
+
+            this.setupScrollEffects();
+            this.setupMobileMenu();
+            this.setupMegaMenus();
+        }
+
+        private setupScrollEffects() {
+            let ticking = false;
+
+            const updateHeader = () => {
+                if (!this.header) return;
+
+                const scrollY = window.scrollY;
+
+                if (scrollY > this.scrollThreshold) {
+                    this.header.classList.add("scrolled");
+                } else {
+                    this.header.classList.remove("scrolled");
+                }
+
+                ticking = false;
+            };
+
+            const requestTick = () => {
+                if (!ticking) {
+                    requestAnimationFrame(updateHeader);
+                    ticking = true;
+                }
+            };
+
+            window.addEventListener("scroll", requestTick, { passive: true });
+        }
+
+        private setupMobileMenu() {
+            if (!this.mobileMenuButton || !this.mobileMenu) return;
+
+            this.mobileMenuButton.addEventListener("click", () => {
+                this.toggleMobileMenu();
+            });
+
+            // Close mobile menu when clicking on links
+            const mobileLinks = this.mobileMenu.querySelectorAll("a");
+            mobileLinks.forEach((link) => {
+                link.addEventListener("click", () => {
+                    this.closeMobileMenu();
+                });
+            });
+
+            // Close mobile menu on escape key
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") {
+                    this.closeMobileMenu();
+                }
+            });
+
+            // Setup mobile dropdown functionality
+            this.setupMobileDropdowns();
+        }
+
+        private setupMobileDropdowns() {
+            const mobileDropdowns = document.querySelectorAll("[data-mobile-dropdown]");
+
+            mobileDropdowns.forEach((dropdown) => {
+                const trigger = dropdown.querySelector("[data-mobile-toggle]") as HTMLElement;
+                if (!trigger) return;
+
+                trigger.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Close other dropdowns
+                    mobileDropdowns.forEach((otherDropdown) => {
+                        if (otherDropdown !== dropdown) {
+                            otherDropdown.classList.remove("active");
+                        }
+                    });
+
+                    // Toggle current dropdown
+                    dropdown.classList.toggle("active");
+                });
+            });
+        }
+
+        private toggleMobileMenu() {
+            if (!this.mobileMenu || !this.mobileMenuButton) return;
+
+            const isActive = this.mobileMenu.classList.contains("active");
+
+            if (isActive) {
+                this.closeMobileMenu();
+            } else {
+                this.openMobileMenu();
+            }
+        }
+
+        private openMobileMenu() {
+            if (!this.mobileMenu || !this.mobileMenuButton) return;
+
+            this.mobileMenu.classList.add("active");
+            this.mobileMenuButton.classList.add("active");
+            this.mobileMenuButton.setAttribute("aria-expanded", "true");
+
+            // Prevent body scroll
+            document.body.style.overflow = "hidden";
+        }
+
+        private closeMobileMenu() {
+            if (!this.mobileMenu || !this.mobileMenuButton) return;
+
+            this.mobileMenu.classList.remove("active");
+            this.mobileMenuButton.classList.remove("active");
+            this.mobileMenuButton.setAttribute("aria-expanded", "false");
+
+            // Restore body scroll
+            document.body.style.overflow = "";
+        }
+
+        private setupMegaMenus() {
+            if (!this.megaMenuTriggers || !this.megaMenus) return;
+
+            this.megaMenuTriggers.forEach((trigger) => {
+                const triggerElement = trigger as HTMLElement;
+                const menuType = triggerElement.getAttribute("data-mega-toggle");
+                const megaMenu = document.querySelector(`[data-mega-menu="${menuType}"]`) as HTMLElement;
+
+                if (!megaMenu) return;
+
+                // Handle click interaction
+                triggerElement.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Clear any pending hover timeouts
+                    if (this.megaMenuTimeout) {
+                        clearTimeout(this.megaMenuTimeout);
+                        this.megaMenuTimeout = null;
+                    }
+
+                    // Set click interaction mode and disable hover temporarily
+                    this.clickInteractionMode = true;
+                    this.hoverDisabledUntil = Date.now() + 500; // Disable hover for 500ms
+
+                    this.toggleMegaMenu(menuType!);
+                });
+
+                // Show mega menu on hover with delay (only if not in click mode)
+                triggerElement.addEventListener("mouseenter", () => {
+                    if (this.clickInteractionMode || Date.now() < this.hoverDisabledUntil) return;
+
+                    if (this.megaMenuTimeout) {
+                        clearTimeout(this.megaMenuTimeout);
+                    }
+
+                    this.megaMenuTimeout = setTimeout(() => {
+                        if (!this.clickInteractionMode && Date.now() >= this.hoverDisabledUntil) {
+                            this.openMegaMenu(menuType!);
+                        }
+                    }, 150);
+                });
+
+                // Hide mega menu on mouse leave with delay (only if not in click mode)
+                triggerElement.addEventListener("mouseleave", () => {
+                    if (this.clickInteractionMode) return;
+
+                    if (this.megaMenuTimeout) {
+                        clearTimeout(this.megaMenuTimeout);
+                    }
+
+                    this.megaMenuTimeout = setTimeout(() => {
+                        if (!this.clickInteractionMode) {
+                            this.closeMegaMenu(menuType!);
+                        }
+                    }, 300);
+                });
+
+                // Keep mega menu open when hovering over it (only if not in click mode)
+                megaMenu.addEventListener("mouseenter", () => {
+                    if (this.clickInteractionMode) return;
+
+                    if (this.megaMenuTimeout) {
+                        clearTimeout(this.megaMenuTimeout);
+                    }
+                });
+
+                megaMenu.addEventListener("mouseleave", () => {
+                    if (this.clickInteractionMode) return;
+
+                    this.megaMenuTimeout = setTimeout(() => {
+                        if (!this.clickInteractionMode) {
+                            this.closeMegaMenu(menuType!);
+                        }
+                    }, 150);
+                });
+
+                // Handle keyboard navigation
+                triggerElement.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        this.toggleMegaMenu(menuType!);
+                    } else if (e.key === "Escape") {
+                        this.closeMegaMenu(menuType!);
+                    }
+                });
+            });
+
+            // Close mega menus when clicking outside
+            document.addEventListener("click", (e) => {
+                const target = e.target as HTMLElement;
+                const isInMega = target.closest("[data-mega-menu-trigger]") || target.closest("[data-mega-menu]");
+
+                if (!isInMega) {
+                    this.closeAllMegaMenus();
+                }
+            });
+        }
+
+        private openMegaMenu(menuType: string) {
+            this.closeAllMegaMenus();
+
+            const megaMenu = document.querySelector(`[data-mega-menu="${menuType}"]`) as HTMLElement;
+            const trigger = document.querySelector(`[data-mega-toggle="${menuType}"]`) as HTMLElement;
+
+            if (megaMenu && trigger) {
+                megaMenu.setAttribute("aria-hidden", "false");
+                trigger.setAttribute("aria-expanded", "true");
+                this.currentOpenMega = menuType;
+            }
+        }
+
+        private closeMegaMenu(menuType: string) {
+            const megaMenu = document.querySelector(`[data-mega-menu="${menuType}"]`) as HTMLElement;
+            const trigger = document.querySelector(`[data-mega-toggle="${menuType}"]`) as HTMLElement;
+
+            if (megaMenu && trigger) {
+                megaMenu.setAttribute("aria-hidden", "true");
+                trigger.setAttribute("aria-expanded", "false");
+
+                if (this.currentOpenMega === menuType) {
+                    this.currentOpenMega = null;
+                    // Reset click interaction mode when closing the current menu
+                    this.clickInteractionMode = false;
+                }
+            }
+        }
+
+        private toggleMegaMenu(menuType: string) {
+            const megaMenu = document.querySelector(`[data-mega-menu="${menuType}"]`) as HTMLElement;
+
+            if (megaMenu && megaMenu.getAttribute("aria-hidden") === "false") {
+                this.closeMegaMenu(menuType);
+            } else {
+                this.openMegaMenu(menuType);
+            }
+        }
+
+        private closeAllMegaMenus() {
+            if (!this.megaMenus) return;
+
+            this.megaMenus.forEach((menu) => {
+                const menuElement = menu as HTMLElement;
+                const menuType = menuElement.getAttribute("data-mega-menu");
+                if (menuType) {
+                    this.closeMegaMenu(menuType);
+                }
+            });
+
+            // Reset click interaction mode when all menus are closed
+            this.clickInteractionMode = false;
+        }
+    }
+
+    // Initialize header when DOM is ready
+    document.addEventListener("DOMContentLoaded", () => {
+        new Header();
+    });
+</script>

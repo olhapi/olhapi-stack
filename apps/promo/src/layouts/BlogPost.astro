@@ -1,0 +1,481 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Layout from './Layout.astro';
+import Container from '../components/ui/Container.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import StructuredData from '../components/StructuredData.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import ReadingProgress from '../components/ReadingProgress.astro';
+import SocialShare from '../components/SocialShare.astro';
+import PostNavigation from '../components/PostNavigation.astro';
+import RelatedPosts from '../components/RelatedPosts.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { useTranslations } from '../utils/i18n';
+
+type Props = CollectionEntry<'blog'>['data'] & {
+  postId: string;
+  post: CollectionEntry<'blog'>;
+};
+
+const { title, description, pubDate, updatedDate, heroImage, author, category, tags, postId, post } = Astro.props;
+const currentLang = Astro.currentLocale || 'en';
+
+const translations = {
+  en: {
+    lastUpdated: 'Last updated on',
+    publishedOn: 'Published on',
+    readTime: 'min read',
+    by: 'By',
+    inCategory: 'in',
+    blog: 'Blog',
+  },
+  de: {
+    lastUpdated: 'Zuletzt aktualisiert am',
+    publishedOn: 'Veröffentlicht am',
+    readTime: 'Min. Lesezeit',
+    by: 'Von',
+    inCategory: 'in',
+    blog: 'Blog',
+  },
+};
+
+const $t = useTranslations(translations, currentLang);
+
+// Format author info
+const authorName = typeof author === 'string' ? author : author?.name;
+const authorTitle = typeof author === 'object' ? author?.title : undefined;
+const authorAvatar = typeof author === 'object' ? author?.avatar : undefined;
+
+// Setup breadcrumbs
+const blogUrl = currentLang !== 'en' ? `/${currentLang}/blog` : '/blog';
+const breadcrumbItems = [
+  { label: $t('blog'), href: blogUrl },
+  { label: title }
+];
+
+// Setup SEO meta data
+const seoTitle = post.data.seo?.title || title;
+const seoDescription = post.data.seo?.description || description;
+const canonicalUrl = post.data.seo?.canonical || Astro.url.toString();
+const ogImage = post.data.seo?.image || post.data.heroImage?.src;
+---
+
+<Layout title={seoTitle} description={seoDescription}>
+  <!-- Additional SEO Meta Tags -->
+  <meta slot="head" name="robots" content={post.data.seo?.noindex ? "noindex, nofollow" : "index, follow"} />
+  <link slot="head" rel="canonical" href={canonicalUrl} />
+
+  <!-- Open Graph Tags -->
+  <meta slot="head" property="og:type" content="article" />
+  <meta slot="head" property="og:title" content={seoTitle} />
+  <meta slot="head" property="og:description" content={seoDescription} />
+  <meta slot="head" property="og:url" content={Astro.url.toString()} />
+  {ogImage && <meta slot="head" property="og:image" content={ogImage} />}
+  <meta slot="head" property="article:published_time" content={pubDate.toISOString()} />
+  {updatedDate && <meta slot="head" property="article:modified_time" content={updatedDate.toISOString()} />}
+  <meta slot="head" property="article:author" content={authorName || "Your SaaS Platform"} />
+  <meta slot="head" property="article:section" content={category} />
+  {tags && tags.map(tag => <meta slot="head" property="article:tag" content={tag} />)}
+
+  <!-- Twitter Card Tags -->
+  <meta slot="head" name="twitter:card" content="summary_large_image" />
+  <meta slot="head" name="twitter:title" content={seoTitle} />
+  <meta slot="head" name="twitter:description" content={seoDescription} />
+  {ogImage && <meta slot="head" name="twitter:image" content={ogImage} />}
+
+  <StructuredData
+    type="article"
+    url={Astro.url.toString()}
+    title={title}
+    description={description}
+    datePublished={pubDate.toISOString()}
+    dateModified={updatedDate?.toISOString()}
+    image={heroImage?.src}
+    author={authorName || "Your SaaS Platform"}
+  />
+
+  <ReadingProgress />
+
+  <article class="min-h-screen">
+    <!-- Hero Section -->
+    <header class="pt-24 pb-16 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+      <Container size="md">
+        <div class="max-w-4xl mx-auto">
+          <!-- Breadcrumbs -->
+          <Breadcrumbs lang={currentLang} items={breadcrumbItems} />
+          <!-- Category and metadata -->
+          <div class="flex items-center gap-4 mb-6">
+            <span class="inline-flex items-center px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full">
+              {category}
+            </span>
+            <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <FormattedDate date={pubDate} />
+              {post.data.readTime && (
+                <>
+                  <span>•</span>
+                  <span>{post.data.readTime} {$t('readTime')}</span>
+                </>
+              )}
+            </div>
+          </div>
+
+          <!-- Title -->
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+            {title}
+          </h1>
+
+          <!-- Description -->
+          <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+            {description}
+          </p>
+
+          <!-- Author Info -->
+          {authorName && (
+            <div class="flex items-center gap-4 mb-8">
+              {authorAvatar && (
+                <img
+                  src={authorAvatar}
+                  alt={authorName}
+                  class="w-12 h-12 rounded-full object-cover"
+                />
+              )}
+              <div>
+                <div class="flex items-center gap-2 text-gray-900 dark:text-white font-medium">
+                  <span>{$t('by')} {authorName}</span>
+                  {authorTitle && (
+                    <>
+                      <span class="text-gray-400">•</span>
+                      <span class="text-gray-600 dark:text-gray-400">{authorTitle}</span>
+                    </>
+                  )}
+                </div>
+                {updatedDate && (
+                  <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    {$t('lastUpdated')} <FormattedDate date={updatedDate} />
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
+          <!-- Tags -->
+          {tags && tags.length > 0 && (
+            <div class="flex flex-wrap gap-2 mb-8">
+              {tags.map(tag => (
+                <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-md">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </Container>
+    </header>
+
+    <!-- Hero Image -->
+    {heroImage && (
+      <div class="mb-16">
+        <Container size="lg">
+          <div class="relative overflow-hidden rounded-2xl shadow-2xl">
+            <Image
+              src={heroImage.src}
+              alt={heroImage.alt || title}
+              width={1200}
+              height={675}
+              class="w-full h-auto object-cover"
+            />
+            {heroImage.caption && (
+              <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+                <p class="text-white text-sm">
+                  {heroImage.caption}
+                  {heroImage.credit && (
+                    <span class="ml-2 opacity-80">— {heroImage.credit}</span>
+                  )}
+                </p>
+              </div>
+            )}
+          </div>
+        </Container>
+      </div>
+    )}
+
+    <!-- Main Content -->
+    <div class="py-16">
+      <Container size="lg">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <!-- Table of Contents -->
+          <div class="lg:col-span-3 order-2 lg:order-1">
+            <TableOfContents lang={currentLang} />
+          </div>
+
+          <!-- Article Content -->
+          <div class="lg:col-span-9 order-1 lg:order-2">
+            <div class="prose prose-lg prose-blue dark:prose-invert max-w-none text-gray-800 dark:text-gray-200">
+              <slot />
+            </div>
+
+            <!-- Social Share -->
+            <div class="mt-12">
+              <SocialShare
+                lang={currentLang}
+                title={title}
+                url={Astro.url.toString()}
+                description={description}
+              />
+            </div>
+
+            <!-- Post Navigation -->
+            <PostNavigation lang={currentLang} currentPostId={postId} />
+
+            <!-- Related Posts -->
+            <RelatedPosts lang={currentLang} currentPost={post} />
+          </div>
+        </div>
+      </Container>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  /* Enhanced prose styles */
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
+    color: #111827;
+    font-weight: 700;
+    scroll-margin-top: 6rem; /* Account for sticky header */
+  }
+
+  :global([data-theme="dark"]) .prose h1,
+  :global([data-theme="dark"]) .prose h2,
+  :global([data-theme="dark"]) .prose h3,
+  :global([data-theme="dark"]) .prose h4,
+  :global([data-theme="dark"]) .prose h5,
+  :global([data-theme="dark"]) .prose h6 {
+    color: #ffffff;
+  }
+
+  .prose h2 {
+    font-size: 1.875rem;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  :global([data-theme="dark"]) .prose h2 {
+    border-bottom-color: #374151;
+  }
+
+  .prose h3 {
+    font-size: 1.5rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose h4 {
+    font-size: 1.25rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose p {
+    font-size: 1.125rem;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+
+  .prose a {
+    color: #2563eb;
+    text-decoration: underline;
+    text-decoration-color: rgba(37, 99, 235, 0.3);
+    text-underline-offset: 2px;
+    transition: color 150ms ease-in-out;
+  }
+
+  .prose a:hover {
+    color: #1e40af;
+    text-decoration-color: #2563eb;
+  }
+
+  :global([data-theme="dark"]) .prose a {
+    color: #60a5fa;
+    text-decoration-color: rgba(96, 165, 250, 0.3);
+  }
+
+  :global([data-theme="dark"]) .prose a:hover {
+    color: #93c5fd;
+    text-decoration-color: #60a5fa;
+  }
+
+  .prose blockquote {
+    border-left: 4px solid #3b82f6;
+    padding-left: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    background-color: #eff6ff;
+    font-style: italic;
+    color: #374151;
+    margin: 2rem 0;
+  }
+
+  :global([data-theme="dark"]) .prose blockquote {
+    background-color: rgba(29, 78, 216, 0.2);
+    color: #d1d5db;
+  }
+
+  .prose code {
+    background-color: #f3f4f6;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    color: #111827;
+    font-family: ui-monospace, "SFMono-Regular", "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  }
+
+  :global([data-theme="dark"]) .prose code {
+    background-color: #1f2937;
+    color: #e5e7eb;
+  }
+
+  .prose pre {
+    background-color: #111827;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 2rem 0;
+    border: 1px solid #e5e7eb;
+  }
+
+  :global([data-theme="dark"]) .prose pre {
+    background-color: #030712;
+    border-color: #374151;
+  }
+
+  .prose pre code {
+    background: transparent;
+    padding: 0;
+    color: #f3f4f6;
+  }
+
+  .prose ul,
+  .prose ol {
+    margin: 1.5rem 0;
+  }
+
+  .prose ul > li,
+  .prose ol > li {
+    margin-bottom: 0.5rem;
+    font-size: 1.125rem;
+  }
+
+  .prose img {
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+  }
+
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #d1d5db;
+    margin: 2rem 0;
+  }
+
+  :global([data-theme="dark"]) .prose table {
+    border-color: #4b5563;
+  }
+
+  .prose th,
+  .prose td {
+    border: 1px solid #d1d5db;
+    padding: 1rem;
+    text-align: left;
+  }
+
+  :global([data-theme="dark"]) .prose th,
+  :global([data-theme="dark"]) .prose td {
+    border-color: #4b5563;
+  }
+
+  .prose th {
+    background-color: #f3f4f6;
+    font-weight: 600;
+  }
+
+  :global([data-theme="dark"]) .prose th {
+    background-color: #1f2937;
+  }
+
+  /* Custom elements */
+  .prose .callout {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin: 2rem 0;
+  }
+
+  :global([data-theme="dark"]) .prose .callout {
+    background-color: rgba(29, 78, 216, 0.2);
+    border-color: #1e40af;
+  }
+
+  .prose .warning {
+    background-color: #fefce8;
+    border: 1px solid #fde047;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin: 2rem 0;
+  }
+
+  :global([data-theme="dark"]) .prose .warning {
+    background-color: rgba(161, 98, 7, 0.2);
+    border-color: #a16207;
+  }
+
+  .prose .error {
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin: 2rem 0;
+  }
+
+  :global([data-theme="dark"]) .prose .error {
+    background-color: rgba(185, 28, 28, 0.2);
+    border-color: #b91c1c;
+  }
+
+  .prose .success {
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin: 2rem 0;
+  }
+
+  :global([data-theme="dark"]) .prose .success {
+    background-color: rgba(21, 128, 61, 0.2);
+    border-color: #15803d;
+  }
+
+  /* Line clamp utilities */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

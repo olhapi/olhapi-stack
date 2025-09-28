@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { useTranslations } from '../utils/i18n';
+import Card from './ui/Card.astro';
+import type { CollectionEntry } from 'astro:content';
+import { ChevronLeft, ChevronRight } from '@lucide/astro';
+
+interface Props {
+  lang: string;
+  currentPostId: string;
+}
+
+const { lang, currentPostId } = Astro.props;
+
+const translations = {
+  en: {
+    previousPost: 'Previous Post',
+    nextPost: 'Next Post',
+    navigation: 'Post Navigation',
+  },
+  de: {
+    previousPost: 'Vorheriger Artikel',
+    nextPost: 'Nächster Artikel',
+    navigation: 'Artikel-Navigation',
+  },
+};
+
+const $t = useTranslations(translations, lang);
+
+// Get all published posts for this language
+const allPosts = await getCollection('blog');
+const posts = allPosts
+  .filter(post => post.id.startsWith(`${lang}/`))
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Find current post index
+const currentIndex = posts.findIndex(post => post.id === currentPostId);
+
+// Get previous and next posts
+const prevPost = currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
+const nextPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
+---
+
+{(prevPost || nextPost) && (
+  <nav class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700" aria-label={$t('navigation')}>
+    <div class="grid gap-6 md:grid-cols-2">
+      <!-- Previous Post -->
+      {prevPost ? (
+        <Card
+          variant="bordered"
+          hover={true}
+          href={getRelativeLocaleUrl(lang, `blog/${prevPost.id.replace(`${lang}/`, '')}`)}
+          class="group"
+        >
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 mt-1">
+              <ChevronLeft class="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
+                {$t('previousPost')}
+              </p>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+                {prevPost.data.title}
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300 mt-2 line-clamp-2">
+                {prevPost.data.description}
+              </p>
+            </div>
+          </div>
+        </Card>
+      ) : (
+        <div></div>
+      )}
+
+      <!-- Next Post -->
+      {nextPost && (
+        <Card
+          variant="bordered"
+          hover={true}
+          href={getRelativeLocaleUrl(lang, `blog/${nextPost.id.replace(`${lang}/`, '')}`)}
+          class="group md:text-right"
+        >
+          <div class="flex items-start gap-4 md:flex-row-reverse">
+            <div class="flex-shrink-0 mt-1">
+              <ChevronRight class="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
+                {$t('nextPost')}
+              </p>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+                {nextPost.data.title}
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300 mt-2 line-clamp-2">
+                {nextPost.data.description}
+              </p>
+            </div>
+          </div>
+        </Card>
+      )}
+    </div>
+  </nav>
+)}

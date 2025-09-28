@@ -1,0 +1,159 @@
+---
+import { getCollection } from 'astro:content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { Image } from 'astro:assets';
+import { useTranslations } from '../utils/i18n';
+import FormattedDate from './FormattedDate.astro';
+import Card from './ui/Card.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  lang: string;
+  currentPost: CollectionEntry<'blog'>;
+  maxPosts?: number;
+}
+
+const { lang, currentPost, maxPosts = 3 } = Astro.props;
+
+const translations = {
+  en: {
+    title: 'Related Articles',
+    readMore: 'Read more',
+  },
+  de: {
+    title: 'Verwandte Artikel',
+    readMore: 'Mehr lesen',
+  },
+};
+
+const $t = useTranslations(translations, lang);
+
+// Get all published posts for this language
+const allPosts = await getCollection('blog');
+const posts = allPosts
+  .filter(post => post.id.startsWith(`${lang}/`))
+  .filter(post => !post.data.draft)
+  .filter(post => post.id !== currentPost.id);
+
+// Function to calculate similarity score
+function calculateSimilarity(post1: CollectionEntry<'blog'>, post2: CollectionEntry<'blog'>): number {
+  let score = 0;
+
+  // Same category gets high score
+  if (post1.data.category === post2.data.category) {
+    score += 10;
+  }
+
+  // Common tags
+  if (post1.data.tags && post2.data.tags) {
+    const commonTags = post1.data.tags.filter(tag => post2.data.tags?.includes(tag));
+    score += commonTags.length * 3;
+  }
+
+  // Same author
+  if (post1.data.author && post2.data.author) {
+    const author1 = typeof post1.data.author === 'string' ? post1.data.author : post1.data.author.name;
+    const author2 = typeof post2.data.author === 'string' ? post2.data.author : post2.data.author.name;
+    if (author1 === author2) {
+      score += 5;
+    }
+  }
+
+  // Similar publication dates (within 30 days)
+  const timeDiff = Math.abs(post1.data.pubDate.getTime() - post2.data.pubDate.getTime());
+  const daysDiff = timeDiff / (1000 * 3600 * 24);
+  if (daysDiff <= 30) {
+    score += Math.max(0, 3 - Math.floor(daysDiff / 10));
+  }
+
+  return score;
+}
+
+// Get related posts based on similarity
+const relatedPosts = posts
+  .map(post => ({
+    post,
+    similarity: calculateSimilarity(currentPost, post)
+  }))
+  .filter(item => item.similarity > 0) // Only show posts with some similarity
+  .sort((a, b) => b.similarity - a.similarity)
+  .slice(0, maxPosts)
+  .map(item => item.post);
+
+// If we don't have enough related posts based on similarity,
+// fill with recent posts from the same category
+if (relatedPosts.length < maxPosts) {
+  const sameCategoryPosts = posts
+    .filter(post => post.data.category === currentPost.data.category)
+    .filter(post => !relatedPosts.some(rp => rp.id === post.id))
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .slice(0, maxPosts - relatedPosts.length);
+
+  relatedPosts.push(...sameCategoryPosts);
+}
+
+// If still not enough, fill with recent posts
+if (relatedPosts.length < maxPosts) {
+  const recentPosts = posts
+    .filter(post => !relatedPosts.some(rp => rp.id === post.id))
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .slice(0, maxPosts - relatedPosts.length);
+
+  relatedPosts.push(...recentPosts);
+}
+---
+
+{relatedPosts.length > 0 && (
+  <section class="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
+    <div class="flex items-center gap-3 mb-8">
+      <div class="w-1 h-8 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-full"></div>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{$t('title')}</h2>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {relatedPosts.map((post) => {
+        const slug = post.id.replace(`${lang}/`, '');
+        return (
+          <Card
+            variant="default"
+            hover={true}
+            padding="none"
+            href={getRelativeLocaleUrl(lang, `blog/${slug}`)}
+            class="overflow-hidden group h-full flex flex-col"
+          >
+            {post.data.heroImage && (
+              <div class="aspect-video overflow-hidden">
+                <Image
+                  src={post.data.heroImage.src}
+                  alt={post.data.heroImage.alt || ''}
+                  width={300}
+                  height={168}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+            )}
+            <div class="p-4 flex-1 flex flex-col">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-full">
+                  {post.data.category}
+                </span>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+                {post.data.title}
+              </h3>
+              <p class="text-gray-600 dark:text-gray-300 text-sm mb-3 line-clamp-2 flex-1">
+                {post.data.description}
+              </p>
+              <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mt-auto">
+                <FormattedDate date={post.data.pubDate} />
+                {post.data.readTime && (
+                  <span>{post.data.readTime} min read</span>
+                )}
+              </div>
+            </div>
+          </Card>
+        );
+      })}
+    </div>
+  </section>
+)}

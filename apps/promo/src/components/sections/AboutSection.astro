@@ -1,0 +1,38 @@
+---
+import { useTranslations } from '../../utils/i18n';
+
+interface Props {
+  lang: string;
+}
+
+const { lang } = Astro.props;
+
+const translations = {
+  en: {
+    title: 'About',
+    content: 'This is the about page. Here you can write information about yourself, your company, or your project.',
+    moreInfo: 'You can add more detailed information here about your background, skills, experience, or anything else you would like visitors to know.',
+  },
+  de: {
+    title: 'Über uns',
+    content: 'Dies ist die Über-uns-Seite. Hier können Sie Informationen über sich selbst, Ihr Unternehmen oder Ihr Projekt schreiben.',
+    moreInfo: 'Sie können hier detailliertere Informationen über Ihren Hintergrund, Ihre Fähigkeiten, Erfahrungen oder alles andere hinzufügen, was Besucher wissen sollten.',
+  },
+};
+
+const $t = useTranslations(translations, lang);
+---
+
+<section class="py-16 px-6">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold mb-8">{$t('title')}</h1>
+    <div class="prose prose-lg max-w-none">
+      <p class="text-lg leading-relaxed mb-6">
+        {$t('content')}
+      </p>
+      <p class="text-lg leading-relaxed">
+        {$t('moreInfo')}
+      </p>
+    </div>
+  </div>
+</section>

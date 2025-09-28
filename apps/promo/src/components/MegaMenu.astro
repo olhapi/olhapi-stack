@@ -1,0 +1,719 @@
+---
+import { useTranslations } from '../utils/i18n';
+
+interface Props {
+  lang: string;
+  type: 'product' | 'solutions' | 'resources';
+  isOpen?: boolean;
+}
+
+const { lang, type, isOpen = false } = Astro.props;
+
+const translations = {
+  en: {
+    product: {
+      title: 'Product',
+      features: {
+        title: 'Core Features',
+        items: [
+          { name: 'Real-time Collaboration', description: 'Work together seamlessly', icon: '👥' },
+          { name: 'Advanced Analytics', description: 'Deep insights and metrics', icon: '📊' },
+          { name: 'Secure Infrastructure', description: 'Enterprise-grade security', icon: '🔒' },
+          { name: 'API Integration', description: 'Connect with your tools', icon: '🔗' }
+        ]
+      },
+      integrations: {
+        title: 'Popular Integrations',
+        items: [
+          { name: 'Slack', icon: '💬' },
+          { name: 'GitHub', icon: '🐙' },
+          { name: 'Figma', icon: '🎨' },
+          { name: 'Notion', icon: '📝' }
+        ]
+      },
+      whatsNew: {
+        title: "What's New",
+        items: [
+          { title: 'Version 2.0 Release', badge: 'New', date: '2024-01-15' },
+          { title: 'Mobile App Beta', badge: 'Beta', date: '2024-01-10' }
+        ]
+      },
+      footer: {
+        documentation: 'Documentation',
+        api: 'API Reference',
+        status: 'System Status'
+      }
+    },
+    solutions: {
+      title: 'Solutions',
+      industries: {
+        title: 'By Industry',
+        items: [
+          { name: 'Healthcare', description: 'HIPAA-compliant solutions', icon: '🏥' },
+          { name: 'Finance', description: 'SOC 2 Type II certified', icon: '🏦' },
+          { name: 'Education', description: 'FERPA-compliant tools', icon: '🎓' },
+          { name: 'Technology', description: 'Developer-first approach', icon: '💻' }
+        ]
+      },
+      useCases: {
+        title: 'By Use Case',
+        items: [
+          { name: 'Team Collaboration', description: 'Remote-first workflows', icon: '🤝' },
+          { name: 'Project Management', description: 'Agile methodologies', icon: '📋' },
+          { name: 'Customer Support', description: 'Omnichannel support', icon: '🎧' },
+          { name: 'Sales Automation', description: 'CRM integration', icon: '💼' }
+        ]
+      },
+      companySize: {
+        title: 'By Company Size',
+        items: [
+          { name: 'Startups', description: 'Scale with confidence', icon: '🚀' },
+          { name: 'Enterprise', description: 'Enterprise-grade features', icon: '🏢' }
+        ]
+      },
+      footer: {
+        caseStudies: 'Customer Stories',
+        comparison: 'Compare Solutions',
+        consulting: 'Talk to Expert'
+      }
+    },
+    resources: {
+      title: 'Resources',
+      learn: {
+        title: 'Learn & Grow',
+        items: [
+          { name: 'Getting Started', description: '15-minute setup guide', icon: '🚀' },
+          { name: 'Best Practices', description: 'Expert recommendations', icon: '⭐' },
+          { name: 'Video Tutorials', description: 'Step-by-step walkthroughs', icon: '🎥' },
+          { name: 'Webinars', description: 'Live and on-demand', icon: '📺' }
+        ]
+      },
+      tools: {
+        title: 'Tools & Templates',
+        items: [
+          { name: 'Project Templates', description: 'Ready-to-use templates', icon: '📄' },
+          { name: 'ROI Calculator', description: 'Calculate your savings', icon: '🧮' },
+          { name: 'Migration Tools', description: 'Seamless transitions', icon: '🔄' },
+          { name: 'Checklists', description: 'Implementation guides', icon: '✅' }
+        ]
+      },
+      community: {
+        title: 'Community',
+        items: [
+          { name: 'Developer Forum', description: 'Get help from experts', icon: '💬' },
+          { name: 'GitHub', description: 'Open source projects', icon: '📚' }
+        ]
+      },
+      footer: {
+        blog: 'Latest Articles',
+        newsletter: 'Newsletter',
+        support: 'Support Center'
+      }
+    }
+  },
+  de: {
+    product: {
+      title: 'Produkt',
+      features: {
+        title: 'Kernfunktionen',
+        items: [
+          { name: 'Echtzeit-Zusammenarbeit', description: 'Nahtlose Teamarbeit', icon: '👥' },
+          { name: 'Erweiterte Analytik', description: 'Tiefe Einblicke und Metriken', icon: '📊' },
+          { name: 'Sichere Infrastruktur', description: 'Unternehmenssicherheit', icon: '🔒' },
+          { name: 'API-Integration', description: 'Mit Ihren Tools verbinden', icon: '🔗' }
+        ]
+      },
+      integrations: {
+        title: 'Beliebte Integrationen',
+        items: [
+          { name: 'Slack', icon: '💬' },
+          { name: 'GitHub', icon: '🐙' },
+          { name: 'Figma', icon: '🎨' },
+          { name: 'Notion', icon: '📝' }
+        ]
+      },
+      whatsNew: {
+        title: 'Was ist neu',
+        items: [
+          { title: 'Version 2.0 Veröffentlichung', badge: 'Neu', date: '2024-01-15' },
+          { title: 'Mobile App Beta', badge: 'Beta', date: '2024-01-10' }
+        ]
+      },
+      footer: {
+        documentation: 'Dokumentation',
+        api: 'API-Referenz',
+        status: 'Systemstatus'
+      }
+    },
+    solutions: {
+      title: 'Lösungen',
+      industries: {
+        title: 'Nach Branche',
+        items: [
+          { name: 'Gesundheitswesen', description: 'HIPAA-konforme Lösungen', icon: '🏥' },
+          { name: 'Finanzwesen', description: 'SOC 2 Type II zertifiziert', icon: '🏦' },
+          { name: 'Bildung', description: 'FERPA-konforme Tools', icon: '🎓' },
+          { name: 'Technologie', description: 'Entwickler-zentriert', icon: '💻' }
+        ]
+      },
+      useCases: {
+        title: 'Nach Anwendungsfall',
+        items: [
+          { name: 'Team-Zusammenarbeit', description: 'Remote-first Workflows', icon: '🤝' },
+          { name: 'Projektmanagement', description: 'Agile Methoden', icon: '📋' },
+          { name: 'Kundensupport', description: 'Omnichannel-Support', icon: '🎧' },
+          { name: 'Vertriebsautomatisierung', description: 'CRM-Integration', icon: '💼' }
+        ]
+      },
+      companySize: {
+        title: 'Nach Unternehmensgröße',
+        items: [
+          { name: 'Startups', description: 'Vertrauensvoll skalieren', icon: '🚀' },
+          { name: 'Unternehmen', description: 'Enterprise-Funktionen', icon: '🏢' }
+        ]
+      },
+      footer: {
+        caseStudies: 'Kundengeschichten',
+        comparison: 'Lösungen vergleichen',
+        consulting: 'Experten sprechen'
+      }
+    },
+    resources: {
+      title: 'Ressourcen',
+      learn: {
+        title: 'Lernen & Wachsen',
+        items: [
+          { name: 'Erste Schritte', description: '15-Minuten Setup-Anleitung', icon: '🚀' },
+          { name: 'Best Practices', description: 'Expertenempfehlungen', icon: '⭐' },
+          { name: 'Video-Tutorials', description: 'Schritt-für-Schritt Anleitungen', icon: '🎥' },
+          { name: 'Webinare', description: 'Live und on-demand', icon: '📺' }
+        ]
+      },
+      tools: {
+        title: 'Tools & Vorlagen',
+        items: [
+          { name: 'Projekt-Vorlagen', description: 'Sofort einsetzbare Vorlagen', icon: '📄' },
+          { name: 'ROI-Rechner', description: 'Ihre Einsparungen berechnen', icon: '🧮' },
+          { name: 'Migrations-Tools', description: 'Nahtlose Übergänge', icon: '🔄' },
+          { name: 'Checklisten', description: 'Implementierungs-Leitfäden', icon: '✅' }
+        ]
+      },
+      community: {
+        title: 'Community',
+        items: [
+          { name: 'Entwickler-Forum', description: 'Hilfe von Experten', icon: '💬' },
+          { name: 'GitHub', description: 'Open Source Projekte', icon: '📚' }
+        ]
+      },
+      footer: {
+        blog: 'Neueste Artikel',
+        newsletter: 'Newsletter',
+        support: 'Support-Center'
+      }
+    }
+  }
+};
+
+const $t = useTranslations(translations, lang);
+const menuData = $t(type);
+---
+
+<div
+  class="mega-menu"
+  data-mega-menu={type}
+  aria-hidden={!isOpen}
+  role="menu"
+>
+  <div class="mega-menu-content">
+    <div class="mega-menu-container">
+
+      <!-- Product Mega Menu -->
+      {type === 'product' && (
+        <div class="mega-menu-grid product-grid">
+
+          <!-- Features Section -->
+          <div class="mega-menu-section">
+            <h3 class="mega-menu-title">{menuData.features.title}</h3>
+            <div class="mega-menu-items">
+              {menuData.features.items.map((item: any) => (
+                <a href={`/${lang === 'de' ? 'de/' : ''}features/${item.name.toLowerCase().replace(/\s+/g, '-')}`} class="mega-menu-item">
+                  <span class="mega-menu-icon">{item.icon}</span>
+                  <div class="mega-menu-item-content">
+                    <span class="mega-menu-item-name">{item.name}</span>
+                    <span class="mega-menu-item-desc">{item.description}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <!-- Integrations Section -->
+          <div class="mega-menu-section">
+            <h3 class="mega-menu-title">{menuData.integrations.title}</h3>
+            <div class="mega-menu-integrations">
+              {menuData.integrations.items.map((item: any) => (
+                <a href={`/${lang === 'de' ? 'de/' : ''}integrations`} class="mega-menu-integration">
+                  <span class="mega-menu-icon">{item.icon}</span>
+                  <span class="integration-name">{item.name}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <!-- What's New Section -->
+          <div class="mega-menu-section">
+            <h3 class="mega-menu-title">{menuData.whatsNew.title}</h3>
+            <div class="mega-menu-items">
+              {menuData.whatsNew.items.map((item: any) => (
+                <a href={`/${lang === 'de' ? 'de/' : ''}blog`} class="mega-menu-item whats-new-item">
+                  <div class="mega-menu-item-content">
+                    <div class="whats-new-header">
+                      <span class="mega-menu-item-name">{item.title}</span>
+                      <span class={`badge badge-${item.badge.toLowerCase()}`}>{item.badge}</span>
+                    </div>
+                    <span class="mega-menu-item-date">{item.date}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer Links -->
+        <div class="mega-menu-footer">
+          <a href={`/${lang === 'de' ? 'de/' : ''}docs`} class="mega-menu-footer-link">
+            {menuData.footer.documentation}
+          </a>
+          <a href={`/${lang === 'de' ? 'de/' : ''}docs/api`} class="mega-menu-footer-link">
+            {menuData.footer.api}
+          </a>
+          <a href="https://status.example.com" class="mega-menu-footer-link" target="_blank">
+            {menuData.footer.status}
+          </a>
+        </div>
+      )}
+
+      <!-- Solutions Mega Menu -->
+      {type === 'solutions' && (
+        <div class="mega-menu-grid solutions-grid">
+
+          <!-- Industries -->
+          <div class="mega-menu-section">
+            <h3 class="mega-menu-title">{menuData.industries.title}</h3>
+            <div class="mega-menu-items">
+              {menuData.industries.items.map((item: any) => (
+                <a href={`/${lang === 'de' ? 'de/' : ''}solutions/${item.name.toLowerCase()}`} class="mega-menu-item">
+                  <span class="mega-menu-icon">{item.icon}</span>
+                  <div class="mega-menu-item-content">
+                    <span class="mega-menu-item-name">{item.name}</span>
+                    <span class="mega-menu-item-desc">{item.description}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <!-- Use Cases -->
+          <div class="mega-menu-section">
+            <h3 class="mega-menu-title">{menuData.useCases.title}</h3>
+            <div class="mega-menu-items">
+              {menuData.useCases.items.map((item: any) => (
+                <a href={`/${lang === 'de' ? 'de/' : ''}solutions/use-cases/${item.name.toLowerCase().replace(/\s+/g, '-')}`} class="mega-menu-item">
+                  <span class="mega-menu-icon">{item.icon}</span>
+                  <div class="mega-menu-item-content">
+                    <span class="mega-menu-item-name">{item.name}</span>
+                    <span class="mega-menu-item-desc">{item.description}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <!-- Company Size -->
+          <div class="mega-menu-section">
+            <h3 class="mega-menu-title">{menuData.companySize.title}</h3>
+            <div class="mega-menu-items">
+              {menuData.companySize.items.map((item: any) => (
+                <a href={`/${lang === 'de' ? 'de/' : ''}solutions/${item.name.toLowerCase()}`} class="mega-menu-item">
+                  <span class="mega-menu-icon">{item.icon}</span>
+                  <div class="mega-menu-item-content">
+                    <span class="mega-menu-item-name">{item.name}</span>
+                    <span class="mega-menu-item-desc">{item.description}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer Links -->
+        <div class="mega-menu-footer">
+          <a href={`/${lang === 'de' ? 'de/' : ''}case-studies`} class="mega-menu-footer-link">
+            {menuData.footer.caseStudies}
+          </a>
+          <a href={`/${lang === 'de' ? 'de/' : ''}compare`} class="mega-menu-footer-link">
+            {menuData.footer.comparison}
+          </a>
+          <a href={`/${lang === 'de' ? 'de/' : ''}contact/sales`} class="mega-menu-footer-link">
+            {menuData.footer.consulting}
+          </a>
+        </div>
+      )}
+
+      <!-- Resources Mega Menu -->
+      {type === 'resources' && (
+        <div class="mega-menu-grid resources-grid">
+
+          <!-- Learn & Grow -->
+          <div class="mega-menu-section">
+            <h3 class="mega-menu-title">{menuData.learn.title}</h3>
+            <div class="mega-menu-items">
+              {menuData.learn.items.map((item: any) => (
+                <a href={`/${lang === 'de' ? 'de/' : ''}resources`} class="mega-menu-item">
+                  <span class="mega-menu-icon">{item.icon}</span>
+                  <div class="mega-menu-item-content">
+                    <span class="mega-menu-item-name">{item.name}</span>
+                    <span class="mega-menu-item-desc">{item.description}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <!-- Tools & Templates -->
+          <div class="mega-menu-section">
+            <h3 class="mega-menu-title">{menuData.tools.title}</h3>
+            <div class="mega-menu-items">
+              {menuData.tools.items.map((item: any) => (
+                <a href={`/${lang === 'de' ? 'de/' : ''}resources`} class="mega-menu-item">
+                  <span class="mega-menu-icon">{item.icon}</span>
+                  <div class="mega-menu-item-content">
+                    <span class="mega-menu-item-name">{item.name}</span>
+                    <span class="mega-menu-item-desc">{item.description}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <!-- Community -->
+          <div class="mega-menu-section">
+            <h3 class="mega-menu-title">{menuData.community.title}</h3>
+            <div class="mega-menu-items">
+              {menuData.community.items.map((item: any) => (
+                <a href="https://community.example.com" class="mega-menu-item" target="_blank">
+                  <span class="mega-menu-icon">{item.icon}</span>
+                  <div class="mega-menu-item-content">
+                    <span class="mega-menu-item-name">{item.name}</span>
+                    <span class="mega-menu-item-desc">{item.description}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer Links -->
+        <div class="mega-menu-footer">
+          <a href={`/${lang === 'de' ? 'de/' : ''}blog`} class="mega-menu-footer-link">
+            {menuData.footer.blog}
+          </a>
+          <a href={`/${lang === 'de' ? 'de/' : ''}newsletter`} class="mega-menu-footer-link">
+            {menuData.footer.newsletter}
+          </a>
+          <a href={`/${lang === 'de' ? 'de/' : ''}support`} class="mega-menu-footer-link">
+            {menuData.footer.support}
+          </a>
+        </div>
+      )}
+
+    </div>
+  </div>
+</div>
+
+<style>
+  .mega-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    background: var(--color-surface);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    box-shadow:
+      0 20px 40px rgba(0, 0, 0, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
+  }
+
+  .mega-menu[aria-hidden="false"] {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .mega-menu-content {
+    max-width: 950px;
+    margin: 0 auto;
+    padding: 1.25rem;
+    width: 100%;
+    position: relative;
+  }
+
+  .mega-menu-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .product-grid,
+  .solutions-grid,
+  .resources-grid {
+    grid-template-columns: repeat(3, max-content);
+    justify-content: center;
+  }
+
+  .mega-menu-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .mega-menu-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(0, 102, 255, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.875rem;
+  }
+
+  .mega-menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .mega-menu-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    padding: 0.625rem;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+  }
+
+  .mega-menu-item:hover {
+    background: rgba(0, 102, 255, 0.08);
+    border-color: rgba(0, 102, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.15);
+  }
+
+  .mega-menu-icon {
+    font-size: 1rem;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .mega-menu-item-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .mega-menu-item-name {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  .mega-menu-item-desc {
+    font-size: 0.6875rem;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+  }
+
+  .mega-menu-integrations {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.375rem;
+  }
+
+  .mega-menu-integration {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .mega-menu-integration:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  .integration-name {
+    font-size: 0.8125rem;
+    color: var(--color-text-primary);
+  }
+
+  .whats-new-item .mega-menu-item-content {
+    width: 100%;
+  }
+
+  .whats-new-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .badge {
+    padding: 0.125rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .badge-new {
+    background: #84CC16;
+    color: white;
+  }
+
+  .badge-beta {
+    background: #F59E0B;
+    color: white;
+  }
+
+  .mega-menu-item-date {
+    font-size: 0.75rem;
+    color: var(--color-text-tertiary);
+  }
+
+  .mega-menu-footer {
+    display: flex;
+    gap: 1.5rem;
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .mega-menu-footer-link {
+    font-size: 0.8125rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .mega-menu-footer-link:hover {
+    color: var(--color-primary-hover);
+  }
+
+  /* Dark theme */
+  [data-theme="dark"] .mega-menu {
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow:
+      0 20px 40px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  }
+
+  [data-theme="dark"] .mega-menu-title {
+    color: var(--color-text-primary);
+    border-color: rgba(6, 182, 212, 0.3);
+  }
+
+  [data-theme="dark"] .mega-menu-item:hover {
+    background: rgba(6, 182, 212, 0.12);
+    border-color: rgba(6, 182, 212, 0.3);
+    box-shadow: 0 4px 12px rgba(6, 182, 212, 0.2);
+  }
+
+  [data-theme="dark"] .mega-menu-integration:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  [data-theme="dark"] .mega-menu-footer {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Mobile responsiveness */
+  @media (max-width: 1024px) {
+    .mega-menu {
+      width: 98vw;
+    }
+
+    .mega-menu-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .mega-menu {
+      width: 100vw;
+      left: 0;
+      transform: translateY(-10px);
+      border-radius: 0 0 16px 16px;
+    }
+
+    .mega-menu[aria-hidden="false"] {
+      transform: translateY(0);
+    }
+
+    .mega-menu-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .mega-menu-content {
+      padding: 1rem;
+    }
+
+    .mega-menu-footer {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+</style>
+
+<script>
+  // Handle mega menu interactions
+  document.addEventListener('DOMContentLoaded', () => {
+    const megaMenus = document.querySelectorAll('[data-mega-menu]');
+
+    megaMenus.forEach(menu => {
+      // Close on escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          menu.setAttribute('aria-hidden', 'true');
+        }
+      });
+
+      // Close on click outside
+      document.addEventListener('click', (e) => {
+        if (!menu.contains(e.target as Node)) {
+          menu.setAttribute('aria-hidden', 'true');
+        }
+      });
+    });
+  });
+</script>

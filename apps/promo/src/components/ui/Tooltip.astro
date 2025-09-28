@@ -1,0 +1,386 @@
+---
+interface Props {
+  content: string;
+  position?: 'top' | 'bottom' | 'left' | 'right';
+  delay?: number;
+  class?: string;
+  maxWidth?: string;
+}
+
+const {
+  content,
+  position = 'top',
+  delay = 300,
+  class: className = '',
+  maxWidth = '200px'
+} = Astro.props;
+
+const tooltipId = `tooltip-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<div
+  class={`tooltip-wrapper ${className}`}
+  data-tooltip-wrapper
+  data-tooltip-content={content}
+  data-tooltip-position={position}
+  data-tooltip-delay={delay}
+  data-tooltip-max-width={maxWidth}
+  aria-describedby={tooltipId}
+>
+  <slot />
+  <div
+    class={`tooltip tooltip-${position}`}
+    id={tooltipId}
+    role="tooltip"
+    aria-hidden="true"
+  >
+    <div class="tooltip-content">
+      {content}
+    </div>
+    <div class="tooltip-arrow"></div>
+  </div>
+</div>
+
+<style>
+  /* Tooltip Wrapper */
+  .tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Tooltip Base */
+  .tooltip {
+    position: absolute;
+    z-index: 1000;
+    background: var(--color-background-inverse);
+    color: var(--color-text-inverse);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-3);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.95);
+    transition: all var(--duration-fast) var(--ease-out);
+    pointer-events: none;
+    white-space: nowrap;
+    max-width: var(--tooltip-max-width, 200px);
+  }
+
+  .tooltip.show {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+  }
+
+  /* Tooltip Content */
+  .tooltip-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Tooltip Arrow */
+  .tooltip-arrow {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--color-background-inverse);
+    transform: rotate(45deg);
+  }
+
+  /* Position Variants */
+  .tooltip-top {
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) scale(0.95);
+    margin-bottom: 8px;
+  }
+
+  .tooltip-top.show {
+    transform: translateX(-50%) scale(1);
+  }
+
+  .tooltip-top .tooltip-arrow {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    margin-top: -4px;
+  }
+
+  .tooltip-bottom {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) scale(0.95);
+    margin-top: 8px;
+  }
+
+  .tooltip-bottom.show {
+    transform: translateX(-50%) scale(1);
+  }
+
+  .tooltip-bottom .tooltip-arrow {
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    margin-bottom: -4px;
+  }
+
+  .tooltip-left {
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%) scale(0.95);
+    margin-right: 8px;
+  }
+
+  .tooltip-left.show {
+    transform: translateY(-50%) scale(1);
+  }
+
+  .tooltip-left .tooltip-arrow {
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    margin-left: -4px;
+  }
+
+  .tooltip-right {
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%) scale(0.95);
+    margin-left: 8px;
+  }
+
+  .tooltip-right.show {
+    transform: translateY(-50%) scale(1);
+  }
+
+  .tooltip-right .tooltip-arrow {
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    margin-right: -4px;
+  }
+
+  /* Dark Mode Adjustments */
+  [data-theme="dark"] .tooltip {
+    background: var(--color-background-primary);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+  }
+
+  [data-theme="dark"] .tooltip-arrow {
+    background: var(--color-background-primary);
+    border: 1px solid var(--color-border);
+    border-bottom: none;
+    border-right: none;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .tooltip {
+      max-width: calc(100vw - 32px);
+      white-space: normal;
+    }
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .tooltip {
+      transition: opacity var(--duration-fast) ease;
+      transform: scale(1);
+    }
+
+    .tooltip-top,
+    .tooltip-bottom,
+    .tooltip-left,
+    .tooltip-right {
+      transform: translateX(-50%) scale(1);
+    }
+
+    .tooltip-left,
+    .tooltip-right {
+      transform: translateY(-50%) scale(1);
+    }
+  }
+
+  /* High Contrast Mode */
+  @media (prefers-contrast: high) {
+    .tooltip {
+      border: 2px solid var(--color-text-primary);
+    }
+  }
+</style>
+
+<script>
+  // Tooltip functionality
+  class TooltipController {
+    private tooltips: Map<HTMLElement, {
+      tooltip: HTMLElement;
+      content: string;
+      position: string;
+      delay: number;
+      maxWidth: string;
+      showTimeout?: number;
+      hideTimeout?: number;
+    }> = new Map();
+
+    constructor() {
+      this.init();
+    }
+
+    private init() {
+      // Find all tooltip wrappers and register them
+      document.querySelectorAll('[data-tooltip-wrapper]').forEach(wrapper => {
+        this.setupTooltip(wrapper as HTMLElement);
+      });
+    }
+
+    private setupTooltip(wrapper: HTMLElement) {
+      const tooltip = wrapper.querySelector('.tooltip') as HTMLElement;
+      if (!tooltip) return;
+
+      const content = wrapper.dataset.tooltipContent || '';
+      const position = wrapper.dataset.tooltipPosition || 'top';
+      const delay = parseInt(wrapper.dataset.tooltipDelay || '300');
+      const maxWidth = wrapper.dataset.tooltipMaxWidth || '200px';
+
+      // Set CSS custom property for max-width
+      tooltip.style.setProperty('--tooltip-max-width', maxWidth);
+
+      this.tooltips.set(wrapper, {
+        tooltip,
+        content,
+        position,
+        delay,
+        maxWidth
+      });
+
+      // Add event listeners
+      wrapper.addEventListener('mouseenter', () => this.showTooltip(wrapper));
+      wrapper.addEventListener('mouseleave', () => this.hideTooltip(wrapper));
+      wrapper.addEventListener('focus', () => this.showTooltip(wrapper));
+      wrapper.addEventListener('blur', () => this.hideTooltip(wrapper));
+
+      // Touch support
+      wrapper.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        this.showTooltip(wrapper);
+
+        // Hide after a delay on touch
+        setTimeout(() => this.hideTooltip(wrapper), 2000);
+      });
+    }
+
+    private showTooltip(wrapper: HTMLElement) {
+      const tooltipData = this.tooltips.get(wrapper);
+      if (!tooltipData) return;
+
+      const { tooltip, delay } = tooltipData;
+
+      // Clear any existing timeouts
+      if (tooltipData.hideTimeout) {
+        clearTimeout(tooltipData.hideTimeout);
+        delete tooltipData.hideTimeout;
+      }
+
+      // Set show timeout
+      tooltipData.showTimeout = window.setTimeout(() => {
+        this.positionTooltip(wrapper, tooltip);
+        tooltip.classList.add('show');
+        tooltip.setAttribute('aria-hidden', 'false');
+        delete tooltipData.showTimeout;
+      }, delay);
+    }
+
+    private hideTooltip(wrapper: HTMLElement) {
+      const tooltipData = this.tooltips.get(wrapper);
+      if (!tooltipData) return;
+
+      const { tooltip } = tooltipData;
+
+      // Clear any existing timeouts
+      if (tooltipData.showTimeout) {
+        clearTimeout(tooltipData.showTimeout);
+        delete tooltipData.showTimeout;
+      }
+
+      // Set hide timeout for smooth transition
+      tooltipData.hideTimeout = window.setTimeout(() => {
+        tooltip.classList.remove('show');
+        tooltip.setAttribute('aria-hidden', 'true');
+        delete tooltipData.hideTimeout;
+      }, 50);
+    }
+
+    private positionTooltip(wrapper: HTMLElement, tooltip: HTMLElement) {
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const tooltipRect = tooltip.getBoundingClientRect();
+      const position = this.tooltips.get(wrapper)?.position || 'top';
+
+      // Reset any previous positioning
+      tooltip.style.left = '';
+      tooltip.style.right = '';
+      tooltip.style.top = '';
+      tooltip.style.bottom = '';
+
+      // Check if tooltip would go off-screen and adjust position
+      const viewport = {
+        width: window.innerWidth,
+        height: window.innerHeight
+      };
+
+      let finalPosition = position;
+
+      // Smart positioning to avoid going off-screen
+      if (position === 'top' && wrapperRect.top - tooltipRect.height < 10) {
+        finalPosition = 'bottom';
+      } else if (position === 'bottom' && wrapperRect.bottom + tooltipRect.height > viewport.height - 10) {
+        finalPosition = 'top';
+      } else if (position === 'left' && wrapperRect.left - tooltipRect.width < 10) {
+        finalPosition = 'right';
+      } else if (position === 'right' && wrapperRect.right + tooltipRect.width > viewport.width - 10) {
+        finalPosition = 'left';
+      }
+
+      // Update tooltip class if position changed
+      if (finalPosition !== position) {
+        tooltip.className = tooltip.className.replace(/tooltip-\w+/, `tooltip-${finalPosition}`);
+      }
+    }
+
+    public destroy() {
+      this.tooltips.forEach((_, wrapper) => {
+        const tooltipData = this.tooltips.get(wrapper);
+        if (tooltipData?.showTimeout) {
+          clearTimeout(tooltipData.showTimeout);
+        }
+        if (tooltipData?.hideTimeout) {
+          clearTimeout(tooltipData.hideTimeout);
+        }
+      });
+      this.tooltips.clear();
+    }
+  }
+
+  // Initialize tooltip controller when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    window.tooltipController = new TooltipController();
+  });
+
+  // Re-initialize when new content is added dynamically
+  document.addEventListener('tooltip:refresh', () => {
+    if (window.tooltipController) {
+      window.tooltipController.destroy();
+    }
+    window.tooltipController = new TooltipController();
+  });
+
+  // Global TypeScript declarations
+  declare global {
+    interface Window {
+      tooltipController: TooltipController;
+    }
+  }
+</script>

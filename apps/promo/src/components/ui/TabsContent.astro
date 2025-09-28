@@ -1,0 +1,165 @@
+---
+interface Props {
+  value: string;
+  class?: string;
+}
+
+const {
+  value,
+  class: className = ''
+} = Astro.props;
+
+const contentClasses = [
+  'tabs-content',
+  className
+].filter(Boolean).join(' ');
+---
+
+<div class={contentClasses} data-tabs-content data-value={value}>
+  <slot />
+</div>
+
+<style>
+  /* Tabs Content */
+  .tabs-content {
+    margin-top: 0;
+    border-radius: var(--radius-md);
+    outline: none;
+    animation: fadeIn var(--duration-fast) var(--ease-out);
+  }
+
+  /* Vertical Layout */
+  .tabs-vertical .tabs-content {
+    flex: 1;
+    margin-top: 0;
+    min-height: 300px;
+  }
+
+  /* Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Content Styling */
+  .tabs-content h1,
+  .tabs-content h2,
+  .tabs-content h3,
+  .tabs-content h4,
+  .tabs-content h5,
+  .tabs-content h6 {
+    margin-top: 0;
+    margin-bottom: var(--space-4);
+    color: var(--color-text-primary);
+  }
+
+  .tabs-content p {
+    margin: 0 0 var(--space-4) 0;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .tabs-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  .tabs-content ul,
+  .tabs-content ol {
+    margin: 0 0 var(--space-4) 0;
+    padding-left: var(--space-6);
+    color: var(--color-text-secondary);
+  }
+
+  .tabs-content li {
+    margin-bottom: var(--space-2);
+  }
+
+  .tabs-content li:last-child {
+    margin-bottom: 0;
+  }
+
+  .tabs-content code {
+    background: var(--color-background-tertiary);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 0.875em;
+    color: var(--color-text-primary);
+  }
+
+  .tabs-content pre {
+    background: var(--color-background-tertiary);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    margin: var(--space-4) 0;
+    border: 1px solid var(--color-border);
+  }
+
+  .tabs-content blockquote {
+    border-left: 4px solid var(--color-primary-blue);
+    padding-left: var(--space-4);
+    margin: var(--space-4) 0;
+    font-style: italic;
+    color: var(--color-text-secondary);
+  }
+
+  .tabs-content a {
+    color: var(--color-primary-blue);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .tabs-content a:hover {
+    text-decoration: none;
+  }
+
+  /* Dark Mode Adjustments */
+  [data-theme="dark"] .tabs-content h1,
+  [data-theme="dark"] .tabs-content h2,
+  [data-theme="dark"] .tabs-content h3,
+  [data-theme="dark"] .tabs-content h4,
+  [data-theme="dark"] .tabs-content h5,
+  [data-theme="dark"] .tabs-content h6 {
+    color: var(--color-text-primary);
+  }
+
+  [data-theme="dark"] .tabs-content p,
+  [data-theme="dark"] .tabs-content ul,
+  [data-theme="dark"] .tabs-content ol {
+    color: var(--color-text-secondary);
+  }
+
+  [data-theme="dark"] .tabs-content code {
+    background: var(--color-background-quaternary);
+    color: var(--color-text-primary);
+  }
+
+  [data-theme="dark"] .tabs-content pre {
+    background: var(--color-background-quaternary);
+    border-color: var(--color-border);
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .tabs-content {
+      animation: none;
+    }
+  }
+
+  /* Mobile Optimization */
+  @media (max-width: 768px) {
+    .tabs-content {
+      padding: var(--space-4) 0;
+    }
+
+    .tabs-vertical .tabs-content {
+      min-height: 200px;
+    }
+  }
+</style>

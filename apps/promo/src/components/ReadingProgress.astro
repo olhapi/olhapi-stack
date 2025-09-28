@@ -1,0 +1,46 @@
+---
+// Reading Progress component - shows a progress bar at the top of the page
+---
+
+<div id="reading-progress" class="fixed top-0 left-0 w-full h-1 z-50 bg-gray-200 dark:bg-gray-700 max-md:hidden">
+  <div class="h-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-150 ease-out" style="width: 0%;"></div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const progressBar = document.querySelector('#reading-progress > div') as HTMLElement;
+    const article = document.querySelector('article .prose') as HTMLElement;
+
+    if (!progressBar || !article) return;
+
+    function updateReadingProgress() {
+      const articleRect = article.getBoundingClientRect();
+      const articleTop = articleRect.top + window.scrollY;
+      const articleHeight = articleRect.height;
+      const viewportHeight = window.innerHeight;
+
+      // Calculate how much of the article has been scrolled past
+      const scrollTop = window.scrollY;
+      const articleStart = articleTop;
+      const articleEnd = articleTop + articleHeight - viewportHeight;
+
+      let progress = 0;
+
+      if (scrollTop >= articleStart && scrollTop <= articleEnd) {
+        progress = ((scrollTop - articleStart) / (articleEnd - articleStart)) * 100;
+      } else if (scrollTop > articleEnd) {
+        progress = 100;
+      }
+
+      progress = Math.max(0, Math.min(100, progress));
+      progressBar.style.width = `${progress}%`;
+    }
+
+    // Update progress on scroll
+    window.addEventListener('scroll', updateReadingProgress);
+
+    // Initial update
+    updateReadingProgress();
+  });
+</script>
+

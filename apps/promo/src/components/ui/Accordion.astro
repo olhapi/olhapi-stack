@@ -1,0 +1,205 @@
+---
+interface Props {
+  class?: string;
+  allowMultiple?: boolean;
+  collapsible?: boolean;
+}
+
+const {
+  class: className = '',
+  allowMultiple = false,
+  collapsible = true
+} = Astro.props;
+
+const wrapperClasses = [
+  'accordion',
+  className
+].filter(Boolean).join(' ');
+---
+
+<div
+  class={wrapperClasses}
+  data-accordion
+  data-allow-multiple={allowMultiple}
+  data-collapsible={collapsible}
+>
+  <slot />
+</div>
+
+<style>
+  /* Accordion Container */
+  .accordion {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-background-secondary);
+    overflow: hidden;
+  }
+
+  /* Dark Mode Adjustments */
+  [data-theme="dark"] .accordion {
+    background: var(--color-background-tertiary);
+    border-color: var(--color-border);
+  }
+</style>
+
+<script>
+  // Accordion functionality
+  class AccordionController {
+    private accordions: Map<HTMLElement, AccordionConfig> = new Map();
+
+    constructor() {
+      this.init();
+    }
+
+    private init() {
+      document.querySelectorAll('[data-accordion]').forEach(accordion => {
+        this.setupAccordion(accordion as HTMLElement);
+      });
+    }
+
+    private setupAccordion(accordion: HTMLElement) {
+      const allowMultiple = accordion.dataset.allowMultiple === 'true';
+      const collapsible = accordion.dataset.collapsible === 'true';
+
+      this.accordions.set(accordion, { allowMultiple, collapsible });
+
+      const items = accordion.querySelectorAll('[data-accordion-item]');
+      items.forEach((item, index) => {
+        this.setupAccordionItem(item as HTMLElement, accordion, index);
+      });
+    }
+
+    private setupAccordionItem(item: HTMLElement, accordion: HTMLElement, index: number) {
+      const trigger = item.querySelector('[data-accordion-trigger]') as HTMLElement;
+      const content = item.querySelector('[data-accordion-content]') as HTMLElement;
+
+      if (!trigger || !content) return;
+
+      // Set up IDs for accessibility
+      const itemId = item.id || `accordion-item-${Date.now()}-${index}`;
+      const triggerId = `${itemId}-trigger`;
+      const contentId = `${itemId}-content`;
+
+      item.id = itemId;
+      trigger.id = triggerId;
+      content.id = contentId;
+
+      // Set up ARIA attributes
+      trigger.setAttribute('aria-controls', contentId);
+      trigger.setAttribute('aria-expanded', 'false');
+      content.setAttribute('aria-labelledby', triggerId);
+      content.setAttribute('role', 'region');
+
+      // Handle click events
+      trigger.addEventListener('click', () => {
+        this.toggleItem(item, accordion);
+      });
+
+      // Handle keyboard navigation
+      trigger.addEventListener('keydown', (e) => {
+        this.handleKeydown(e, accordion);
+      });
+
+      // Set initial state
+      const isOpen = item.hasAttribute('data-open');
+      if (isOpen) {
+        this.openItem(item);
+      } else {
+        this.closeItem(item);
+      }
+    }
+
+    private toggleItem(item: HTMLElement, accordion: HTMLElement) {
+      const config = this.accordions.get(accordion);
+      if (!config) return;
+
+      const isOpen = item.getAttribute('data-state') === 'open';
+
+      if (isOpen) {
+        if (config.collapsible) {
+          this.closeItem(item);
+        }
+      } else {
+        // If not allowing multiple, close other items
+        if (!config.allowMultiple) {
+          const openItems = accordion.querySelectorAll('[data-state="open"]');
+          openItems.forEach(openItem => {
+            if (openItem !== item) {
+              this.closeItem(openItem as HTMLElement);
+            }
+          });
+        }
+        this.openItem(item);
+      }
+    }
+
+    private openItem(item: HTMLElement) {
+      const trigger = item.querySelector('[data-accordion-trigger]') as HTMLElement;
+      const content = item.querySelector('[data-accordion-content]') as HTMLElement;
+
+      item.setAttribute('data-state', 'open');
+      trigger.setAttribute('aria-expanded', 'true');
+      content.style.height = 'auto';
+
+      // Dispatch event
+      item.dispatchEvent(new CustomEvent('accordion:open', {
+        bubbles: true,
+        detail: { item }
+      }));
+    }
+
+    private closeItem(item: HTMLElement) {
+      const trigger = item.querySelector('[data-accordion-trigger]') as HTMLElement;
+      const content = item.querySelector('[data-accordion-content]') as HTMLElement;
+
+      item.setAttribute('data-state', 'closed');
+      trigger.setAttribute('aria-expanded', 'false');
+      content.style.height = '0';
+
+      // Dispatch event
+      item.dispatchEvent(new CustomEvent('accordion:close', {
+        bubbles: true,
+        detail: { item }
+      }));
+    }
+
+    private handleKeydown(e: KeyboardEvent, accordion: HTMLElement) {
+      const triggers = Array.from(accordion.querySelectorAll('[data-accordion-trigger]'));
+      const currentIndex = triggers.indexOf(e.target as Element);
+
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault();
+          const nextIndex = (currentIndex + 1) % triggers.length;
+          (triggers[nextIndex] as HTMLElement).focus();
+          break;
+
+        case 'ArrowUp':
+          e.preventDefault();
+          const prevIndex = currentIndex === 0 ? triggers.length - 1 : currentIndex - 1;
+          (triggers[prevIndex] as HTMLElement).focus();
+          break;
+
+        case 'Home':
+          e.preventDefault();
+          (triggers[0] as HTMLElement).focus();
+          break;
+
+        case 'End':
+          e.preventDefault();
+          (triggers[triggers.length - 1] as HTMLElement).focus();
+          break;
+      }
+    }
+  }
+
+  interface AccordionConfig {
+    allowMultiple: boolean;
+    collapsible: boolean;
+  }
+
+  // Initialize accordion controller when DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    new AccordionController();
+  });
+</script>

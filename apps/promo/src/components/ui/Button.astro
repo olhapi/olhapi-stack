@@ -1,0 +1,150 @@
+---
+import { Loader2 } from '@lucide/astro';
+
+interface Props {
+  variant?: 'primary' | 'secondary' | 'ghost' | 'outline';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  href?: string;
+  target?: string;
+  disabled?: boolean;
+  type?: 'button' | 'submit' | 'reset';
+  class?: string;
+  glow?: boolean;
+  loading?: boolean;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  href,
+  target,
+  disabled = false,
+  type = 'button',
+  class: className = '',
+  glow = false,
+  loading = false
+} = Astro.props;
+
+const Component = href ? 'a' : 'button';
+
+const baseClasses = 'btn';
+const variantClasses = {
+  primary: 'btn-primary',
+  secondary: 'btn-secondary',
+  ghost: 'btn-ghost',
+  outline: 'btn-outline'
+};
+
+const sizeClasses = {
+  sm: 'btn-sm',
+  md: '',
+  lg: 'btn-lg',
+  xl: 'btn-xl'
+};
+
+const classes = [
+  baseClasses,
+  variantClasses[variant],
+  sizeClasses[size],
+  glow && 'btn-glow',
+  loading && 'btn-loading',
+  className
+].filter(Boolean).join(' ');
+---
+
+<Component
+  class={classes}
+  href={href}
+  target={target}
+  disabled={disabled || loading}
+  type={!href ? type : undefined}
+  aria-disabled={disabled || loading}
+>
+  {loading && (
+    <Loader2 size={16} class="animate-spin" />
+  )}
+  <slot />
+</Component>
+
+<style>
+  .btn-outline {
+    background-color: transparent;
+    color: var(--color-primary-blue);
+    border: 2px solid var(--color-primary-blue);
+  }
+
+  .btn-outline:hover {
+    background-color: var(--color-primary-blue);
+    color: white;
+    border-color: var(--color-primary-blue);
+  }
+
+  .btn-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .btn-glow:hover {
+    box-shadow: var(--shadow-glow), var(--shadow-lg);
+  }
+
+  .btn-loading {
+    position: relative;
+    pointer-events: none;
+  }
+
+  .btn-loading svg {
+    margin-right: var(--space-2);
+  }
+
+  /* Ripple Effect */
+  .btn {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+  }
+
+  .btn:active::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  /* Focus states */
+  .btn:focus-visible {
+    outline: 2px solid var(--color-primary-blue);
+    outline-offset: 2px;
+  }
+
+  /* Disabled state */
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Animation utilities */
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+</style>

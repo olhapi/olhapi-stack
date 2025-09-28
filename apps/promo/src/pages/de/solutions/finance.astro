@@ -1,0 +1,14 @@
+---
+import SolutionTemplate from '../../../components/templates/SolutionTemplate.astro';
+
+const currentLang = Astro.currentLocale || 'de';
+---
+
+<SolutionTemplate
+  lang={currentLang}
+  industry="finance"
+  seo={{
+    title: "Finanzdienstleistungen-Lösungen - SOC 2 Type II Zertifiziert",
+    description: "Sichere Finanzlösungen für Banken und Fintech. SOC 2 Type II zertifiziert mit Bank-Sicherheit und regulatorischer Compliance."
+  }}
+/>

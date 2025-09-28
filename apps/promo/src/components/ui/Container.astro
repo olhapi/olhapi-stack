@@ -1,0 +1,90 @@
+---
+interface Props {
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  padding?: boolean;
+  class?: string;
+}
+
+const {
+  size = 'lg',
+  padding = true,
+  class: className = ''
+} = Astro.props;
+
+const sizeClasses = {
+  xs: 'container-xs',
+  sm: 'container-sm',
+  md: 'container-md',
+  lg: 'container-lg',
+  xl: 'container-xl',
+  full: 'w-full'
+};
+
+const classes = [
+  sizeClasses[size],
+  !padding && 'px-0',
+  className
+].filter(Boolean).join(' ');
+---
+
+<div class={classes}>
+  <slot />
+</div>
+
+<style>
+  .container-xs {
+    max-width: var(--container-xs);
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+  }
+
+  .container-sm {
+    max-width: var(--container-sm);
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+  }
+
+  .container-md {
+    max-width: var(--container-md);
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+  }
+
+  .container-lg {
+    max-width: var(--container-lg);
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+  }
+
+  .container-xl {
+    max-width: var(--container-xl);
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+  }
+
+  .w-full {
+    width: 100%;
+    padding: 0 var(--space-6);
+  }
+
+  .px-0 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  @media (max-width: 768px) {
+    .container-xs,
+    .container-sm,
+    .container-md,
+    .container-lg,
+    .container-xl,
+    .w-full {
+      padding: 0 var(--space-4);
+    }
+
+    .px-0 {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+  }
+</style>

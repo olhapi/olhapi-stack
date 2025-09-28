@@ -1,0 +1,227 @@
+---
+import { useTranslations } from '../../utils/i18n';
+import Container from '../ui/Container.astro';
+import { getCollection } from 'astro:content';
+import { List, Package, GraduationCap, FileText, Wrench, FolderOpen } from '@lucide/astro';
+
+interface Props {
+  lang: string;
+  activeCategory?: string;
+}
+
+const { lang, activeCategory } = Astro.props;
+
+const translations = {
+  en: {
+    title: 'Our Blog',
+    subtitle: 'Insights, tutorials, and industry news to help you succeed',
+    allPosts: 'All Posts',
+    totalPosts: 'articles',
+    browseByCategory: 'Browse by Category',
+    postsCount: 'posts',
+    postCount: 'post',
+  },
+  de: {
+    title: 'Unser Blog',
+    subtitle: 'Einblicke, Tutorials und Branchennews für Ihren Erfolg',
+    allPosts: 'Alle Artikel',
+    totalPosts: 'Artikel',
+    browseByCategory: 'Nach Kategorie durchsuchen',
+    postsCount: 'Artikel',
+    postCount: 'Artikel',
+  },
+};
+
+const $t = useTranslations(translations, lang);
+
+// Get all posts for this language to count total and get categories
+const allPosts = await getCollection('blog');
+const posts = allPosts
+  .filter(post => post.id.startsWith(`${lang}/`))
+  .filter(post => !post.data.draft);
+
+const totalPosts = posts.length;
+
+// Get categories with post counts
+const categoryMap = new Map();
+posts.forEach(post => {
+  const category = post.data.category;
+  if (category) {
+    categoryMap.set(category, (categoryMap.get(category) || 0) + 1);
+  }
+});
+
+// Create unified categories array with "All" as first item
+const categories = [
+  {
+    category: 'All',
+    count: totalPosts,
+    href: `${lang !== 'en' ? `/${lang}` : ''}/blog`,
+    isActive: !activeCategory
+  },
+  ...Array.from(categoryMap.entries())
+    .map(([category, count]) => ({
+      category,
+      count,
+      href: `${lang !== 'en' ? `/${lang}` : ''}/blog/category/${category.toLowerCase().replace(/\s+/g, '-')}`,
+      isActive: activeCategory === category
+    }))
+    .sort((a, b) => a.category.localeCompare(b.category))
+];
+
+// Category icons mapping
+const categoryIcons = {
+  'All': List,
+  'Product Updates': Package,
+  'Tutorials': GraduationCap,
+  'Case Studies': FileText,
+  'Engineering': Wrench,
+};
+
+// Get icon component for category
+const getIconComponent = (category: string) => {
+  return categoryIcons[category] || FolderOpen;
+};
+---
+
+<section class="from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-20">
+  <Container size="lg">
+    <div class="text-center mb-12">
+      <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-6">
+        {$t('title')}
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+        {$t('subtitle')}
+      </p>
+      <div class="text-sm text-gray-500 dark:text-gray-400">
+        {totalPosts} {$t('totalPosts')}
+      </div>
+    </div>
+
+    <!-- Category Cards -->
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
+          {$t('browseByCategory')}
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        {categories.map(({ category, count, href, isActive }) => {
+          const IconComponent = getIconComponent(category);
+          return (
+            <a
+              href={href}
+              class={`category-card ${isActive ? 'category-card--active' : ''}`}
+            >
+              <div class="category-card__icon">
+                <IconComponent class="w-6 h-6" />
+              </div>
+              <h3 class="category-card__title">
+                {category === 'All' ? $t('allPosts') : category}
+              </h3>
+              <span class="category-card__count">
+                {count} {count === 1 ? $t('postCount') : $t('postsCount')}
+              </span>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </Container>
+</section>
+
+
+<style>
+  .category-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid #e5e7eb;
+    background-color: #ffffff;
+    color: #1f2937;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .category-card:hover {
+    transform: translateY(-0.25rem);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: #d1d5db;
+  }
+
+  .category-card--active {
+    background: linear-gradient(to bottom right, #2563eb, #3730a3);
+    border-color: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .category-card--active:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.4), 0 10px 10px -5px rgba(59, 130, 246, 0.1);
+  }
+
+  .category-card__icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    background-color: #f3f4f6;
+    color: #6b7280;
+    transition: all 0.3s ease;
+  }
+
+  .category-card:hover .category-card__icon {
+    transform: scale(1.1);
+  }
+
+  .category-card--active .category-card__icon {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+
+  .category-card__title {
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.25;
+    color: #1f2937;
+  }
+
+  .category-card__count {
+    font-size: 0.75rem;
+    line-height: 1.25;
+  }
+
+  .category-card--active .category-card__title,
+  .category-card--active .category-card__count {
+    color: #ffffff;
+  }
+
+  /* Dark mode styles */
+  :global(.dark) .category-card {
+    background-color: #1f2937;
+    border-color: #374151;
+    color: #e5e7eb;
+  }
+
+  :global(.dark) .category-card:hover {
+    border-color: #4b5563;
+  }
+
+  :global(.dark) .category-card__icon {
+    background-color: #374151;
+    color: #9ca3af;
+  }
+
+  :global(.dark) .category-card__title {
+    color: #e5e7eb;
+  }
+</style>

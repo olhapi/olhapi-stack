@@ -1,0 +1,255 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import Globe from '@lucide/astro/icons/globe';
+import { useTranslations } from '../utils/i18n';
+
+interface Props {
+  lang: string;
+}
+
+const { lang } = Astro.props;
+
+const translations = {
+  en: {
+    switchTo: 'Switch to {language}',
+    english: 'English',
+    german: 'Deutsch',
+  },
+  de: {
+    switchTo: 'Wechseln zu {language}',
+    english: 'English',
+    german: 'Deutsch',
+  },
+};
+
+const $t = useTranslations(translations, lang);
+
+const languages = [
+  { code: 'en', name: $t('english') },
+  { code: 'de', name: $t('german') },
+];
+
+const currentPath = Astro.url.pathname;
+const pathWithoutLocale = currentPath.replace(/^\/(en|de)/, '') || '/';
+---
+
+<div class="relative" data-language-switcher>
+  <button
+    type="button"
+    class="language-toggle btn btn-ghost btn-sm"
+    aria-label={$t('switchTo', { language: lang === 'en' ? $t('german') : $t('english') })}
+    aria-expanded="false"
+    data-language-toggle
+  >
+    <Globe size={20} />
+    <span class="sr-only">{languages.find(l => l.code === lang)?.name}</span>
+  </button>
+
+  <div class="language-dropdown" data-language-dropdown>
+    {languages.map((language, index) => (
+      <a
+        href={getRelativeLocaleUrl(language.code, pathWithoutLocale)}
+        class={`language-dropdown-item ${
+          lang === language.code ? 'active' : ''
+        } ${index === 0 ? 'first' : ''} ${index === languages.length - 1 ? 'last' : ''}`}
+        title={$t('switchTo', { language: language.name })}
+      >
+        {language.name}
+      </a>
+    ))}
+  </div>
+</div>
+
+<style>
+  /* Language toggle button - match theme switcher */
+  .language-toggle {
+    border-radius: var(--radius-full);
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .language-toggle:hover {
+    transform: scale(1.1);
+  }
+
+  /* Language dropdown */
+  .language-dropdown {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    min-width: 160px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all var(--duration-normal) var(--ease-out);
+    z-index: 50;
+    overflow: hidden;
+  }
+
+  .language-dropdown-item {
+    display: block;
+    padding: var(--space-3) var(--space-4);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all var(--duration-fast) var(--ease-out);
+    border-radius: 0;
+  }
+
+  .language-dropdown-item:hover {
+    background-color: var(--color-background-secondary);
+    color: var(--color-primary-blue);
+  }
+
+  .language-dropdown-item.active {
+    background-color: var(--color-primary-blue);
+    color: white;
+    font-weight: 600;
+  }
+
+  .language-dropdown-item.first {
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+
+  .language-dropdown-item.last {
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+  }
+
+  /* Active state */
+  [data-language-switcher].active .language-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  /* Screen reader only */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Dark theme support */
+  [data-theme="dark"] .language-dropdown {
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  [data-theme="dark"] .language-dropdown-item:hover {
+    background-color: var(--color-background-secondary);
+    color: var(--color-primary-cyan);
+  }
+
+  [data-theme="dark"] .language-dropdown-item.active {
+    background-color: var(--color-primary-cyan);
+    color: var(--color-background-primary);
+  }
+</style>
+
+<script>
+  class LanguageSwitcher {
+    private switcher: HTMLElement | null = null;
+    private toggle: HTMLElement | null = null;
+    private dropdown: HTMLElement | null = null;
+    private isOpen: boolean = false;
+
+    constructor() {
+      this.init();
+    }
+
+    private init() {
+      this.switcher = document.querySelector('[data-language-switcher]');
+      this.toggle = document.querySelector('[data-language-toggle]');
+      this.dropdown = document.querySelector('[data-language-dropdown]');
+
+      if (!this.switcher || !this.toggle || !this.dropdown) return;
+
+      this.setupEventListeners();
+    }
+
+    private setupEventListeners() {
+      if (!this.toggle || !this.switcher) return;
+
+      // Toggle on click
+      this.toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.toggleDropdown();
+      });
+
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        if (!this.switcher?.contains(target)) {
+          this.close();
+        }
+      });
+
+      // Close on escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.isOpen) {
+          this.close();
+        }
+      });
+
+      // Handle keyboard navigation
+      this.toggle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.toggleDropdown();
+        } else if (e.key === 'ArrowDown' && !this.isOpen) {
+          e.preventDefault();
+          this.open();
+        }
+      });
+    }
+
+    private toggleDropdown() {
+      if (this.isOpen) {
+        this.close();
+      } else {
+        this.open();
+      }
+    }
+
+    private open() {
+      if (!this.switcher || !this.toggle) return;
+
+      this.isOpen = true;
+      this.switcher.classList.add('active');
+      this.toggle.setAttribute('aria-expanded', 'true');
+    }
+
+    private close() {
+      if (!this.switcher || !this.toggle) return;
+
+      this.isOpen = false;
+      this.switcher.classList.remove('active');
+      this.toggle.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  // Initialize when DOM is loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      new LanguageSwitcher();
+    });
+  } else {
+    new LanguageSwitcher();
+  }
+</script>

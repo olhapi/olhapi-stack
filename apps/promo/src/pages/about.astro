@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AboutSection from '../components/sections/AboutSection.astro';
+
+const currentLang = Astro.currentLocale || 'en';
+---
+
+<Layout title="About" description="Learn more about us">
+	<AboutSection lang={currentLang} />
+</Layout>

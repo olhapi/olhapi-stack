@@ -1,0 +1,1016 @@
+---
+import { useTranslations } from '../../utils/i18n';
+import Layout from '../../layouts/Layout.astro';
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import Card from '../ui/Card.astro';
+
+interface Props {
+  lang: string;
+  industry: string;
+  seo?: {
+    title?: string;
+    description?: string;
+  };
+}
+
+const { lang, industry, seo } = Astro.props;
+
+// Industry-specific content
+const industryContent = {
+  healthcare: {
+    en: {
+      title: 'Healthcare Solutions',
+      subtitle: 'HIPAA-compliant platform for healthcare organizations',
+      description: 'Transform your healthcare operations with our secure, compliant, and scalable platform designed specifically for medical organizations.',
+      hero: {
+        headline: 'Revolutionize Healthcare Operations',
+        subheadline: 'Secure, compliant, and efficient solutions for modern healthcare providers',
+        image: '/images/solutions/healthcare-hero.jpg'
+      },
+      challenges: {
+        title: 'Healthcare Challenges We Solve',
+        items: [
+          {
+            icon: '🏥',
+            title: 'Patient Data Security',
+            description: 'HIPAA-compliant data handling and storage with end-to-end encryption'
+          },
+          {
+            icon: '📋',
+            title: 'Workflow Efficiency',
+            description: 'Streamline clinical workflows and reduce administrative burden'
+          },
+          {
+            icon: '🔗',
+            title: 'System Integration',
+            description: 'Seamless integration with EMR/EHR systems and medical devices'
+          },
+          {
+            icon: '📊',
+            title: 'Compliance Reporting',
+            description: 'Automated compliance reporting and audit trail management'
+          }
+        ]
+      },
+      features: {
+        title: 'Features Built for Healthcare',
+        items: [
+          {
+            title: 'HIPAA Compliance',
+            description: 'Built-in HIPAA compliance with BAA agreements and audit logs',
+            icon: '🛡️'
+          },
+          {
+            title: 'EMR Integration',
+            description: 'Direct integration with major EMR systems like Epic, Cerner, and Allscripts',
+            icon: '🔗'
+          },
+          {
+            title: 'Telemedicine Support',
+            description: 'Secure video conferencing and remote patient monitoring',
+            icon: '📹'
+          },
+          {
+            title: 'Clinical Analytics',
+            description: 'Advanced analytics for patient outcomes and operational efficiency',
+            icon: '📈'
+          }
+        ]
+      },
+      benefits: {
+        title: 'Healthcare Benefits',
+        items: [
+          {
+            metric: '40%',
+            label: 'Reduction in Administrative Tasks',
+            description: 'Automate routine processes and focus on patient care'
+          },
+          {
+            metric: '99.9%',
+            label: 'Uptime SLA',
+            description: 'Reliable platform for critical healthcare operations'
+          },
+          {
+            metric: '100%',
+            label: 'HIPAA Compliant',
+            description: 'Full compliance with healthcare data protection regulations'
+          }
+        ]
+      },
+      testimonial: {
+        quote: 'This platform has transformed how we manage patient data and streamlined our clinical workflows. The HIPAA compliance features give us peace of mind.',
+        author: 'Dr. Sarah Johnson',
+        title: 'Chief Medical Officer',
+        company: 'Metro Health System'
+      },
+      cta: {
+        title: 'Ready to Transform Your Healthcare Operations?',
+        description: 'Join hundreds of healthcare organizations already using our platform',
+        primaryButton: 'Request Healthcare Demo',
+        secondaryButton: 'Download Healthcare Guide'
+      }
+    },
+    de: {
+      title: 'Gesundheitswesen-Lösungen',
+      subtitle: 'HIPAA-konforme Plattform für Gesundheitsorganisationen',
+      description: 'Transformieren Sie Ihre Gesundheitsoperationen mit unserer sicheren, konformen und skalierbaren Plattform, die speziell für medizinische Organisationen entwickelt wurde.',
+      hero: {
+        headline: 'Revolutionieren Sie Gesundheitsoperationen',
+        subheadline: 'Sichere, konforme und effiziente Lösungen für moderne Gesundheitsdienstleister',
+        image: '/images/solutions/healthcare-hero.jpg'
+      },
+      challenges: {
+        title: 'Gesundheitswesen-Herausforderungen, die wir lösen',
+        items: [
+          {
+            icon: '🏥',
+            title: 'Patientendatensicherheit',
+            description: 'HIPAA-konforme Datenverarbeitung und -speicherung mit Ende-zu-Ende-Verschlüsselung'
+          },
+          {
+            icon: '📋',
+            title: 'Workflow-Effizienz',
+            description: 'Optimierung klinischer Arbeitsabläufe und Reduzierung der Verwaltungsbelastung'
+          },
+          {
+            icon: '🔗',
+            title: 'Systemintegration',
+            description: 'Nahtlose Integration mit EMR/EHR-Systemen und medizinischen Geräten'
+          },
+          {
+            icon: '📊',
+            title: 'Compliance-Berichterstattung',
+            description: 'Automatisierte Compliance-Berichterstattung und Audit-Trail-Management'
+          }
+        ]
+      },
+      features: {
+        title: 'Funktionen für das Gesundheitswesen entwickelt',
+        items: [
+          {
+            title: 'HIPAA-Konformität',
+            description: 'Eingebaute HIPAA-Konformität mit BAA-Vereinbarungen und Audit-Logs',
+            icon: '🛡️'
+          },
+          {
+            title: 'EMR-Integration',
+            description: 'Direkte Integration mit großen EMR-Systemen wie Epic, Cerner und Allscripts',
+            icon: '🔗'
+          },
+          {
+            title: 'Telemedizin-Unterstützung',
+            description: 'Sichere Videokonferenzen und Fernüberwachung von Patienten',
+            icon: '📹'
+          },
+          {
+            title: 'Klinische Analytik',
+            description: 'Erweiterte Analytik für Patientenergebnisse und operative Effizienz',
+            icon: '📈'
+          }
+        ]
+      },
+      benefits: {
+        title: 'Gesundheitswesen-Vorteile',
+        items: [
+          {
+            metric: '40%',
+            label: 'Reduzierung administrativer Aufgaben',
+            description: 'Automatisierung von Routineprozessen und Fokus auf Patientenversorgung'
+          },
+          {
+            metric: '99,9%',
+            label: 'Verfügbarkeits-SLA',
+            description: 'Zuverlässige Plattform für kritische Gesundheitsoperationen'
+          },
+          {
+            metric: '100%',
+            label: 'HIPAA-konform',
+            description: 'Vollständige Einhaltung der Datenschutzbestimmungen im Gesundheitswesen'
+          }
+        ]
+      },
+      testimonial: {
+        quote: 'Diese Plattform hat unsere Patientendatenverwaltung transformiert und unsere klinischen Workflows optimiert. Die HIPAA-Compliance-Funktionen geben uns Sicherheit.',
+        author: 'Dr. Sarah Johnson',
+        title: 'Chefärztin',
+        company: 'Metro Health System'
+      },
+      cta: {
+        title: 'Bereit, Ihre Gesundheitsoperationen zu transformieren?',
+        description: 'Schließen Sie sich Hunderten von Gesundheitsorganisationen an, die bereits unsere Plattform nutzen',
+        primaryButton: 'Gesundheitswesen-Demo anfordern',
+        secondaryButton: 'Gesundheitswesen-Leitfaden herunterladen'
+      }
+    }
+  },
+  finance: {
+    en: {
+      title: 'Financial Services Solutions',
+      subtitle: 'SOC 2 Type II certified platform for financial institutions',
+      description: 'Secure, compliant, and scalable solutions designed for banks, credit unions, and fintech companies.',
+      hero: {
+        headline: 'Secure Financial Operations',
+        subheadline: 'SOC 2 certified solutions for modern financial institutions',
+        image: '/images/solutions/finance-hero.jpg'
+      },
+      challenges: {
+        title: 'Financial Challenges We Address',
+        items: [
+          {
+            icon: '🏦',
+            title: 'Regulatory Compliance',
+            description: 'Meet SOX, PCI DSS, and other financial regulations automatically'
+          },
+          {
+            icon: '🔒',
+            title: 'Data Security',
+            description: 'Bank-grade security with multi-layer encryption and fraud detection'
+          },
+          {
+            icon: '⚡',
+            title: 'Real-time Processing',
+            description: 'High-frequency trading and instant payment processing capabilities'
+          },
+          {
+            icon: '📈',
+            title: 'Risk Management',
+            description: 'Advanced analytics for credit risk, market risk, and operational risk'
+          }
+        ]
+      },
+      features: {
+        title: 'Financial Services Features',
+        items: [
+          {
+            title: 'SOC 2 Type II',
+            description: 'Certified security controls and annual third-party audits',
+            icon: '🛡️'
+          },
+          {
+            title: 'Core Banking Integration',
+            description: 'Connect with major core banking systems and payment processors',
+            icon: '🔗'
+          },
+          {
+            title: 'Fraud Detection',
+            description: 'AI-powered fraud detection and prevention systems',
+            icon: '🕵️'
+          },
+          {
+            title: 'Regulatory Reporting',
+            description: 'Automated generation of regulatory reports and filings',
+            icon: '📊'
+          }
+        ]
+      },
+      benefits: {
+        title: 'Financial Benefits',
+        items: [
+          {
+            metric: '60%',
+            label: 'Faster Loan Processing',
+            description: 'Automated workflows and decision engines'
+          },
+          {
+            metric: '99.99%',
+            label: 'Transaction Uptime',
+            description: 'Mission-critical reliability for financial operations'
+          },
+          {
+            metric: '50%',
+            label: 'Reduced Compliance Costs',
+            description: 'Automated compliance monitoring and reporting'
+          }
+        ]
+      },
+      testimonial: {
+        quote: 'The platform has significantly improved our loan processing times while maintaining the highest security standards. SOC 2 compliance was seamless.',
+        author: 'Michael Chen',
+        title: 'CTO',
+        company: 'First National Bank'
+      },
+      cta: {
+        title: 'Secure Your Financial Operations',
+        description: 'Join leading financial institutions using our certified platform',
+        primaryButton: 'Request Financial Demo',
+        secondaryButton: 'View Compliance Docs'
+      }
+    },
+    de: {
+      title: 'Finanzdienstleistungen-Lösungen',
+      subtitle: 'SOC 2 Type II zertifizierte Plattform für Finanzinstitute',
+      description: 'Sichere, konforme und skalierbare Lösungen für Banken, Kreditgenossenschaften und Fintech-Unternehmen.',
+      hero: {
+        headline: 'Sichere Finanzoperationen',
+        subheadline: 'SOC 2 zertifizierte Lösungen für moderne Finanzinstitute',
+        image: '/images/solutions/finance-hero.jpg'
+      },
+      challenges: {
+        title: 'Finanzielle Herausforderungen, die wir angehen',
+        items: [
+          {
+            icon: '🏦',
+            title: 'Regulatorische Compliance',
+            description: 'Automatische Einhaltung von SOX, PCI DSS und anderen Finanzvorschriften'
+          },
+          {
+            icon: '🔒',
+            title: 'Datensicherheit',
+            description: 'Bank-Sicherheit mit mehrschichtiger Verschlüsselung und Betrugserkennung'
+          },
+          {
+            icon: '⚡',
+            title: 'Echtzeitverarbeitung',
+            description: 'Hochfrequenzhandel und sofortige Zahlungsverarbeitung'
+          },
+          {
+            icon: '📈',
+            title: 'Risikomanagement',
+            description: 'Erweiterte Analytik für Kredit-, Markt- und operative Risiken'
+          }
+        ]
+      },
+      features: {
+        title: 'Finanzdienstleistungen-Funktionen',
+        items: [
+          {
+            title: 'SOC 2 Type II',
+            description: 'Zertifizierte Sicherheitskontrollen und jährliche Drittpartei-Audits',
+            icon: '🛡️'
+          },
+          {
+            title: 'Core Banking Integration',
+            description: 'Verbindung mit großen Core-Banking-Systemen und Zahlungsabwicklern',
+            icon: '🔗'
+          },
+          {
+            title: 'Betrugserkennung',
+            description: 'KI-gestützte Betrugserkennung und Präventionssysteme',
+            icon: '🕵️'
+          },
+          {
+            title: 'Regulatorische Berichterstattung',
+            description: 'Automatisierte Generierung von regulatorischen Berichten und Einreichungen',
+            icon: '📊'
+          }
+        ]
+      },
+      benefits: {
+        title: 'Finanzielle Vorteile',
+        items: [
+          {
+            metric: '60%',
+            label: 'Schnellere Kreditbearbeitung',
+            description: 'Automatisierte Workflows und Entscheidungsmaschinen'
+          },
+          {
+            metric: '99,99%',
+            label: 'Transaktions-Verfügbarkeit',
+            description: 'Missionskritische Zuverlässigkeit für Finanzoperationen'
+          },
+          {
+            metric: '50%',
+            label: 'Reduzierte Compliance-Kosten',
+            description: 'Automatisierte Compliance-Überwachung und Berichterstattung'
+          }
+        ]
+      },
+      testimonial: {
+        quote: 'Die Plattform hat unsere Kreditbearbeitungszeiten erheblich verbessert und dabei höchste Sicherheitsstandards beibehalten. SOC 2 Compliance war nahtlos.',
+        author: 'Michael Chen',
+        title: 'CTO',
+        company: 'First National Bank'
+      },
+      cta: {
+        title: 'Sichern Sie Ihre Finanzoperationen',
+        description: 'Schließen Sie sich führenden Finanzinstituten an, die unsere zertifizierte Plattform nutzen',
+        primaryButton: 'Finanz-Demo anfordern',
+        secondaryButton: 'Compliance-Docs anzeigen'
+      }
+    }
+  },
+  technology: {
+    en: {
+      title: 'Technology Solutions',
+      subtitle: 'Developer-first platform for modern tech companies',
+      description: 'Scalable infrastructure and tools designed for fast-growing technology companies and development teams.',
+      hero: {
+        headline: 'Scale Your Technology Stack',
+        subheadline: 'Developer-first platform for modern tech companies',
+        image: '/images/solutions/technology-hero.jpg'
+      },
+      challenges: {
+        title: 'Technology Challenges We Solve',
+        items: [
+          {
+            icon: '⚡',
+            title: 'Rapid Scaling',
+            description: 'Infrastructure that grows with your user base and development team'
+          },
+          {
+            icon: '🔧',
+            title: 'Developer Productivity',
+            description: 'Tools and APIs that accelerate development and deployment cycles'
+          },
+          {
+            icon: '🚀',
+            title: 'Performance Optimization',
+            description: 'Global CDN, caching, and optimization for maximum performance'
+          },
+          {
+            icon: '🔄',
+            title: 'DevOps Integration',
+            description: 'Seamless integration with existing CI/CD pipelines and tools'
+          }
+        ]
+      },
+      features: {
+        title: 'Technology Features',
+        items: [
+          {
+            title: 'API-First Architecture',
+            description: 'RESTful and GraphQL APIs with comprehensive documentation',
+            icon: '⚡'
+          },
+          {
+            title: 'Multi-Cloud Support',
+            description: 'Deploy across AWS, Azure, GCP, and hybrid environments',
+            icon: '☁️'
+          },
+          {
+            title: 'Real-time Analytics',
+            description: 'Performance monitoring, error tracking, and user analytics',
+            icon: '📊'
+          },
+          {
+            title: 'Auto-Scaling',
+            description: 'Automatic scaling based on traffic and resource utilization',
+            icon: '📈'
+          }
+        ]
+      },
+      benefits: {
+        title: 'Technology Benefits',
+        items: [
+          {
+            metric: '10x',
+            label: 'Faster Deployment',
+            description: 'Streamlined CI/CD pipelines and automated deployments'
+          },
+          {
+            metric: '99.99%',
+            label: 'System Uptime',
+            description: 'Redundant infrastructure and automatic failover'
+          },
+          {
+            metric: '75%',
+            label: 'Reduced Infrastructure Costs',
+            description: 'Optimized resource allocation and usage-based pricing'
+          }
+        ]
+      },
+      testimonial: {
+        quote: 'The platform has been instrumental in our rapid growth. The API-first approach and auto-scaling capabilities have saved us months of development time.',
+        author: 'Alex Rodriguez',
+        title: 'VP of Engineering',
+        company: 'TechStart Inc.'
+      },
+      cta: {
+        title: 'Accelerate Your Technology Growth',
+        description: 'Join innovative tech companies building the future',
+        primaryButton: 'Start Free Trial',
+        secondaryButton: 'Explore Developer Docs'
+      }
+    },
+    de: {
+      title: 'Technologie-Lösungen',
+      subtitle: 'Entwickler-zentrierte Plattform für moderne Tech-Unternehmen',
+      description: 'Skalierbare Infrastruktur und Tools für schnell wachsende Technologieunternehmen und Entwicklungsteams.',
+      hero: {
+        headline: 'Skalieren Sie Ihren Technologie-Stack',
+        subheadline: 'Entwickler-zentrierte Plattform für moderne Tech-Unternehmen',
+        image: '/images/solutions/technology-hero.jpg'
+      },
+      challenges: {
+        title: 'Technologie-Herausforderungen, die wir lösen',
+        items: [
+          {
+            icon: '⚡',
+            title: 'Schnelle Skalierung',
+            description: 'Infrastruktur, die mit Ihrer Nutzerbasis und Ihrem Entwicklungsteam wächst'
+          },
+          {
+            icon: '🔧',
+            title: 'Entwicklerproduktivität',
+            description: 'Tools und APIs, die Entwicklungs- und Bereitstellungszyklen beschleunigen'
+          },
+          {
+            icon: '🚀',
+            title: 'Performance-Optimierung',
+            description: 'Globales CDN, Caching und Optimierung für maximale Performance'
+          },
+          {
+            icon: '🔄',
+            title: 'DevOps-Integration',
+            description: 'Nahtlose Integration mit bestehenden CI/CD-Pipelines und Tools'
+          }
+        ]
+      },
+      features: {
+        title: 'Technologie-Funktionen',
+        items: [
+          {
+            title: 'API-First-Architektur',
+            description: 'RESTful und GraphQL APIs mit umfassender Dokumentation',
+            icon: '⚡'
+          },
+          {
+            title: 'Multi-Cloud-Unterstützung',
+            description: 'Bereitstellung über AWS, Azure, GCP und hybride Umgebungen',
+            icon: '☁️'
+          },
+          {
+            title: 'Echtzeit-Analytik',
+            description: 'Performance-Monitoring, Fehler-Tracking und Nutzer-Analytik',
+            icon: '📊'
+          },
+          {
+            title: 'Auto-Skalierung',
+            description: 'Automatische Skalierung basierend auf Traffic und Ressourcennutzung',
+            icon: '📈'
+          }
+        ]
+      },
+      benefits: {
+        title: 'Technologie-Vorteile',
+        items: [
+          {
+            metric: '10x',
+            label: 'Schnellere Bereitstellung',
+            description: 'Optimierte CI/CD-Pipelines und automatisierte Bereitstellungen'
+          },
+          {
+            metric: '99,99%',
+            label: 'System-Verfügbarkeit',
+            description: 'Redundante Infrastruktur und automatisches Failover'
+          },
+          {
+            metric: '75%',
+            label: 'Reduzierte Infrastrukturkosten',
+            description: 'Optimierte Ressourcenzuweisung und nutzungsbasierte Preisgestaltung'
+          }
+        ]
+      },
+      testimonial: {
+        quote: 'Die Plattform war entscheidend für unser schnelles Wachstum. Der API-First-Ansatz und die Auto-Skalierungs-Funktionen haben uns Monate der Entwicklungszeit gespart.',
+        author: 'Alex Rodriguez',
+        title: 'VP Engineering',
+        company: 'TechStart Inc.'
+      },
+      cta: {
+        title: 'Beschleunigen Sie Ihr Technologie-Wachstum',
+        description: 'Schließen Sie sich innovativen Tech-Unternehmen an, die die Zukunft gestalten',
+        primaryButton: 'Kostenlose Testversion starten',
+        secondaryButton: 'Entwickler-Docs erkunden'
+      }
+    }
+  }
+};
+
+const content = industryContent[industry as keyof typeof industryContent];
+const $t = useTranslations(content, lang);
+const currentContent = content[lang] || content.en;
+
+// Get APP_URL from environment variables
+const appUrl = import.meta.env.PUBLIC_APP_URL || '#';
+---
+
+<Layout
+  title={seo?.title || $t('title')}
+  description={seo?.description || $t('description')}
+>
+  <!-- Hero Section -->
+  <section class="solution-hero">
+    <Container size="xl">
+      <div class="hero-content">
+        <div class="hero-text">
+          <div class="hero-badge">
+            <span class="badge-text">{$t('subtitle')}</span>
+          </div>
+
+          <h1 class="hero-headline">
+            {$t('hero.headline')}
+          </h1>
+
+          <p class="hero-subheadline">
+            {$t('hero.subheadline')}
+          </p>
+
+          <div class="hero-actions">
+            <Button variant="primary" size="lg" href={appUrl}>
+              {$t('cta.primaryButton')}
+            </Button>
+            <Button variant="ghost" size="lg" href="#features">
+              Learn More
+            </Button>
+          </div>
+        </div>
+
+        <div class="hero-image">
+          <img src={$t('hero.image')} alt={$t('title')} class="hero-img" />
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Challenges Section -->
+  <section class="challenges-section section-padding">
+    <Container size="xl">
+      <div class="section-header">
+        <h2 class="section-title">{currentContent.challenges.title}</h2>
+      </div>
+
+      <div class="challenges-grid">
+        {currentContent.challenges.items.map((challenge: any) => (
+          <div class="challenge-card">
+            <div class="challenge-icon">{challenge.icon}</div>
+            <h3 class="challenge-title">{challenge.title}</h3>
+            <p class="challenge-description">{challenge.description}</p>
+          </div>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section section-padding" id="features">
+    <Container size="xl">
+      <div class="section-header">
+        <h2 class="section-title">{currentContent.features.title}</h2>
+      </div>
+
+      <div class="features-grid">
+        {currentContent.features.items.map((feature: any) => (
+          <Card class="feature-card">
+            <div class="feature-content">
+              <div class="feature-icon">{feature.icon}</div>
+              <h3 class="feature-title">{feature.title}</h3>
+              <p class="feature-description">{feature.description}</p>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="benefits-section section-padding">
+    <Container size="xl">
+      <div class="section-header">
+        <h2 class="section-title">{currentContent.benefits.title}</h2>
+      </div>
+
+      <div class="benefits-grid">
+        {currentContent.benefits.items.map((benefit: any) => (
+          <div class="benefit-card">
+            <div class="benefit-metric">{benefit.metric}</div>
+            <div class="benefit-label">{benefit.label}</div>
+            <p class="benefit-description">{benefit.description}</p>
+          </div>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <!-- Testimonial Section -->
+  <section class="testimonial-section section-padding">
+    <Container size="lg">
+      <div class="testimonial-card">
+        <div class="testimonial-content">
+          <blockquote class="testimonial-quote">
+            "{$t('testimonial.quote')}"
+          </blockquote>
+          <div class="testimonial-author">
+            <div class="author-info">
+              <div class="author-name">{$t('testimonial.author')}</div>
+              <div class="author-title">{$t('testimonial.title')}, {$t('testimonial.company')}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="solution-cta section-padding">
+    <Container size="xl">
+      <div class="cta-content">
+        <h2 class="cta-title">{$t('cta.title')}</h2>
+        <p class="cta-description">{$t('cta.description')}</p>
+
+        <div class="cta-actions">
+          <Button variant="primary" size="lg" href={appUrl}>
+            {$t('cta.primaryButton')}
+          </Button>
+          <Button variant="ghost" size="lg" href="/resources">
+            {$t('cta.secondaryButton')}
+          </Button>
+        </div>
+      </div>
+    </Container>
+  </section>
+</Layout>
+
+<style>
+  .solution-hero {
+    padding: 8rem 0 4rem;
+    background: linear-gradient(135deg, var(--color-background-primary) 0%, var(--color-background-secondary) 100%);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+  }
+
+  .badge-text {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .hero-headline {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subheadline {
+    font-size: 1.25rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .hero-image {
+    position: relative;
+  }
+
+  .hero-img {
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-xl);
+  }
+
+  .section-padding {
+    padding: 4rem 0;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+
+  .challenges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .challenge-card {
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .challenge-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .challenge-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+
+  .challenge-description {
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .feature-card {
+    text-align: center;
+    height: 100%;
+  }
+
+  .feature-content {
+    padding: 2rem;
+  }
+
+  .feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .feature-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+
+  .feature-description {
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .benefit-card {
+    text-align: center;
+    padding: 2rem;
+    border-radius: 1rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+
+  .benefit-metric {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .benefit-label {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+  }
+
+  .benefit-description {
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .testimonial-section {
+    background: var(--color-background-secondary);
+  }
+
+  .testimonial-card {
+    background: var(--color-surface);
+    border-radius: 1rem;
+    padding: 3rem;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .testimonial-quote {
+    font-size: 1.5rem;
+    font-style: italic;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: var(--color-text-primary);
+  }
+
+  .author-name {
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .author-title {
+    color: var(--color-text-secondary);
+    margin-top: 0.25rem;
+  }
+
+  .solution-cta {
+    background: var(--gradient-primary);
+    color: white;
+    text-align: center;
+  }
+
+  .cta-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .cta-description {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .hero-content {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      text-align: center;
+    }
+
+    .hero-headline {
+      font-size: 3rem;
+    }
+
+    .challenges-grid,
+    .features-grid {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+  }
+
+  @media (max-width: 768px) {
+    .solution-hero {
+      padding: 6rem 0 3rem;
+    }
+
+    .hero-headline {
+      font-size: 2.5rem;
+    }
+
+    .hero-subheadline {
+      font-size: 1.125rem;
+    }
+
+    .hero-actions,
+    .cta-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .section-title {
+      font-size: 2rem;
+    }
+
+    .testimonial-card {
+      padding: 2rem;
+    }
+
+    .testimonial-quote {
+      font-size: 1.25rem;
+    }
+
+    .cta-title {
+      font-size: 2rem;
+    }
+
+    .cta-description {
+      font-size: 1.125rem;
+    }
+
+    .challenges-grid,
+    .features-grid,
+    .benefits-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

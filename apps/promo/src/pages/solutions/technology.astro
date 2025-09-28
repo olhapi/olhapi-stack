@@ -1,0 +1,14 @@
+---
+import SolutionTemplate from '../../components/templates/SolutionTemplate.astro';
+
+const currentLang = Astro.currentLocale || 'en';
+---
+
+<SolutionTemplate
+  lang={currentLang}
+  industry="technology"
+  seo={{
+    title: "Technology Solutions - Developer-First Platform",
+    description: "Scalable technology solutions for modern tech companies. API-first architecture with multi-cloud support and auto-scaling."
+  }}
+/>

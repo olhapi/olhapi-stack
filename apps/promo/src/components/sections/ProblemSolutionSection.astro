@@ -1,0 +1,534 @@
+---
+import { Info, AlertTriangle, TrendingDown, EyeOff, ArrowRight, CheckCircle, Zap, Link, TrendingUp, Eye } from '@lucide/astro';
+
+interface Props {
+    lang: string;
+}
+
+const { lang } = Astro.props;
+
+const translations = {
+    en: {
+        sectionTitle: "Transform Your Workflow",
+        problemTitle: "The Challenge",
+        solutionTitle: "Our Solution",
+        problems: [
+            {
+                title: "Manual Processes",
+                description: "Time-consuming tasks that drain productivity and increase human error",
+                icon: "warning",
+            },
+            {
+                title: "Disconnected Tools",
+                description: "Fragmented systems that don't communicate, leading to data silos",
+                icon: "alert-triangle",
+            },
+            {
+                title: "Scaling Difficulties",
+                description: "Growing teams struggle with outdated workflows and bottlenecks",
+                icon: "trending-down",
+            },
+            {
+                title: "Lack of Visibility",
+                description: "Poor insights into performance and no real-time monitoring",
+                icon: "eye-off",
+            },
+        ],
+        solutions: [
+            {
+                title: "Intelligent Automation",
+                description: "AI-powered workflows that eliminate repetitive tasks and reduce errors by 90%",
+                icon: "zap",
+            },
+            {
+                title: "Unified Platform",
+                description: "One centralized hub that connects all your tools and data seamlessly",
+                icon: "link",
+            },
+            {
+                title: "Effortless Scaling",
+                description: "Built to grow with your team, from startup to enterprise with zero friction",
+                icon: "trending-up",
+            },
+            {
+                title: "Real-time Insights",
+                description: "Comprehensive analytics and monitoring for complete visibility",
+                icon: "eye",
+            },
+        ],
+        ctaText: "See How It Works",
+        statisticsTitle: "The Impact",
+        statistics: [
+            { value: "90%", label: "Reduction in manual work" },
+            { value: "50%", label: "Faster project completion" },
+            { value: "10x", label: "Better team collaboration" },
+            { value: "99.9%", label: "System uptime" },
+        ],
+    },
+    de: {
+        sectionTitle: "Transformieren Sie Ihren Workflow",
+        problemTitle: "Die Herausforderung",
+        solutionTitle: "Unsere Lösung",
+        problems: [
+            {
+                title: "Manuelle Prozesse",
+                description: "Zeitaufwändige Aufgaben, die Produktivität beeinträchtigen und Fehler verursachen",
+                icon: "warning",
+            },
+            {
+                title: "Isolierte Tools",
+                description: "Fragmentierte Systeme ohne Kommunikation führen zu Datensilos",
+                icon: "alert-triangle",
+            },
+            {
+                title: "Skalierungsprobleme",
+                description: "Wachsende Teams kämpfen mit veralteten Workflows und Engpässen",
+                icon: "trending-down",
+            },
+            {
+                title: "Mangelnde Transparenz",
+                description: "Schlechte Einblicke in die Leistung und keine Echtzeitüberwachung",
+                icon: "eye-off",
+            },
+        ],
+        solutions: [
+            {
+                title: "Intelligente Automatisierung",
+                description: "KI-gestützte Workflows eliminieren repetitive Aufgaben und reduzieren Fehler um 90%",
+                icon: "zap",
+            },
+            {
+                title: "Einheitliche Plattform",
+                description: "Ein zentraler Hub, der alle Ihre Tools und Daten nahtlos verbindet",
+                icon: "link",
+            },
+            {
+                title: "Mühelose Skalierung",
+                description: "Entwickelt für Ihr Teamwachstum, vom Startup bis zum Unternehmen ohne Reibung",
+                icon: "trending-up",
+            },
+            {
+                title: "Echtzeit-Einblicke",
+                description: "Umfassende Analysen und Überwachung für vollständige Transparenz",
+                icon: "eye",
+            },
+        ],
+        ctaText: "Erfahren Sie wie es funktioniert",
+        statisticsTitle: "Die Auswirkung",
+        statistics: [
+            { value: "90%", label: "Reduzierung manueller Arbeit" },
+            { value: "50%", label: "Schnellere Projektfertigstellung" },
+            { value: "10x", label: "Bessere Teamzusammenarbeit" },
+            { value: "99,9%", label: "Systemverfügbarkeit" },
+        ],
+    },
+};
+
+import { useTranslations } from "../../utils/i18n";
+const $t = useTranslations(translations, lang);
+---
+
+<section class="problem-solution-section section">
+    <div class="container">
+        <!-- Section Header -->
+        <div class="section-header text-center">
+            <h2 class="text-display-medium gradient-text animate-fade-in">
+                {$t("sectionTitle")}
+            </h2>
+        </div>
+
+        <!-- Main Problem-Solution Layout -->
+        <div class="problem-solution-grid">
+            <!-- Problems Side -->
+            <div class="problems-side">
+                <div class="side-header">
+                    <div class="side-icon problem-icon">
+                        <Info size={32} />
+                    </div>
+                    <h3 class="text-heading-xl">{$t("problemTitle")}</h3>
+                </div>
+
+                <div class="items-list" data-stagger>
+                    {
+                        [...$t("problems")].map((problem: any, index: number) => (
+                            <div class="problem-item item-card" data-animate="fade-up">
+                                <div class="item-icon problem">
+                                    {problem.icon === "warning" && (
+                                        <AlertTriangle size={24} />
+                                    )}
+                                    {problem.icon === "alert-triangle" && (
+                                        <AlertTriangle size={24} />
+                                    )}
+                                    {problem.icon === "trending-down" && (
+                                        <TrendingDown size={24} />
+                                    )}
+                                    {problem.icon === "eye-off" && (
+                                        <EyeOff size={24} />
+                                    )}
+                                </div>
+                                <div class="item-content">
+                                    <h4 class="item-title">{problem.title}</h4>
+                                    <p class="item-description">{problem.description}</p>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+
+            <!-- Connecting Element -->
+            <div class="connection-element">
+                <div class="connection-line"></div>
+                <div class="connection-arrow">
+                    <ArrowRight size={48} />
+                </div>
+            </div>
+
+            <!-- Solutions Side -->
+            <div class="solutions-side">
+                <div class="side-header">
+                    <div class="side-icon solution-icon">
+                        <CheckCircle size={32} />
+                    </div>
+                    <h3 class="text-heading-xl">{$t("solutionTitle")}</h3>
+                </div>
+
+                <div class="items-list" data-stagger data-delay="200">
+                    {
+                        $t("solutions").map((solution: any, index: number) => (
+                            <div class="solution-item item-card" data-animate="fade-up">
+                                <div class="item-icon solution">
+                                    {solution.icon === "zap" && (
+                                        <Zap size={24} />
+                                    )}
+                                    {solution.icon === "link" && (
+                                        <Link size={24} />
+                                    )}
+                                    {solution.icon === "trending-up" && (
+                                        <TrendingUp size={24} />
+                                    )}
+                                    {solution.icon === "eye" && (
+                                        <Eye size={24} />
+                                    )}
+                                </div>
+                                <div class="item-content">
+                                    <h4 class="item-title">{solution.title}</h4>
+                                    <p class="item-description">{solution.description}</p>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="statistics-section">
+            <h3 class="statistics-title text-heading-large text-center">
+                {$t("statisticsTitle")}
+            </h3>
+            <div class="statistics-grid" data-stagger data-delay="800">
+                {
+                    $t("statistics").map((stat: any, index: number) => (
+                        <div class="stat-card">
+                            <div class="stat-value" data-counter>
+                                {stat.value}
+                            </div>
+                            <div class="stat-label">{stat.label}</div>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+
+
+        <!-- CTA Section -->
+        <div class="section-cta text-center">
+            <a href="#how-it-works" class="btn btn-primary btn-lg">
+                {$t("ctaText")}
+                <ArrowRight size={20} />
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+    .problem-solution-section {
+        background: var(--color-background-primary);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .section-header {
+        margin-bottom: var(--space-16);
+    }
+
+    /* Main Grid Layout */
+    .problem-solution-grid {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: var(--space-12);
+        align-items: stretch;
+        margin-bottom: var(--space-20);
+        min-height: 400px;
+    }
+
+    /* Side Headers */
+    .side-header {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+        margin-bottom: var(--space-8);
+    }
+
+    .side-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: var(--radius-xl);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .problem-icon {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: white;
+        box-shadow: 0 8px 32px rgba(239, 68, 68, 0.3);
+    }
+
+    .solution-icon {
+        background: var(--gradient-primary);
+        color: white;
+        box-shadow: 0 8px 32px rgba(0, 102, 255, 0.3);
+    }
+
+    /* Items List */
+    .items-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-6);
+    }
+
+    .item-card {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--space-4);
+        padding: var(--space-6);
+        border-radius: var(--radius-lg);
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        transition: all var(--duration-normal) var(--ease-out);
+    }
+
+    .item-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .problem-item:hover {
+        border-color: #ef4444;
+        box-shadow: 0 8px 32px rgba(239, 68, 68, 0.15);
+    }
+
+    .solution-item:hover {
+        border-color: var(--color-primary-blue);
+        box-shadow: 0 8px 32px rgba(0, 102, 255, 0.15);
+    }
+
+    .item-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius-lg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .item-icon.problem {
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .item-icon.solution {
+        background: rgba(0, 102, 255, 0.1);
+        color: var(--color-primary-blue);
+        border: 1px solid rgba(0, 102, 255, 0.2);
+    }
+
+    .item-content {
+        flex: 1;
+    }
+
+    .item-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--color-text-primary);
+        margin-bottom: var(--space-2);
+    }
+
+    .item-description {
+        color: var(--color-text-secondary);
+        font-size: 14px;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    /* Connection Element */
+    .connection-element {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: var(--space-8) 0;
+        position: relative;
+        height: 100%;
+    }
+
+    .connection-line {
+        width: 2px;
+        height: 100%;
+        background: linear-gradient(180deg, #ef4444 0%, var(--color-primary-blue) 100%);
+        border-radius: var(--radius-full);
+        position: relative;
+        flex: 1;
+    }
+
+    .connection-arrow {
+        position: absolute;
+        top: 50%;
+        left: calc(50% - 32px);
+        width: 64px;
+        height: 64px;
+        border-radius: var(--radius-full);
+        background: var(--gradient-primary);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-lg);
+        animation: pulse2 2s infinite;
+        z-index: 2;
+    }
+
+    @keyframes pulse2 {
+        0%,
+        100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+    }
+
+    /* Statistics Section */
+    .statistics-section {
+        margin: var(--space-20) 0;
+        text-align: center;
+    }
+
+    .statistics-title {
+        margin-bottom: var(--space-12);
+        color: var(--color-text-primary);
+    }
+
+    .statistics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: var(--space-6);
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .stat-card {
+        text-align: center;
+    }
+
+    .stat-value {
+        font-size: 48px;
+        font-weight: 800;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: var(--space-2);
+        line-height: 1;
+    }
+
+    .stat-label {
+        color: var(--color-text-secondary);
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    /* CTA Section */
+    .section-cta {
+        margin-top: var(--space-16);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .problem-solution-grid {
+            grid-template-columns: 1fr;
+            gap: var(--space-16);
+        }
+
+        .connection-element {
+            order: 2;
+            transform: rotate(90deg);
+            margin: var(--space-8) 0;
+        }
+
+        .problems-side {
+            order: 1;
+        }
+
+        .solutions-side {
+            order: 3;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .side-header {
+            flex-direction: column;
+            text-align: center;
+            gap: var(--space-3);
+        }
+
+        .side-icon {
+            width: 48px;
+            height: 48px;
+        }
+
+        .item-card {
+            padding: var(--space-4);
+        }
+
+        .item-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .connection-element {
+            display: none;
+        }
+
+        .stat-value {
+            font-size: 36px;
+        }
+
+        .statistics-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-6);
+        }
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+        .connection-arrow {
+            animation: none;
+        }
+    }
+</style>

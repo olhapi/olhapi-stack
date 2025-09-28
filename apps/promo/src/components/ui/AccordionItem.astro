@@ -1,0 +1,66 @@
+---
+interface Props {
+  class?: string;
+  open?: boolean;
+  disabled?: boolean;
+}
+
+const {
+  class: className = '',
+  open = false,
+  disabled = false
+} = Astro.props;
+
+const itemClasses = [
+  'accordion-item',
+  disabled && 'accordion-item-disabled',
+  className
+].filter(Boolean).join(' ');
+---
+
+<div
+  class={itemClasses}
+  data-accordion-item
+  data-state={open ? 'open' : 'closed'}
+  data-disabled={disabled ? 'true' : 'false'}
+>
+  <slot />
+</div>
+
+<style>
+  /* Accordion Item */
+  .accordion-item {
+    border-bottom: 1px solid var(--color-border);
+    transition: all var(--duration-fast) var(--ease-out);
+  }
+
+  .accordion-item:last-child {
+    border-bottom: none;
+  }
+
+  .accordion-item[data-state="open"] {
+    background: var(--color-background-primary);
+  }
+
+  /* Disabled State */
+  .accordion-item-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  /* Dark Mode Adjustments */
+  [data-theme="dark"] .accordion-item {
+    border-color: var(--color-border);
+  }
+
+  [data-theme="dark"] .accordion-item[data-state="open"] {
+    background: var(--color-background-secondary);
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .accordion-item {
+      transition: none;
+    }
+  }
+</style>

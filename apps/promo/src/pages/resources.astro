@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ResourcesListSection from '../components/sections/ResourcesListSection.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getCollection } from 'astro:content';
+
+const currentLang = Astro.currentLocale || 'en';
+
+// Get resources from the collection, filtered by language
+const allResources = await getCollection('resources', ({ id }) => {
+  return id.startsWith(`${currentLang}/`);
+});
+
+// Sort by publication date (newest first)
+const resources = allResources.sort((a, b) =>
+  new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+);
+---
+
+<Layout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+	<ResourcesListSection lang={currentLang} resources={resources} />
+</Layout>
