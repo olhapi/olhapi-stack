@@ -1,45 +1,45 @@
 ---
-title: "Project Starter Template"
-description: "A complete project template with best practices and configurations"
-type: "template"
-category: "Getting Started"
+title: 'Project Starter Template'
+description: 'A complete project template with best practices and configurations'
+type: 'template'
+category: 'Getting Started'
 pubDate: 2024-01-20
-difficulty: "beginner"
+difficulty: 'beginner'
 duration:
-  minutes: 5
-  format: "5 min setup"
-format: "interactive"
+    minutes: 5
+    format: '5 min setup'
+format: 'interactive'
 thumbnail:
-  src: "/images/resources/project-template-thumb.png"
-  alt: "Project Starter Template"
-  type: "screenshot"
-downloadUrl: "/downloads/project-starter-template.zip"
+    src: '/images/resources/project-template-thumb.png'
+    alt: 'Project Starter Template'
+    type: 'screenshot'
+downloadUrl: '/downloads/project-starter-template.zip'
 gated: true
-formFields: ["email", "name", "company"]
-fileSize: "2.5 MB"
+formFields: ['email', 'name', 'company']
+fileSize: '2.5 MB'
 learningObjectives:
-  - "Set up a project with best practices"
-  - "Understand folder structure"
-  - "Configure development environment"
-  - "Deploy with one command"
-tags: ["template", "starter", "best-practices", "configuration"]
+    - 'Set up a project with best practices'
+    - 'Understand folder structure'
+    - 'Configure development environment'
+    - 'Deploy with one command'
+tags: ['template', 'starter', 'best-practices', 'configuration']
 tools:
-  - name: "Node.js"
-    version: "18+"
-    downloadUrl: "https://nodejs.org"
-    requirements: "Required for development"
-  - name: "Git"
-    version: "2.0+"
-    downloadUrl: "https://git-scm.com"
-    requirements: "Required for version control"
+    - name: 'Node.js'
+      version: '18+'
+      downloadUrl: 'https://nodejs.org'
+      requirements: 'Required for development'
+    - name: 'Git'
+      version: '2.0+'
+      downloadUrl: 'https://git-scm.com'
+      requirements: 'Required for version control'
 author:
-  name: "Development Team"
-  title: "Platform Engineers"
-  bio: "Our engineering team maintains these templates"
+    name: 'Development Team'
+    title: 'Platform Engineers'
+    bio: 'Our engineering team maintains these templates'
 seo:
-  title: "Free Project Starter Template - Download Now"
-  description: "Get our production-ready project template with best practices built-in"
-  keywords: ["template", "starter", "project", "boilerplate"]
+    title: 'Free Project Starter Template - Download Now'
+    description: 'Get our production-ready project template with best practices built-in'
+    keywords: ['template', 'starter', 'project', 'boilerplate']
 ---
 
 # Project Starter Template
@@ -49,6 +49,7 @@ This comprehensive starter template includes everything you need to build a mode
 ## What's Included
 
 ### 📁 Folder Structure
+
 - **`/src`** - Source code
 - **`/public`** - Static assets
 - **`/docs`** - Documentation
@@ -56,6 +57,7 @@ This comprehensive starter template includes everything you need to build a mode
 - **`/config`** - Configuration files
 
 ### ⚙️ Configuration Files
+
 - **Environment setup** - Development, staging, and production configs
 - **Build configuration** - Optimized build settings
 - **Testing setup** - Unit and integration tests
@@ -63,6 +65,7 @@ This comprehensive starter template includes everything you need to build a mode
 - **Code quality** - ESLint, Prettier, and pre-commit hooks
 
 ### 🚀 Features
+
 - **Hot reload** during development
 - **Type safety** with TypeScript
 - **Code splitting** for optimal performance
@@ -98,13 +101,17 @@ project-template/
 ## Configuration
 
 ### Environment Variables
+
 The template includes example environment files:
+
 - `.env.example` - Template for environment variables
 - `.env.local.example` - Local development settings
 - `.env.production.example` - Production settings
 
 ### Build Settings
+
 Optimized build configuration for:
+
 - Code minification
 - Asset optimization
 - Bundle splitting
@@ -113,12 +120,14 @@ Optimized build configuration for:
 ## Customization
 
 ### Styling
+
 - CSS-in-JS setup with styled-components
 - Design system tokens
 - Responsive breakpoints
 - Dark/light theme support
 
 ### Components
+
 - Reusable UI components
 - Form components with validation
 - Layout components
@@ -127,6 +136,7 @@ Optimized build configuration for:
 ## Deployment
 
 The template supports multiple deployment options:
+
 - **Vercel** - One-click deployment
 - **Netlify** - Continuous deployment
 - **AWS** - S3 + CloudFront
@@ -144,6 +154,7 @@ The template supports multiple deployment options:
 ## Documentation
 
 Each template includes:
+
 - **README.md** - Getting started guide
 - **CONTRIBUTING.md** - Contribution guidelines
 - **DEPLOYMENT.md** - Deployment instructions
@@ -152,6 +163,7 @@ Each template includes:
 ## Support
 
 After downloading:
+
 - Join our [Discord community](https://discord.example.com)
 - Read the [documentation](/docs)
 - Contact [support](mailto:support@example.com)

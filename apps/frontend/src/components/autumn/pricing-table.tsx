@@ -1,7 +1,5 @@
-import React from 'react';
-
 import { useCustomer, usePricingTable, type ProductDetails } from 'autumn-js/react';
-import { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { cn } from '@/utils/style-utils';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
@@ -10,7 +8,11 @@ import { getPricingTableContent } from '@/lib/autumn/pricing-table-content';
 import type { Product, ProductItem } from 'autumn-js';
 import { Loader2 } from 'lucide-react';
 
-export default function PricingTable({ productDetails }: { productDetails?: ProductDetails[] }) {
+interface PricingTableProps {
+    productDetails?: ProductDetails[];
+}
+
+export default function PricingTable({ productDetails }: Readonly<PricingTableProps>) {
     const { checkout } = useCustomer();
     const [isAnnual, setIsAnnual] = useState(false);
     const { products, isLoading, error } = usePricingTable({ productDetails });
@@ -56,9 +58,9 @@ export default function PricingTable({ productDetails }: { productDetails?: Prod
                     setIsAnnualToggle={setIsAnnual}
                     multiInterval={multiInterval}
                 >
-                    {products.filter(intervalFilter).map((product, index) => (
+                    {products.filter(intervalFilter).map((product) => (
                         <PricingCard
-                            key={index}
+                            key={product.id}
                             productId={product.id}
                             buttonProps={{
                                 disabled:
@@ -106,6 +108,16 @@ export const usePricingTableContext = (componentName: string) => {
     return context;
 };
 
+type PricingTableContainerProps = {
+    children?: React.ReactNode;
+    products?: Product[];
+    showFeatures?: boolean;
+    className?: string;
+    isAnnualToggle: boolean;
+    setIsAnnualToggle: (isAnnual: boolean) => void;
+    multiInterval: boolean;
+};
+
 export const PricingTableContainer = ({
     children,
     products,
@@ -114,15 +126,7 @@ export const PricingTableContainer = ({
     isAnnualToggle,
     setIsAnnualToggle,
     multiInterval,
-}: {
-    children?: React.ReactNode;
-    products?: Product[];
-    showFeatures?: boolean;
-    className?: string;
-    isAnnualToggle: boolean;
-    setIsAnnualToggle: (isAnnual: boolean) => void;
-    multiInterval: boolean;
-}) => {
+}: Readonly<PricingTableContainerProps>) => {
     if (!products) {
         throw new Error('products is required in <PricingTable />');
     }
@@ -132,8 +136,13 @@ export const PricingTableContainer = ({
     }
 
     const hasRecommended = products?.some((p) => p.display?.recommend_text);
+    const contextValue = React.useMemo(
+        () => ({ isAnnualToggle, setIsAnnualToggle, products, showFeatures }),
+        [isAnnualToggle, setIsAnnualToggle, products, showFeatures],
+    );
+
     return (
-        <PricingTableContext.Provider value={{ isAnnualToggle, setIsAnnualToggle, products, showFeatures }}>
+        <PricingTableContext.Provider value={contextValue}>
             <div className={cn('flex items-center flex-col', hasRecommended && '!py-10')}>
                 {multiInterval && (
                     <div className={cn(products.some((p) => p.display?.recommend_text) && 'mb-8')}>
@@ -161,7 +170,7 @@ interface PricingCardProps {
     buttonProps?: React.ComponentProps<'button'>;
 }
 
-export const PricingCard = ({ productId, className, buttonProps }: PricingCardProps) => {
+export const PricingCard = ({ productId, className, buttonProps }: Readonly<PricingCardProps>) => {
     const { products, showFeatures } = usePricingTableContext('PricingCard');
 
     const product = products.find((p) => p.id === productId);
@@ -237,21 +246,19 @@ export const PricingCard = ({ productId, className, buttonProps }: PricingCardPr
 };
 
 // Pricing Feature List
-export const PricingFeatureList = ({
-    items,
-    everythingFrom,
-    className,
-}: {
+type PricingFeatureListProps = {
     items: ProductItem[];
     everythingFrom?: string;
     className?: string;
-}) => {
+};
+
+export const PricingFeatureList = ({ items, everythingFrom, className }: Readonly<PricingFeatureListProps>) => {
     return (
         <div className={cn('flex-grow', className)}>
             {everythingFrom && <p className="text-sm mb-4">Everything from {everythingFrom}, plus:</p>}
             <div className="space-y-3">
                 {items.map((item, index) => (
-                    <div key={index} className="flex items-start gap-2 text-sm">
+                    <div key={`${item.display?.primary_text}-${index}`} className="flex items-start gap-2 text-sm">
                         {/* {showIcon && (
               <Check className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
             )} */}
@@ -322,13 +329,12 @@ export const PricingCardButton = React.forwardRef<HTMLButtonElement, PricingCard
 PricingCardButton.displayName = 'PricingCardButton';
 
 // Annual Switch
-export const AnnualSwitch = ({
-    isAnnualToggle,
-    setIsAnnualToggle,
-}: {
+type AnnualSwitchProps = {
     isAnnualToggle: boolean;
     setIsAnnualToggle: (isAnnual: boolean) => void;
-}) => {
+};
+
+export const AnnualSwitch = ({ isAnnualToggle, setIsAnnualToggle }: Readonly<AnnualSwitchProps>) => {
     return (
         <div className="flex items-center space-x-2 mb-4">
             <span className="text-sm text-muted-foreground">Monthly</span>
@@ -338,7 +344,11 @@ export const AnnualSwitch = ({
     );
 };
 
-export const RecommendedBadge = ({ recommended }: { recommended: string }) => {
+type RecommendedBadgeProps = {
+    recommended: string;
+};
+
+export const RecommendedBadge = ({ recommended }: Readonly<RecommendedBadgeProps>) => {
     return (
         <div className="bg-secondary absolute border text-muted-foreground text-sm font-medium lg:rounded-full px-3 lg:py-0.5 lg:top-4 lg:right-4 top-[-1px] right-[-1px] rounded-bl-lg">
             {recommended}

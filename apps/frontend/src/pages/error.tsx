@@ -30,7 +30,7 @@ export function ErrorPage() {
                                 <Trans>Go Home</Trans>
                             </Link>
                         </Button>
-                        <Button onClick={() => window.location.reload()} className="flex-1">
+                        <Button onClick={() => globalThis.location.reload()} className="flex-1">
                             <Trans>Try Again</Trans>
                         </Button>
                     </div>

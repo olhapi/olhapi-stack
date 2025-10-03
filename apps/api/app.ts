@@ -9,8 +9,8 @@ import closeWithGrace from 'close-with-grace';
 import { createSanitizedError } from './lib/utils/error-handling.ts';
 import { fastifyToWebRequest } from './lib/utils/request-conversion.ts';
 
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -60,7 +60,9 @@ const app: FastifyPluginAsync<AppOptions> = async (fastify, opts): Promise<void>
 
                 // Forward response to client
                 reply.status(response.status);
-                response.headers.forEach((value: string, key: string) => reply.header(key, value));
+                for (const [key, value] of response.headers) {
+                    reply.header(key, value);
+                }
                 reply.send(response.body ? await response.text() : null);
             } catch (error) {
                 const sanitizedError = createSanitizedError(
@@ -80,16 +82,14 @@ const app: FastifyPluginAsync<AppOptions> = async (fastify, opts): Promise<void>
     // This loads all plugins defined in plugins
     // those should be support plugins that are reused
     // through your application
-    // eslint-disable-next-line no-void
-    void fastify.register(AutoLoad, {
+    await fastify.register(AutoLoad, {
         dir: join(__dirname, 'plugins'),
         options: opts,
     });
 
     // This loads all plugins defined in routes
     // define your routes in one of these
-    // eslint-disable-next-line no-void
-    void fastify.register(AutoLoad, {
+    await fastify.register(AutoLoad, {
         dir: join(__dirname, 'routes'),
         options: opts,
     });

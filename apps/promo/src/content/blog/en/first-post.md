@@ -3,8 +3,8 @@ title: 'First post'
 description: 'Lorem ipsum dolor sit amet'
 pubDate: 'Jul 08 2022'
 heroImage:
-  src: '../../../assets/blog-placeholder-3.jpg'
-  alt: 'Blog placeholder image'
+    src: '../../../assets/blog-placeholder-3.jpg'
+    alt: 'Blog placeholder image'
 category: 'Product Updates'
 tags: ['blog', 'example']
 featured: true

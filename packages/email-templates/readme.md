@@ -73,20 +73,20 @@ pnpm test             # Run template tests
     import { Button, Container, Head, Html, Text } from '@react-email/components';
 
     interface MyTemplateProps {
-      name: string;
-      actionUrl: string;
+        name: string;
+        actionUrl: string;
     }
 
     export default function MyTemplate({ name, actionUrl }: MyTemplateProps) {
-      return (
-        <Html>
-          <Head />
-          <Container>
-            <Text>Hello {name}!</Text>
-            <Button href={actionUrl}>Take Action</Button>
-          </Container>
-        </Html>
-      );
+        return (
+            <Html>
+                <Head />
+                <Container>
+                    <Text>Hello {name}!</Text>
+                    <Button href={actionUrl}>Take Action</Button>
+                </Container>
+            </Html>
+        );
     }
     ```
 
@@ -124,10 +124,12 @@ Templates integrate with the API server (`apps/api`) for sending:
 import { render } from '@react-email/render';
 import MagicLinkEmail from '@olhapi/email-templates/emails/auth/magic-link';
 
-const html = render(MagicLinkEmail({
-  name: 'John Doe',
-  magicLink: 'https://app.example.com/auth/verify?token=...'
-}));
+const html = render(
+    MagicLinkEmail({
+        name: 'John Doe',
+        magicLink: 'https://app.example.com/auth/verify?token=...',
+    }),
+);
 ```
 
 ## 🔗 Related Documentation

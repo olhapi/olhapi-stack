@@ -3,8 +3,8 @@ title: 'Third post'
 description: 'Lorem ipsum dolor sit amet'
 pubDate: 'Jul 22 2022'
 heroImage:
-  src: '../../../assets/blog-placeholder-2.jpg'
-  alt: 'Blog placeholder image'
+    src: '../../../assets/blog-placeholder-2.jpg'
+    alt: 'Blog placeholder image'
 category: 'Case Studies'
 tags: ['analysis', 'research']
 readTime: 6

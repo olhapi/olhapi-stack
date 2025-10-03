@@ -5,7 +5,7 @@ export interface MagicLinkEmailProps {
     appName?: string;
 }
 
-export const MagicLinkEmail = ({ magicLink, appName = 'Your App' }: MagicLinkEmailProps) => {
+export const MagicLinkEmail = ({ magicLink, appName = 'Your App' }: Readonly<MagicLinkEmailProps>) => {
     return (
         <Html>
             <Head />

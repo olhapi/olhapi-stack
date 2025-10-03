@@ -14,7 +14,7 @@ export default fp(async (fastify: FastifyInstance) => {
         Sentry.init({
             dsn: config.SENTRY_DSN,
             environment: config.NODE_ENV,
-            tracesSampleRate: config.NODE_ENV === 'production' ? 0.1 : 1.0,
+            tracesSampleRate: config.NODE_ENV === 'production' ? 0.1 : 1,
             integrations: [Sentry.httpIntegration(), Sentry.expressIntegration()],
         });
 

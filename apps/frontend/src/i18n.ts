@@ -20,7 +20,7 @@ export function detectBrowserLocale(): string {
 }
 
 export function getSavedLocale(): string {
-    if (typeof window === 'undefined') return defaultLocale;
+    if (typeof globalThis.window === 'undefined') return defaultLocale;
     return localStorage.getItem('language') || detectBrowserLocale();
 }
 
@@ -30,7 +30,7 @@ export function initializeI18n(): void {
 }
 
 export function saveLocale(locale: string): void {
-    if (typeof window === 'undefined') return;
+    if (typeof globalThis.window === 'undefined') return;
     localStorage.setItem('language', locale);
 }
 

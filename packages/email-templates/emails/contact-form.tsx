@@ -14,7 +14,7 @@ export const ContactFormEmail = ({
     subject,
     message,
     companyName = 'Your Company',
-}: ContactFormEmailProps) => {
+}: Readonly<ContactFormEmailProps>) => {
     return (
         <Html>
             <Head />

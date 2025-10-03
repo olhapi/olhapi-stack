@@ -171,7 +171,10 @@ export function BillingSettings() {
                                 <Trans>Current Subscriptions</Trans>
                             </h3>
                             {optimisticSubscriptions.map((product: any, index: number) => (
-                                <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                                <div
+                                    key={product.id || `product-${index}`}
+                                    className="flex items-center justify-between p-3 border rounded-lg"
+                                >
                                     <div className="space-y-1">
                                         <div className="flex items-center gap-2">
                                             <span className="font-medium">{product.name}</span>

@@ -18,22 +18,22 @@ export interface CheckoutDialogProps {
     checkoutResult: CheckoutResult;
 }
 
-const formatCurrency = ({ amount, currency }: { amount: number; currency: string }) => {
+const formatCurrency = ({ amount, currency }: Readonly<{ amount: number; currency: string }>) => {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: currency,
     }).format(amount);
 };
 
-export default function CheckoutDialog(params: CheckoutDialogProps) {
+export default function CheckoutDialog(props: Readonly<CheckoutDialogProps>) {
     const { attach } = useCustomer();
-    const [checkoutResult, setCheckoutResult] = useState<CheckoutResult | undefined>(params?.checkoutResult);
+    const [checkoutResult, setCheckoutResult] = useState<CheckoutResult | undefined>(props?.checkoutResult);
 
     useEffect(() => {
-        if (params.checkoutResult) {
-            setCheckoutResult(params.checkoutResult);
+        if (props.checkoutResult) {
+            setCheckoutResult(props.checkoutResult);
         }
-    }, [params.checkoutResult]);
+    }, [props.checkoutResult]);
 
     const [loading, setLoading] = useState(false);
 
@@ -41,7 +41,7 @@ export default function CheckoutDialog(params: CheckoutDialogProps) {
         return <></>;
     }
 
-    const { open, setOpen } = params;
+    const { open, setOpen } = props;
     const { title, message } = getCheckoutContent(checkoutResult);
 
     const isFree = checkoutResult?.product.properties?.is_free;
@@ -94,13 +94,12 @@ export default function CheckoutDialog(params: CheckoutDialogProps) {
     );
 }
 
-function PriceInformation({
-    checkoutResult,
-    setCheckoutResult,
-}: {
+type PriceInformationProps = {
     checkoutResult: CheckoutResult;
     setCheckoutResult: (checkoutResult: CheckoutResult) => void;
-}) {
+};
+
+function PriceInformation({ checkoutResult, setCheckoutResult }: Readonly<PriceInformationProps>) {
     return (
         <div className="px-6 mb-4 flex flex-col gap-4">
             <ProductItems checkoutResult={checkoutResult} setCheckoutResult={setCheckoutResult} />
@@ -115,7 +114,11 @@ function PriceInformation({
     );
 }
 
-function DueAmounts({ checkoutResult }: { checkoutResult: CheckoutResult }) {
+type DueAmountsProps = {
+    checkoutResult: CheckoutResult;
+};
+
+function DueAmounts({ checkoutResult }: Readonly<DueAmountsProps>) {
     const { next_cycle, product } = checkoutResult;
     const nextCycleAtStr = next_cycle ? new Date(next_cycle.starts_at).toLocaleDateString() : undefined;
 
@@ -155,13 +158,12 @@ function DueAmounts({ checkoutResult }: { checkoutResult: CheckoutResult }) {
     );
 }
 
-function ProductItems({
-    checkoutResult,
-    setCheckoutResult,
-}: {
+type ProductItemsProps = {
     checkoutResult: CheckoutResult;
     setCheckoutResult: (checkoutResult: CheckoutResult) => void;
-}) {
+};
+
+function ProductItems({ checkoutResult, setCheckoutResult }: Readonly<ProductItemsProps>) {
     const isUpdateQuantity =
         checkoutResult?.product.scenario === 'active' && checkoutResult.product.properties.updateable;
     return (
@@ -173,7 +175,7 @@ function ProductItems({
                     if (item.usage_model == 'prepaid') {
                         return (
                             <PrepaidItem
-                                key={index}
+                                key={`prepaid-${index}`}
                                 item={item}
                                 checkoutResult={checkoutResult!}
                                 setCheckoutResult={setCheckoutResult}
@@ -186,7 +188,7 @@ function ProductItems({
                     }
 
                     return (
-                        <div key={index} className="flex justify-between">
+                        <div key={`subscription-${index}`} className="flex justify-between">
                             <p className="text-muted-foreground">{item.feature ? item.feature.name : 'Subscription'}</p>
                             <p>
                                 {item.display?.primary_text} {item.display?.secondary_text}
@@ -198,7 +200,11 @@ function ProductItems({
     );
 }
 
-function CheckoutLines({ checkoutResult }: { checkoutResult: CheckoutResult }) {
+type CheckoutLinesProps = {
+    checkoutResult: CheckoutResult;
+};
+
+function CheckoutLines({ checkoutResult }: Readonly<CheckoutLinesProps>) {
     return (
         <Accordion type="single" collapsible>
             <AccordionItem value="total" className="border-b-0">
@@ -216,7 +222,7 @@ function CheckoutLines({ checkoutResult }: { checkoutResult: CheckoutResult }) {
                         .filter((line) => line.amount != 0)
                         .map((line, index) => {
                             return (
-                                <div key={index} className="flex justify-between">
+                                <div key={`line-${line.description}-${index}`} className="flex justify-between">
                                     <p className="text-muted-foreground">{line.description}</p>
                                     <p className="text-muted-foreground">
                                         {new Intl.NumberFormat('en-US', {
@@ -254,15 +260,13 @@ function CustomAccordionTrigger({
     );
 }
 
-const PrepaidItem = ({
-    item,
-    checkoutResult,
-    setCheckoutResult,
-}: {
+type PrepaidItemProps = {
     item: ProductItem;
     checkoutResult: CheckoutResult;
     setCheckoutResult: (checkoutResult: CheckoutResult) => void;
-}) => {
+};
+
+const PrepaidItem = ({ item, checkoutResult, setCheckoutResult }: Readonly<PrepaidItemProps>) => {
     const { quantity = 0, billing_units: billingUnits = 1 } = item;
     const [quantityInput, setQuantityInput] = useState<string>((quantity / billingUnits).toString());
     const { checkout } = useCustomer();
@@ -365,14 +369,12 @@ const PrepaidItem = ({
     );
 };
 
-export const PriceItem = ({
-    children,
-    className,
-    ...props
-}: {
+type PriceItemProps = {
     children: React.ReactNode;
     className?: string;
-} & React.HTMLAttributes<HTMLDivElement>) => {
+} & React.HTMLAttributes<HTMLDivElement>;
+
+export const PriceItem = ({ children, className, ...props }: Readonly<PriceItemProps>) => {
     return (
         <div
             className={cn(
@@ -386,19 +388,21 @@ export const PriceItem = ({
     );
 };
 
+type PricingDialogButtonProps = {
+    children: React.ReactNode;
+    size?: 'sm' | 'lg' | 'default' | 'icon';
+    onClick: () => void;
+    disabled?: boolean;
+    className?: string;
+};
+
 export const PricingDialogButton = ({
     children,
     size,
     onClick,
     disabled,
     className,
-}: {
-    children: React.ReactNode;
-    size?: 'sm' | 'lg' | 'default' | 'icon';
-    onClick: () => void;
-    disabled?: boolean;
-    className?: string;
-}) => {
+}: Readonly<PricingDialogButtonProps>) => {
     return (
         <Button
             onClick={onClick}

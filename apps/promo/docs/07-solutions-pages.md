@@ -1,11 +1,13 @@
 # Solutions Pages Template Specification
 
 ## Overview
+
 Solutions pages are industry-specific or use-case-specific landing pages that demonstrate how the product solves particular problems for defined audiences. Each page follows a consistent template while allowing for customized content.
 
 ## Page Types
 
 ### 1. Industry Solutions
+
 - Healthcare
 - Financial Services
 - Retail/E-commerce
@@ -15,6 +17,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Technology/SaaS
 
 ### 2. Use Case Solutions
+
 - Team Collaboration
 - Project Management
 - Sales Automation
@@ -24,6 +27,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Compliance Management
 
 ### 3. Business Size Solutions
+
 - Startups
 - Small Business
 - Mid-Market
@@ -34,8 +38,10 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 ## Universal Page Structure
 
 ### 1. Header Navigation
+
 **Reuses**: Main site header
 **Modifications**:
+
 - "Solutions" dropdown shows all solution pages
 - Current solution highlighted in dropdown
 - Breadcrumbs: Home > Solutions > [Industry/Use Case]
@@ -45,9 +51,10 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 **Purpose**: Immediately communicate relevance to the target audience.
 
 **Content Structure**:
+
 - Industry/Use Case Badge: Visual identifier
 - Headline: "[Industry/Use Case]-specific value proposition"
-  - Example: "Healthcare Solutions That Save Lives and Time"
+    - Example: "Healthcare Solutions That Save Lives and Time"
 - Subheadline: Elaborate on specific benefits (max 30 words)
 - Hero Visual: Industry-relevant illustration or photo
 - Trust Indicators: Logos of notable customers in this segment
@@ -55,12 +62,14 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Secondary CTA: "Download Industry Guide"
 
 **Visual Elements**:
+
 - Industry-specific imagery and icons
 - Color scheme aligned with industry conventions
 - Background patterns relevant to sector
 - Animated elements showing industry workflows
 
 **Dynamic Elements**:
+
 - Industry statistics counters
 - Relevant compliance badges
 - Industry awards or certifications
@@ -72,6 +81,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 **Layout**: 3-4 pain point cards in a row (grid on desktop).
 
 **Pain Point Card Structure**:
+
 - Icon: Problem-indicating icon (warning, alert)
 - Challenge Title: Specific industry pain point
 - Description: How this affects the industry
@@ -81,18 +91,21 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 **Industry-Specific Examples**:
 
 **Healthcare**:
+
 - Patient data fragmentation
 - Compliance complexity
 - Staff coordination challenges
 - Cost reduction pressure
 
 **Financial Services**:
+
 - Regulatory compliance burden
 - Legacy system integration
 - Security threats
 - Customer experience demands
 
 **Visual Treatment**:
+
 - Cards with subtle red/orange accents
 - Icons that pulse or animate on scroll
 - Connection lines to solution section
@@ -105,6 +118,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 **Layout**: Split screen or alternating rows.
 
 **Content Blocks**:
+
 - Solution headline for each pain point
 - How the product solves it
 - Specific features used
@@ -112,12 +126,14 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Mini case study or metric
 
 **Visual Elements**:
+
 - Product screenshots in industry context
 - Before/after comparisons
 - Workflow diagrams
 - Industry-specific dashboards
 
 **Interactive Elements**:
+
 - Tabs for different solution areas
 - Expandable details
 - Video demos for specific features
@@ -132,24 +148,28 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 **Feature Categories**:
 
 **Compliance & Security** (if relevant):
+
 - Industry certifications (HIPAA, SOC2, etc.)
 - Audit trails
 - Data encryption
 - Access controls
 
 **Integration Ecosystem**:
+
 - Industry-specific tool integrations
 - API capabilities
 - Data import/export options
 - Legacy system compatibility
 
 **Specialized Workflows**:
+
 - Industry-standard processes
 - Custom terminology support
 - Role-based experiences
 - Industry-specific templates
 
 **Reporting & Analytics**:
+
 - Industry KPIs
 - Compliance reports
 - Custom dashboards
@@ -162,6 +182,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 **Layout**: Tab-based or accordion for multiple use cases.
 
 **Use Case Structure**:
+
 - Scenario title
 - User role/department
 - Challenge description
@@ -170,6 +191,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Time/cost savings
 
 **Presentation Options**:
+
 1. **Interactive Demo**: Click-through prototype
 2. **Video Walkthrough**: Recorded demonstration
 3. **Step-by-Step Guide**: Illustrated process
@@ -180,6 +202,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 **Purpose**: Demonstrate tangible value for this sector.
 
 **Inputs** (Customized per industry):
+
 - Company size
 - Current costs
 - Industry-specific metrics
@@ -187,6 +210,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Efficiency targets
 
 **Outputs**:
+
 - Cost savings
 - Time savings
 - ROI percentage
@@ -194,6 +218,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Industry benchmarks comparison
 
 **Visual Display**:
+
 - Interactive charts
 - Savings breakdown
 - Comparison graphs
@@ -206,6 +231,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 **Layout**: Carousel or grid of 2-3 featured cases.
 
 **Case Study Card**:
+
 - Company logo
 - Industry and size
 - Challenge summary
@@ -215,6 +241,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Video testimonial option
 
 **Results Focus**:
+
 - Percentage improvements
 - Time saved
 - Cost reduced
@@ -226,6 +253,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 **Purpose**: Show how easy it is to get started.
 
 **Content**:
+
 - Implementation timeline
 - Support offerings
 - Training resources
@@ -233,6 +261,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Industry consultants
 
 **Timeline Display**:
+
 - Phase-by-phase breakdown
 - Typical duration
 - Key milestones
@@ -247,6 +276,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 **Categories** (Industry-specific):
 
 **Healthcare Example**:
+
 - EHR Systems
 - Practice Management
 - Medical Devices
@@ -254,6 +284,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Billing Systems
 
 **Financial Services Example**:
+
 - Core Banking Systems
 - Trading Platforms
 - Risk Management Tools
@@ -261,6 +292,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Payment Processors
 
 **Display Features**:
+
 - Searchable/filterable
 - Integration details on click
 - "Coming soon" section
@@ -271,6 +303,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 **Purpose**: Provide industry-specific educational content.
 
 **Content Types**:
+
 - Industry guides
 - Compliance checklists
 - Best practices
@@ -279,6 +312,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Templates
 
 **Resource Display**:
+
 - Thumbnail grid
 - Download counts
 - Resource type badges
@@ -289,11 +323,13 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 **Purpose**: Present industry-relevant pricing.
 
 **Approach Options**:
+
 1. **Standard Pricing**: With industry discounts noted
 2. **Custom Pricing**: "Contact for industry pricing"
 3. **Package Deals**: Industry-specific bundles
 
 **Special Considerations**:
+
 - Volume discounts
 - Non-profit pricing
 - Educational discounts
@@ -304,6 +340,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 **Purpose**: Address industry-specific security and compliance needs.
 
 **Content**:
+
 - Compliance certifications
 - Security badges
 - Industry memberships
@@ -312,6 +349,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Data residency options
 
 **Visual Treatment**:
+
 - Official certification logos
 - Security score displays
 - Audit report links
@@ -322,6 +360,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 **Purpose**: Answer industry-specific questions.
 
 **Question Categories**:
+
 - Compliance & Security
 - Integration & Compatibility
 - Industry Features
@@ -329,6 +368,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Support & Training
 
 **Industry-Specific Questions**:
+
 - Compliance requirements
 - Data handling
 - Industry standards
@@ -340,12 +380,14 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 **Purpose**: Drive conversion with industry-specific messaging.
 
 **Options**:
+
 1. **Demo Request**: Industry-specific demo
 2. **Free Trial**: With industry templates
 3. **Contact Sales**: Industry specialist
 4. **Download Guide**: Industry playbook
 
 **Form Fields** (if applicable):
+
 - Standard contact info
 - Company size
 - Industry segment
@@ -353,12 +395,14 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Specific needs
 
 ### 16. Footer
+
 **Reuses**: Main site footer
 **Additions**: Industry-specific links section
 
 ## Content Customization Strategy
 
 ### Industry Research
+
 - Market size and growth
 - Key challenges and trends
 - Regulatory environment
@@ -366,6 +410,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Technology adoption
 
 ### Messaging Adaptation
+
 - Industry terminology
 - Relevant metaphors
 - Compliance language
@@ -373,6 +418,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Success metrics
 
 ### Visual Customization
+
 - Industry color schemes
 - Relevant imagery
 - Professional vs casual tone
@@ -382,6 +428,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 ## Dynamic Content Options
 
 ### Personalization
+
 - Visitor industry detection
 - Company size adaptation
 - Geographic customization
@@ -389,6 +436,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Account-based messaging
 
 ### A/B Testing
+
 - Headlines and value props
 - CTA buttons
 - Case study selection
@@ -398,17 +446,20 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 ## SEO Strategy
 
 ### URL Structure
+
 - /solutions/[industry-name]
 - /solutions/use-cases/[use-case]
 - /solutions/business-size/[size]
 
 ### Meta Optimization
+
 - Industry keywords
 - Long-tail phrases
 - Local SEO (if applicable)
 - Industry schema markup
 
 ### Content Strategy
+
 - Industry glossary
 - Comparison pages
 - Industry trends content
@@ -418,6 +469,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 ## Performance Metrics
 
 ### Engagement Metrics
+
 - Industry page views
 - Time on page
 - Scroll depth
@@ -425,6 +477,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Resource downloads
 
 ### Conversion Metrics
+
 - Demo requests
 - Trial signups
 - Contact form submissions
@@ -432,6 +485,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Calculator usage
 
 ### Comparison Metrics
+
 - Industry vs industry
 - Solution page vs homepage
 - Direct vs referred traffic
@@ -440,6 +494,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 ## Maintenance & Updates
 
 ### Regular Updates
+
 - Case studies refresh
 - Industry statistics
 - Compliance updates
@@ -447,6 +502,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Testimonial rotation
 
 ### Seasonal Adjustments
+
 - Industry events
 - Fiscal year considerations
 - Regulatory deadlines
@@ -455,6 +511,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 ## Responsive Design
 
 ### Mobile Optimization
+
 - Simplified navigation
 - Touch-friendly calculators
 - Compressed images
@@ -462,6 +519,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Click-to-call CTAs
 
 ### Tablet Experience
+
 - Optimal reading layout
 - Interactive elements
 - Video optimization
@@ -470,6 +528,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 ## Localization
 
 ### Regional Adaptation
+
 - Local regulations
 - Currency display
 - Date formats
@@ -477,6 +536,7 @@ Solutions pages are industry-specific or use-case-specific landing pages that de
 - Regional integrations
 
 ### Cultural Considerations
+
 - Imagery selection
 - Color meanings
 - Communication style

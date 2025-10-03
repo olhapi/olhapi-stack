@@ -3,8 +3,8 @@ title: 'Willkommen bei Astro'
 description: 'Erfahren Sie, wie Astro die moderne Webentwicklung revolutioniert und warum es das perfekte Framework für Ihre nächste Website ist.'
 pubDate: 'Sep 20 2024'
 heroImage:
-  src: '../../../assets/blog-placeholder-1.jpg'
-  alt: 'Astro Framework Illustration'
+    src: '../../../assets/blog-placeholder-1.jpg'
+    alt: 'Astro Framework Illustration'
 category: 'Product Updates'
 tags: ['astro', 'webentwicklung', 'framework']
 readTime: 6

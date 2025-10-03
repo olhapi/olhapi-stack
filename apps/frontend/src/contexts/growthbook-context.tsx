@@ -9,7 +9,7 @@ interface GrowthBookContextProviderProps {
     children: ReactNode;
 }
 
-export function GrowthBookContextProvider({ children }: GrowthBookContextProviderProps) {
+export function GrowthBookContextProvider({ children }: Readonly<GrowthBookContextProviderProps>) {
     const [growthBook, setGrowthBook] = useState<GrowthBook>();
     const { _ } = useLingui();
 

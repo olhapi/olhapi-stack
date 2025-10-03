@@ -63,7 +63,7 @@ const categories = [
     .map(([category, count]) => ({
       category,
       count,
-      href: `${lang !== 'en' ? `/${lang}` : ''}/blog/category/${category.toLowerCase().replace(/\s+/g, '-')}`,
+      href: `${lang !== 'en' ? `/${lang}` : ''}/blog/category/${category.toLowerCase().replaceAll(/\s+/g, '-')}`,
       isActive: activeCategory === category
     }))
     .sort((a, b) => a.category.localeCompare(b.category))

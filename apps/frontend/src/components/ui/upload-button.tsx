@@ -3,21 +3,26 @@ import type { UploadHookControl } from 'better-upload/client';
 import { Loader2, Upload } from 'lucide-react';
 import { useId } from 'react';
 
-type UploadButtonProps = {
+interface UploadButtonProps {
     control: UploadHookControl<false>;
     accept?: string;
     metadata?: Record<string, unknown>;
     uploadOverride?: (...args: Parameters<UploadHookControl<false>['upload']>) => void;
 
     // Add any additional props you need.
-};
+}
 
-export function UploadButton({ control: { upload, isPending }, accept, metadata, uploadOverride }: UploadButtonProps) {
+export function UploadButton({
+    control: { upload, isPending },
+    accept,
+    metadata,
+    uploadOverride,
+}: Readonly<UploadButtonProps>) {
     const id = useId();
 
     return (
         <Button disabled={isPending} className="relative" type="button">
-            <label htmlFor={id} className="absolute inset-0 cursor-pointer">
+            <label htmlFor={id} className="absolute inset-0 cursor-pointer" aria-label="Choose file to upload">
                 <input
                     id={id}
                     className="absolute inset-0 size-0 opacity-0"

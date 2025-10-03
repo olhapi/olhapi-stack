@@ -1,6 +1,7 @@
 # Components Library Specification
 
 ## Overview
+
 This document defines all reusable UI components used throughout the website. Each component is designed to be flexible, accessible, and consistent with the design system.
 
 ## Navigation Components
@@ -10,23 +11,27 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Primary site navigation and branding.
 
 **Variants**:
+
 - Default: Transparent background, becomes solid on scroll
 - Solid: Always solid background
 - Minimal: Logo and menu only
 
 **Structure**:
+
 - Logo area (left)
 - Navigation menu (center/left)
 - Action buttons (right)
 - Mobile menu toggle
 
 **States**:
+
 - Default
 - Scrolled (sticky)
 - Mobile expanded
 - Search active
 
 **Props/Options**:
+
 - Transparent mode
 - Sticky behavior
 - Search integration
@@ -38,6 +43,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Multi-column dropdown navigation.
 
 **Structure**:
+
 - Column layout (2-4 columns)
 - Section headers
 - Link lists
@@ -45,6 +51,7 @@ This document defines all reusable UI components used throughout the website. Ea
 - Visual elements/icons
 
 **Features**:
+
 - Hover delay
 - Keyboard navigation
 - Touch support
@@ -55,12 +62,14 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Show page hierarchy and navigation path.
 
 **Structure**:
+
 - Home link
 - Separator icons
 - Current page (non-link)
 - Schema markup
 
 **Variants**:
+
 - Simple text
 - With icons
 - Collapsible on mobile
@@ -70,6 +79,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Site-wide links and information.
 
 **Sections**:
+
 - Brand area
 - Link columns
 - Newsletter signup
@@ -78,6 +88,7 @@ This document defines all reusable UI components used throughout the website. Ea
 - Copyright
 
 **Variants**:
+
 - Full footer
 - Minimal footer
 - Sticky footer
@@ -87,12 +98,14 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Change site language/locale.
 
 **Types**:
+
 - Dropdown select
 - Flag icons
 - Text links
 - Modal selector
 
 **Features**:
+
 - Current language display
 - Country flags (optional)
 - Auto-detection
@@ -105,6 +118,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Primary interactive element for actions.
 
 **Variants**:
+
 - Primary: Main CTA actions
 - Secondary: Alternative actions
 - Tertiary: Low-emphasis actions
@@ -112,12 +126,14 @@ This document defines all reusable UI components used throughout the website. Ea
 - Danger: Destructive actions
 
 **Sizes**:
+
 - Small (32px height)
 - Medium (40px height)
 - Large (48px height)
 - Extra Large (56px height)
 
 **States**:
+
 - Default
 - Hover
 - Active/Pressed
@@ -125,6 +141,7 @@ This document defines all reusable UI components used throughout the website. Ea
 - Disabled
 
 **Features**:
+
 - Icon support (left/right)
 - Full width option
 - Loading spinner
@@ -136,12 +153,14 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Group related actions.
 
 **Types**:
+
 - Segmented control
 - Split button
 - Toggle group
 - Action bar
 
 **Features**:
+
 - Active state
 - Exclusive/multiple selection
 - Responsive collapse
@@ -151,16 +170,19 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Primary action on a page.
 
 **Variants**:
+
 - Circle
 - Extended (with text)
 - Mini size
 
 **Position**:
+
 - Bottom right
 - Bottom center
 - Custom position
 
 **Features**:
+
 - Show on scroll
 - Expand on hover
 - Multiple actions
@@ -172,6 +194,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Text input for forms.
 
 **Types**:
+
 - Text
 - Email
 - Password
@@ -181,11 +204,13 @@ This document defines all reusable UI components used throughout the website. Ea
 - Search
 
 **Variants**:
+
 - Outlined
 - Filled
 - Underlined
 
 **Features**:
+
 - Floating label
 - Helper text
 - Error state
@@ -198,6 +223,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Multi-line text input.
 
 **Features**:
+
 - Auto-resize
 - Character limit
 - Rich text option
@@ -209,6 +235,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Choose from predefined options.
 
 **Types**:
+
 - Native select
 - Custom dropdown
 - Multi-select
@@ -216,6 +243,7 @@ This document defines all reusable UI components used throughout the website. Ea
 - Async loading
 
 **Features**:
+
 - Option groups
 - Icons in options
 - Search/filter
@@ -227,12 +255,14 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Binary choice or multiple selections.
 
 **Variants**:
+
 - Default
 - Switch style
 - Card selection
 - Indeterminate state
 
 **Features**:
+
 - Label positioning
 - Helper text
 - Error state
@@ -243,12 +273,14 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Single choice from multiple options.
 
 **Variants**:
+
 - Default circles
 - Button style
 - Card style
 - Image selection
 
 **Layout**:
+
 - Vertical list
 - Horizontal list
 - Grid layout
@@ -258,12 +290,14 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: On/off state control.
 
 **Variants**:
+
 - Small/Medium/Large
 - With labels
 - With icons
 - iOS style
 
 **States**:
+
 - On/Off
 - Loading
 - Disabled
@@ -273,12 +307,14 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Select value from range.
 
 **Types**:
+
 - Single value
 - Range (min-max)
 - Stepped
 - Continuous
 
 **Features**:
+
 - Value labels
 - Tick marks
 - Custom tooltips
@@ -289,12 +325,14 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Upload files to the system.
 
 **Types**:
+
 - Button trigger
 - Drag and drop zone
 - Avatar upload
 - Multiple files
 
 **Features**:
+
 - File preview
 - Progress indication
 - File type validation
@@ -308,18 +346,21 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Container for grouped content.
 
 **Variants**:
+
 - Basic: Simple container
 - Media: With image/video
 - Interactive: Clickable
 - Expandable: Show more content
 
 **Structure**:
+
 - Header (optional)
 - Media (optional)
 - Body
 - Actions (optional)
 
 **Styles**:
+
 - Flat
 - Elevated (shadow)
 - Outlined
@@ -330,18 +371,21 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Overlay content requiring attention.
 
 **Types**:
+
 - Standard modal
 - Full screen
 - Side panel
 - Bottom sheet
 
 **Sizes**:
+
 - Small (400px)
 - Medium (600px)
 - Large (800px)
 - Full width
 
 **Features**:
+
 - Close button
 - Backdrop click
 - ESC key close
@@ -353,6 +397,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Expandable content sections.
 
 **Features**:
+
 - Single/multiple expansion
 - Icons (chevron, plus/minus)
 - Smooth height animation
@@ -364,12 +409,14 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Switch between content views.
 
 **Types**:
+
 - Top tabs
 - Vertical tabs
 - Icon tabs
 - Scrollable tabs
 
 **Features**:
+
 - Active indicator
 - Badge support
 - Lazy loading
@@ -381,17 +428,20 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Status indicators and counts.
 
 **Types**:
+
 - Label badge
 - Count badge
 - Dot indicator
 - Icon badge
 
 **Variants**:
+
 - Primary, Success, Warning, Error, Info
 - Small, Medium, Large
 - Rounded, Square
 
 **Position**:
+
 - Standalone
 - Attached to element
 - Floating corner
@@ -401,12 +451,14 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: User or entity representation.
 
 **Types**:
+
 - Image
 - Initial letters
 - Icon
 - Status indicator
 
 **Sizes**:
+
 - XS (24px)
 - Small (32px)
 - Medium (40px)
@@ -414,6 +466,7 @@ This document defines all reusable UI components used throughout the website. Ea
 - XL (96px)
 
 **Features**:
+
 - Fallback image
 - Status dot
 - Badge overlay
@@ -424,16 +477,19 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Contextual information on hover/focus.
 
 **Positions**:
+
 - Top, Bottom, Left, Right
 - Auto-positioning
 
 **Triggers**:
+
 - Hover
 - Click
 - Focus
 - Manual
 
 **Features**:
+
 - Arrow pointer
 - HTML content
 - Delay options
@@ -444,11 +500,13 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Rich content in floating container.
 
 **Differences from Tooltip**:
+
 - Supports interaction
 - Richer content
 - Can contain forms
 
 **Features**:
+
 - Dismissible
 - Focus trap
 - Custom positioning
@@ -461,18 +519,21 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: System messages and alerts.
 
 **Types**:
+
 - Info
 - Success
 - Warning
 - Error
 
 **Variants**:
+
 - Inline alert
 - Toast notification
 - Banner alert
 - Snackbar
 
 **Features**:
+
 - Icon
 - Title and description
 - Action button
@@ -484,18 +545,21 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Show completion or loading progress.
 
 **Types**:
+
 - Determinate
 - Indeterminate
 - Buffer
 - Circular
 
 **Variants**:
+
 - Linear
 - Circular
 - Segmented
 - Stepped
 
 **Features**:
+
 - Percentage label
 - Color variants
 - Animation
@@ -506,6 +570,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Indicate loading state.
 
 **Types**:
+
 - Circular spinner
 - Dots
 - Bars
@@ -513,12 +578,14 @@ This document defines all reusable UI components used throughout the website. Ea
 - Progress ring
 
 **Sizes**:
+
 - Small (16px)
 - Medium (24px)
 - Large (32px)
 - XL (48px)
 
 **Features**:
+
 - Custom colors
 - Speed control
 - Label text
@@ -529,6 +596,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Loading placeholder for content.
 
 **Types**:
+
 - Text lines
 - Avatar
 - Card
@@ -536,6 +604,7 @@ This document defines all reusable UI components used throughout the website. Ea
 - Custom shapes
 
 **Features**:
+
 - Shimmer animation
 - Responsive sizing
 - Multiple items
@@ -546,12 +615,14 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: No content or results messaging.
 
 **Components**:
+
 - Illustration/icon
 - Title
 - Description
 - Action button
 
 **Variants**:
+
 - No data
 - No results
 - Error state
@@ -564,6 +635,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Display tabular data.
 
 **Features**:
+
 - Sortable columns
 - Filterable
 - Searchable
@@ -575,6 +647,7 @@ This document defines all reusable UI components used throughout the website. Ea
 - Column resize
 
 **Variants**:
+
 - Basic
 - Striped
 - Bordered
@@ -586,6 +659,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Display items in vertical layout.
 
 **Types**:
+
 - Simple list
 - Avatar list
 - Two-line list
@@ -593,6 +667,7 @@ This document defines all reusable UI components used throughout the website. Ea
 - Interactive list
 
 **Features**:
+
 - Dividers
 - Section headers
 - Action buttons
@@ -604,11 +679,13 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Show chronological events.
 
 **Layouts**:
+
 - Vertical
 - Horizontal
 - Alternating
 
 **Features**:
+
 - Date markers
 - Icons
 - Content cards
@@ -620,6 +697,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Display metrics and KPIs.
 
 **Components**:
+
 - Value
 - Label
 - Change indicator
@@ -627,6 +705,7 @@ This document defines all reusable UI components used throughout the website. Ea
 - Icon
 
 **Features**:
+
 - Animation on load
 - Comparison value
 - Progress indicator
@@ -637,6 +716,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Data visualization.
 
 **Types**:
+
 - Line chart
 - Bar chart
 - Pie chart
@@ -645,6 +725,7 @@ This document defines all reusable UI components used throughout the website. Ea
 - Scatter plot
 
 **Features**:
+
 - Interactive tooltips
 - Legend
 - Responsive sizing
@@ -658,6 +739,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Page introduction with impact.
 
 **Variants**:
+
 - Text only
 - With image
 - With video
@@ -665,6 +747,7 @@ This document defines all reusable UI components used throughout the website. Ea
 - Full viewport
 
 **Components**:
+
 - Headline
 - Subheadline
 - CTA buttons
@@ -676,12 +759,14 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Display features or benefits.
 
 **Layouts**:
+
 - Equal grid
 - Bento box
 - Masonry
 - Carousel
 
 **Card Components**:
+
 - Icon
 - Title
 - Description
@@ -692,6 +777,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Display customer feedback.
 
 **Components**:
+
 - Quote
 - Author name
 - Author title
@@ -700,6 +786,7 @@ This document defines all reusable UI components used throughout the website. Ea
 - Rating
 
 **Variants**:
+
 - Simple quote
 - Card style
 - With media
@@ -710,6 +797,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Display pricing tiers.
 
 **Components**:
+
 - Plan name
 - Price
 - Period
@@ -718,6 +806,7 @@ This document defines all reusable UI components used throughout the website. Ea
 - Popular badge
 
 **Features**:
+
 - Highlight recommended
 - Compare toggle
 - Feature tooltips
@@ -727,12 +816,14 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Call-to-action blocks.
 
 **Layouts**:
+
 - Centered
 - Split
 - Background image
 - Gradient
 
 **Components**:
+
 - Headline
 - Description
 - Button(s)
@@ -745,12 +836,14 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Navigate through pages.
 
 **Types**:
+
 - Number pagination
 - Previous/Next
 - Load more
 - Infinite scroll
 
 **Features**:
+
 - Page size selector
 - Jump to page
 - Total results
@@ -761,18 +854,21 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Multi-step process indicator.
 
 **Types**:
+
 - Horizontal
 - Vertical
 - Dot indicators
 - Progress bar
 
 **States**:
+
 - Completed
 - Active
 - Upcoming
 - Error
 
 **Features**:
+
 - Step labels
 - Optional steps
 - Clickable steps
@@ -783,6 +879,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Search functionality.
 
 **Features**:
+
 - Auto-suggestions
 - Recent searches
 - Search categories
@@ -791,6 +888,7 @@ This document defines all reusable UI components used throughout the website. Ea
 - Loading state
 
 **Variants**:
+
 - Inline
 - Overlay
 - Expanding
@@ -803,12 +901,14 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Visual separation.
 
 **Types**:
+
 - Horizontal
 - Vertical
 - With text
 - Dotted/dashed
 
 **Features**:
+
 - Custom spacing
 - Color variants
 - Thickness options
@@ -818,6 +918,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Add consistent spacing.
 
 **Sizes**:
+
 - Using spacing scale
 - Responsive sizing
 - Conditional display
@@ -827,6 +928,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Content width constraint.
 
 **Variants**:
+
 - Full width
 - Max width
 - Fluid
@@ -837,12 +939,14 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Cover content temporarily.
 
 **Types**:
+
 - Modal backdrop
 - Loading overlay
 - Image overlay
 - Gradient overlay
 
 **Features**:
+
 - Opacity control
 - Click to close
 - Blur effect
@@ -853,12 +957,14 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Switch between light/dark themes.
 
 **Types**:
+
 - Icon button
 - Switch
 - Dropdown
 - Auto/Light/Dark selector
 
 **Features**:
+
 - Smooth transition
 - System preference
 - Persistence
@@ -869,6 +975,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Copy text/code to clipboard.
 
 **Features**:
+
 - Success feedback
 - Tooltip
 - Custom text
@@ -879,6 +986,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Share content on social media.
 
 **Platforms**:
+
 - Twitter/X
 - LinkedIn
 - Facebook
@@ -887,6 +995,7 @@ This document defines all reusable UI components used throughout the website. Ea
 - Copy link
 
 **Features**:
+
 - Custom text
 - Hashtags
 - Analytics tracking
@@ -897,6 +1006,7 @@ This document defines all reusable UI components used throughout the website. Ea
 **Purpose**: Scroll to page top.
 
 **Features**:
+
 - Show on scroll down
 - Smooth scroll
 - Progress indicator
@@ -905,6 +1015,7 @@ This document defines all reusable UI components used throughout the website. Ea
 ## Component Guidelines
 
 ### Accessibility Requirements
+
 - ARIA labels and roles
 - Keyboard navigation
 - Focus management
@@ -912,18 +1023,21 @@ This document defines all reusable UI components used throughout the website. Ea
 - Color contrast compliance
 
 ### Responsive Behavior
+
 - Mobile-first approach
 - Touch targets (minimum 44px)
 - Breakpoint adaptations
 - Performance optimization
 
 ### Animation Standards
+
 - Consistent timing
 - Reduced motion support
 - Performance considerations
 - Smooth transitions
 
 ### State Management
+
 - Loading states
 - Error states
 - Empty states
@@ -931,12 +1045,14 @@ This document defines all reusable UI components used throughout the website. Ea
 - Disabled states
 
 ### Theming Support
+
 - CSS variables usage
 - Light/dark variants
 - Color customization
 - Typography scaling
 
 ### Documentation Needs
+
 - Usage examples
 - Props/options tables
 - Accessibility notes

@@ -82,7 +82,7 @@ export function createSanitizedError(
 
     return {
         error: errorType
-            .replace('_', ' ')
+            .replaceAll('_', ' ')
             .toLowerCase()
             .replace(/\b\w/g, (l) => l.toUpperCase()),
         message: GENERIC_ERROR_MESSAGES[errorType],

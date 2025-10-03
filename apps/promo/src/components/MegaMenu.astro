@@ -236,7 +236,7 @@ const menuData = $t(type);
             <h3 class="mega-menu-title">{menuData.features.title}</h3>
             <div class="mega-menu-items">
               {menuData.features.items.map((item: any) => (
-                <a href={`/${lang === 'de' ? 'de/' : ''}features/${item.name.toLowerCase().replace(/\s+/g, '-')}`} class="mega-menu-item">
+                <a href={`/${lang === 'de' ? 'de/' : ''}features/${item.name.toLowerCase().replaceAll(/\s+/g, '-')}`} class="mega-menu-item">
                   <span class="mega-menu-icon">{item.icon}</span>
                   <div class="mega-menu-item-content">
                     <span class="mega-menu-item-name">{item.name}</span>
@@ -319,7 +319,7 @@ const menuData = $t(type);
             <h3 class="mega-menu-title">{menuData.useCases.title}</h3>
             <div class="mega-menu-items">
               {menuData.useCases.items.map((item: any) => (
-                <a href={`/${lang === 'de' ? 'de/' : ''}solutions/use-cases/${item.name.toLowerCase().replace(/\s+/g, '-')}`} class="mega-menu-item">
+                <a href={`/${lang === 'de' ? 'de/' : ''}solutions/use-cases/${item.name.toLowerCase().replaceAll(/\s+/g, '-')}`} class="mega-menu-item">
                   <span class="mega-menu-icon">{item.icon}</span>
                   <div class="mega-menu-item-content">
                     <span class="mega-menu-item-name">{item.name}</span>

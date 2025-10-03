@@ -3,8 +3,8 @@ title: 'Second post'
 description: 'Lorem ipsum dolor sit amet'
 pubDate: 'Jul 15 2022'
 heroImage:
-  src: '../../../assets/blog-placeholder-4.jpg'
-  alt: 'Blog placeholder image'
+    src: '../../../assets/blog-placeholder-4.jpg'
+    alt: 'Blog placeholder image'
 category: 'Engineering'
 tags: ['development', 'tutorial']
 readTime: 7

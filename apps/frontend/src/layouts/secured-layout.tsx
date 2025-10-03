@@ -48,7 +48,7 @@ const generateBreadcrumbs = (pathname: string) => {
 
     // Build path progressively for each segment
     let currentPath = '';
-    segments.forEach((segment, index) => {
+    for (const [index, segment] of segments.entries()) {
         currentPath += `/${segment}`;
         const isLast = index === segments.length - 1;
 
@@ -57,7 +57,7 @@ const generateBreadcrumbs = (pathname: string) => {
             path: currentPath,
             isLast,
         });
-    });
+    }
 
     return breadcrumbs;
 };

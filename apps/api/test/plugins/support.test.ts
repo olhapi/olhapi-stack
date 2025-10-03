@@ -6,8 +6,7 @@ import Support from '../../plugins/support.ts';
 
 test('support works standalone', async (_t) => {
     const fastify = Fastify();
-    // eslint-disable-next-line no-void
-    void fastify.register(Support);
+    await fastify.register(Support);
     await fastify.ready();
 
     assert.equal(fastify.someSupport(), 'hugs');

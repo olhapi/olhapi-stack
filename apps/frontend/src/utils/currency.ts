@@ -30,5 +30,5 @@ export function formatCurrencyCompact(amount: number, options: FormatCurrencyOpt
 export function parseCurrencyAmount(currencyString: string): number {
     // Remove currency symbols, spaces, and commas, then parse as float
     const cleanString = currencyString.replace(/[^0-9.-]/g, '');
-    return parseFloat(cleanString) || 0;
+    return Number.parseFloat(cleanString) || 0;
 }

@@ -1,36 +1,46 @@
 # Resources Page Specification
 
 ## Overview
+
 The Resources page serves as a comprehensive knowledge hub, providing guides, documentation, templates, webinars, and help articles. It supports customer success, reduces support burden, and demonstrates product expertise.
 
 ## Resource Types
 
 ### 1. Guides & Tutorials
+
 Step-by-step instructions for specific tasks and workflows.
 
 ### 2. Documentation
+
 Technical documentation, API references, and specifications.
 
 ### 3. Case Studies
+
 Customer success stories and implementation examples.
 
 ### 4. Templates & Tools
+
 Downloadable templates, calculators, and utilities.
 
 ### 5. Webinars & Videos
+
 Recorded sessions, tutorials, and product demos.
 
 ### 6. White Papers
+
 In-depth research and industry reports.
 
 ### 7. Help Articles
+
 Quick answers to common questions and issues.
 
 ## Page Structure
 
 ### 1. Header Navigation
+
 **Reuses**: Main site header from homepage
 **Specific Elements**:
+
 - "Resources" nav item highlighted/active
 - Possible dropdown with resource categories
 
@@ -39,20 +49,22 @@ Quick answers to common questions and issues.
 **Purpose**: Orient visitors and provide immediate search capability.
 
 **Content Structure**:
+
 - Headline: "Resource Center" or "Knowledge Hub"
 - Subheadline: "Everything you need to succeed with [Product]"
 - Search Bar: Large, prominent with placeholder text
-  - Placeholder: "Search guides, docs, videos..."
-  - Auto-suggestions dropdown
-  - Recent searches
-  - Popular searches
+    - Placeholder: "Search guides, docs, videos..."
+    - Auto-suggestions dropdown
+    - Recent searches
+    - Popular searches
 - Quick Stats:
-  - Total resources available
-  - Hours of video content
-  - Templates available
-  - Last updated
+    - Total resources available
+    - Hours of video content
+    - Templates available
+    - Last updated
 
 **Visual Elements**:
+
 - Background: Gradient or abstract pattern
 - Search bar with glass morphism
 - Animated icons or illustrations
@@ -65,6 +77,7 @@ Quick answers to common questions and issues.
 **Layout**: 2x3 or 3x2 grid of category cards.
 
 **Category Card Structure**:
+
 - Icon: Large, colored icon representing category
 - Category Name: Clear label
 - Description: One-line description
@@ -75,31 +88,37 @@ Quick answers to common questions and issues.
 **Categories**:
 
 #### Getting Started
+
 - Icon: Rocket or play button
 - Description: "New to [Product]? Start here"
 - Subcategories: Quick start, Setup guides, First steps
 
 #### Documentation
+
 - Icon: Book or document
 - Description: "Technical docs and API references"
 - Subcategories: API docs, SDKs, Integrations
 
 #### Best Practices
+
 - Icon: Lightbulb or star
 - Description: "Learn from the experts"
 - Subcategories: Workflows, Tips & tricks, Industry guides
 
 #### Video Library
+
 - Icon: Video camera or play circle
 - Description: "Webinars, tutorials, and demos"
 - Subcategories: Webinars, Product tours, Training
 
 #### Templates & Tools
+
 - Icon: Grid or download
 - Description: "Ready-to-use resources"
 - Subcategories: Templates, Calculators, Checklists
 
 #### Case Studies
+
 - Icon: Chart or briefcase
 - Description: "Customer success stories"
 - Subcategories: By industry, By use case, ROI stories
@@ -113,21 +132,25 @@ Quick answers to common questions and issues.
 **Sections**:
 
 #### What's New
+
 - Latest additions to resource library
 - "NEW" badges
 - Last 30 days filter
 
 #### Most Popular
+
 - Top downloaded/viewed resources
 - View/download counts
 - Trending indicators
 
 #### Editor's Picks
+
 - Curated high-value resources
 - Staff recommendations
 - Seasonal relevance
 
 **Resource Card Display**:
+
 - Thumbnail image or icon
 - Resource type badge
 - Title
@@ -144,6 +167,7 @@ Quick answers to common questions and issues.
 **Filters & Controls**:
 
 #### Filter Sidebar (Desktop)
+
 - **Type**: Checkboxes for resource types
 - **Topic**: Product areas and features
 - **Difficulty**: Beginner, Intermediate, Advanced
@@ -153,6 +177,7 @@ Quick answers to common questions and issues.
 - **Language**: Available translations
 
 #### Sort Options
+
 - Newest first
 - Most popular
 - Alphabetical
@@ -160,25 +185,28 @@ Quick answers to common questions and issues.
 - Highest rated
 
 #### View Controls
+
 - Grid view (default)
 - List view (detailed)
 - Compact view (titles only)
 - Results per page
 
 **Resource Card (Grid View)**:
+
 - Thumbnail: Type-specific image or icon
 - Type Badge: Color-coded by resource type
 - Title: Clear, descriptive
 - Description: 2-3 lines
 - Metadata Bar:
-  - Format icon
-  - Duration/length
-  - Difficulty level
-  - Last updated
+    - Format icon
+    - Duration/length
+    - Difficulty level
+    - Last updated
 - Action Button: Download/View/Watch
 - Secondary Actions: Bookmark, Share
 
 **Resource Row (List View)**:
+
 - Smaller thumbnail
 - Expanded description
 - All metadata visible
@@ -190,6 +218,7 @@ Quick answers to common questions and issues.
 **Purpose**: Provide detailed information before download/viewing.
 
 **Content**:
+
 - Full title
 - Extended description
 - Table of contents (for long content)
@@ -202,12 +231,14 @@ Quick answers to common questions and issues.
 - Share buttons
 
 **For Videos**:
+
 - Embedded player
 - Transcript available
 - Chapter markers
 - Download slides option
 
 **For Documents**:
+
 - Preview pages
 - File size
 - Page count
@@ -218,6 +249,7 @@ Quick answers to common questions and issues.
 **Purpose**: Curated sequences of resources for specific goals.
 
 **Structure**:
+
 - Path name and description
 - Total time to complete
 - Number of resources
@@ -225,12 +257,14 @@ Quick answers to common questions and issues.
 - Certificate of completion
 
 **Example Paths**:
+
 - "Getting Started with [Product]"
 - "Advanced Administration"
 - "Developer Essentials"
 - "Sales Enablement"
 
 **Path Display**:
+
 - Visual progress bar
 - Numbered steps
 - Lock icons for sequential content
@@ -241,6 +275,7 @@ Quick answers to common questions and issues.
 **Purpose**: Provide calculators, assessments, and planners.
 
 **Types**:
+
 - ROI Calculator
 - Sizing Calculator
 - Readiness Assessment
@@ -248,6 +283,7 @@ Quick answers to common questions and issues.
 - Comparison Tools
 
 **Tool Cards**:
+
 - Tool name and icon
 - Brief description
 - Time to complete
@@ -261,18 +297,21 @@ Quick answers to common questions and issues.
 **Sections**:
 
 #### Upcoming Webinars
+
 - Calendar view
 - Registration buttons
 - Add to calendar
 - Email reminders
 
 #### On-Demand Library
+
 - Recorded sessions
 - Searchable archive
 - Series/playlists
 - Speaker profiles
 
-#### Webinar Features**:
+#### Webinar Features\*\*:
+
 - Thumbnail preview
 - Duration
 - Speaker info
@@ -285,6 +324,7 @@ Quick answers to common questions and issues.
 **Purpose**: Quick access to support articles.
 
 **Components**:
+
 - Popular help articles
 - Recent questions
 - Contact support button
@@ -296,6 +336,7 @@ Quick answers to common questions and issues.
 **Purpose**: Keep users informed of new resources.
 
 **Content**:
+
 - "Stay Updated" heading
 - Resource digest signup
 - Frequency options
@@ -303,11 +344,13 @@ Quick answers to common questions and issues.
 - Sample newsletter link
 
 ### 12. Footer
+
 **Reuses**: Main site footer from homepage
 
 ## Search Functionality
 
 ### Search Features
+
 - Full-text search across all content
 - Filter search results by type
 - Search suggestions/autocomplete
@@ -317,6 +360,7 @@ Quick answers to common questions and issues.
 - No results suggestions
 
 ### Search Results Page
+
 - Result count and query
 - Filtering options
 - Result snippets with highlighting
@@ -327,6 +371,7 @@ Quick answers to common questions and issues.
 ## User Experience Features
 
 ### Personalization (If Logged In)
+
 - Recommended resources
 - Continue where you left off
 - Bookmarked resources
@@ -335,6 +380,7 @@ Quick answers to common questions and issues.
 - Personalized paths
 
 ### Engagement Features
+
 - Resource ratings
 - Comments/discussions
 - Social sharing
@@ -343,6 +389,7 @@ Quick answers to common questions and issues.
 - Offline download
 
 ### Accessibility
+
 - Keyboard navigation
 - Screen reader support
 - Closed captions for videos
@@ -353,6 +400,7 @@ Quick answers to common questions and issues.
 ## Content Management
 
 ### Metadata Requirements
+
 - Title and description
 - Type and format
 - Topics and tags
@@ -365,6 +413,7 @@ Quick answers to common questions and issues.
 - File size
 
 ### Content States
+
 - Published
 - Scheduled
 - Archived
@@ -372,6 +421,7 @@ Quick answers to common questions and issues.
 - Deprecated
 
 ### Version Control
+
 - Version numbers
 - Change logs
 - Previous versions
@@ -380,6 +430,7 @@ Quick answers to common questions and issues.
 ## Analytics & Tracking
 
 ### Metrics to Monitor
+
 - Resource views/downloads
 - Search queries
 - Filter usage
@@ -390,6 +441,7 @@ Quick answers to common questions and issues.
 - Conversion to signup
 
 ### User Behavior
+
 - Most popular resources
 - Common search terms
 - Filter combinations
@@ -400,6 +452,7 @@ Quick answers to common questions and issues.
 ## Mobile Optimization
 
 ### Layout Adjustments
+
 - Single column grid
 - Collapsible filters
 - Simplified cards
@@ -407,6 +460,7 @@ Quick answers to common questions and issues.
 - Swipe navigation
 
 ### Mobile-Specific Features
+
 - Offline reading list
 - App deep links
 - Native share sheet
@@ -416,6 +470,7 @@ Quick answers to common questions and issues.
 ## Performance Optimization
 
 ### Loading Strategy
+
 - Lazy load images
 - Progressive enhancement
 - Pagination vs infinite scroll
@@ -423,6 +478,7 @@ Quick answers to common questions and issues.
 - Compressed downloads
 
 ### Caching
+
 - Resource metadata
 - Search indices
 - Popular downloads
@@ -431,6 +487,7 @@ Quick answers to common questions and issues.
 ## Integration Points
 
 ### CRM/Marketing Automation
+
 - Lead capture for gated content
 - Progressive profiling
 - Lead scoring
@@ -438,6 +495,7 @@ Quick answers to common questions and issues.
 - Behavior tracking
 
 ### Analytics Platforms
+
 - Google Analytics
 - Mixpanel/Amplitude
 - Video analytics
@@ -445,6 +503,7 @@ Quick answers to common questions and issues.
 - Heatmap tools
 
 ### Content Delivery
+
 - CDN integration
 - Video streaming service
 - Document viewers
@@ -453,6 +512,7 @@ Quick answers to common questions and issues.
 ## Gated Content Strategy
 
 ### Gate Considerations
+
 - High-value content
 - Progressive gating
 - Email-only gates
@@ -460,6 +520,7 @@ Quick answers to common questions and issues.
 - Skip for returning users
 
 ### Lead Capture Forms
+
 - Minimal fields
 - Progressive profiling
 - Social login
@@ -469,6 +530,7 @@ Quick answers to common questions and issues.
 ## SEO Optimization
 
 ### Technical SEO
+
 - Unique meta descriptions
 - Structured data
 - XML sitemap
@@ -476,6 +538,7 @@ Quick answers to common questions and issues.
 - Faceted navigation handling
 
 ### Content SEO
+
 - Keyword optimization
 - Internal linking
 - Topic clusters

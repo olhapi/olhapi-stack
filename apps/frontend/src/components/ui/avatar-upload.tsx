@@ -38,7 +38,7 @@ const getFullAvatarUrl = (imageUrl: string | null | undefined): string | null =>
     return imageUrl;
 };
 
-export function AvatarUpload({ currentImage, onUploadSuccess, onUploadError }: AvatarUploadProps) {
+export function AvatarUpload({ currentImage, onUploadSuccess, onUploadError }: Readonly<AvatarUploadProps>) {
     const fullCurrentImageUrl = getFullAvatarUrl(currentImage);
     const [previousUrl, setPreviousUrl] = useState<string | null>(fullCurrentImageUrl);
     const [cropDialogOpen, setCropDialogOpen] = useState(false);

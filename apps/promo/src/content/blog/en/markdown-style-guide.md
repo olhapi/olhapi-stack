@@ -3,8 +3,8 @@ title: 'Markdown Style Guide'
 description: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
 pubDate: 'Jun 19 2024'
 heroImage:
-  src: '../../../assets/blog-placeholder-1.jpg'
-  alt: 'Markdown style guide illustration'
+    src: '../../../assets/blog-placeholder-1.jpg'
+    alt: 'Markdown style guide illustration'
 category: 'Tutorials'
 tags: ['markdown', 'guide', 'documentation']
 readTime: 8
@@ -106,13 +106,13 @@ we can use 3 backticks ``` in new line and write snippet and close with 3 backti
 ```html
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Example HTML5 Document</title>
-  </head>
-  <body>
-    <p>Test</p>
-  </body>
+    <head>
+        <meta charset="utf-8" />
+        <title>Example HTML5 Document</title>
+    </head>
+    <body>
+        <p>Test</p>
+    </body>
 </html>
 ```
 ````
@@ -122,13 +122,13 @@ we can use 3 backticks ``` in new line and write snippet and close with 3 backti
 ```html
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Example HTML5 Document</title>
-  </head>
-  <body>
-    <p>Test</p>
-  </body>
+    <head>
+        <meta charset="utf-8" />
+        <title>Example HTML5 Document</title>
+    </head>
+    <body>
+        <p>Test</p>
+    </body>
 </html>
 ```
 
@@ -172,23 +172,23 @@ we can use 3 backticks ``` in new line and write snippet and close with 3 backti
 
 ```markdown
 - Fruit
-  - Apple
-  - Orange
-  - Banana
+    - Apple
+    - Orange
+    - Banana
 - Dairy
-  - Milk
-  - Cheese
+    - Milk
+    - Cheese
 ```
 
 #### Output
 
 - Fruit
-  - Apple
-  - Orange
-  - Banana
+    - Apple
+    - Orange
+    - Banana
 - Dairy
-  - Milk
-  - Cheese
+    - Milk
+    - Cheese
 
 ## Other Elements — abbr, sub, sup, kbd, mark
 

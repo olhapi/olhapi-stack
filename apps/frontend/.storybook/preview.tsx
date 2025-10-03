@@ -8,24 +8,6 @@ import '../src/index.css';
 // Initialize i18n for Storybook
 i18n.activate('en');
 
-// Mock auth context for stories
-const mockAuthContext = {
-    user: {
-        id: '1',
-        name: 'John Doe',
-        username: 'johndoe',
-        email: 'john@example.com',
-        image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=johndoe',
-    },
-    updateUser: async (data: any) => {
-        console.log('Updating user:', data);
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-    },
-    login: async () => {},
-    logout: async () => {},
-    isLoading: false,
-};
-
 const preview: Preview = {
     parameters: {
         controls: {

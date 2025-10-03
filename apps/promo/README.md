@@ -126,12 +126,13 @@ src/content/blog/
 ### Adding New Languages
 
 1. Add locale to `astro.config.mjs`:
-   ```js
-   i18n: {
-     defaultLocale: 'en',
-     locales: ['en', 'de', 'fr'], // Add 'fr'
-   }
-   ```
+
+    ```js
+    i18n: {
+      defaultLocale: 'en',
+      locales: ['en', 'de', 'fr'], // Add 'fr'
+    }
+    ```
 
 2. Add translations to component objects
 3. Create new locale folder in `src/pages/`
@@ -231,14 +232,14 @@ Key configuration in `astro.config.mjs`:
 
 ```js
 export default defineConfig({
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'de'],
-    routing: {
-      prefixDefaultLocale: false
-    }
-  },
-  // ... other config
+    i18n: {
+        defaultLocale: 'en',
+        locales: ['en', 'de'],
+        routing: {
+            prefixDefaultLocale: false,
+        },
+    },
+    // ... other config
 });
 ```
 
@@ -276,10 +277,10 @@ import { defineConfig } from 'astro/config';
 import node from '@astrojs/node';
 
 export default defineConfig({
-  output: 'server',
-  adapter: node({
-    mode: 'standalone'
-  }),
+    output: 'server',
+    adapter: node({
+        mode: 'standalone',
+    }),
 });
 ```
 

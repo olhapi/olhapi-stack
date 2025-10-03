@@ -1,29 +1,29 @@
 ---
-title: "Getting Started Guide"
-description: "Learn how to get up and running with our platform in just 15 minutes"
-type: "guide"
-category: "Getting Started"
+title: 'Getting Started Guide'
+description: 'Learn how to get up and running with our platform in just 15 minutes'
+type: 'guide'
+category: 'Getting Started'
 pubDate: 2024-01-15
-difficulty: "beginner"
+difficulty: 'beginner'
 duration:
-  minutes: 15
-  format: "15 min read"
-format: "article"
+    minutes: 15
+    format: '15 min read'
+format: 'article'
 thumbnail:
-  src: "/images/resources/getting-started-thumb.png"
-  alt: "Getting Started Guide"
-  type: "illustration"
+    src: '/images/resources/getting-started-thumb.png'
+    alt: 'Getting Started Guide'
+    type: 'illustration'
 gated: false
 learningObjectives:
-  - "Set up your account and workspace"
-  - "Create your first project"
-  - "Understand the basic interface"
-  - "Deploy your first application"
-tags: ["getting-started", "tutorial", "beginner", "setup"]
+    - 'Set up your account and workspace'
+    - 'Create your first project'
+    - 'Understand the basic interface'
+    - 'Deploy your first application'
+tags: ['getting-started', 'tutorial', 'beginner', 'setup']
 author:
-  name: "Alex Johnson"
-  title: "Developer Relations Engineer"
-  bio: "Alex helps developers get the most out of our platform"
+    name: 'Alex Johnson'
+    title: 'Developer Relations Engineer'
+    bio: 'Alex helps developers get the most out of our platform'
 ---
 
 # Getting Started Guide

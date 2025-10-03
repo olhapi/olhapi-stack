@@ -1,6 +1,7 @@
 'use client';
 
-import { ErrorBoundary as ReactErrorBoundary, useErrorBoundary } from 'react-error-boundary';
+import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
+export { useErrorBoundary } from 'react-error-boundary';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AlertCircle, Home, RefreshCw } from 'lucide-react';
@@ -13,7 +14,7 @@ interface ErrorFallbackProps {
     resetErrorBoundary: () => void;
 }
 
-function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
+function ErrorFallback({ error, resetErrorBoundary }: Readonly<ErrorFallbackProps>) {
     useEffect(() => {
         console.error('ErrorBoundary caught an error:', error);
         toast.error('Something went wrong. Please try again.');
@@ -38,7 +39,7 @@ function ErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
                         <Trans>Please try again or contact support if the problem persists.</Trans>
                     </p>
                     <div className="flex gap-4">
-                        <Button onClick={() => (window.location.href = '/')} variant="outline" className="flex-1">
+                        <Button onClick={() => (globalThis.location.href = '/')} variant="outline" className="flex-1">
                             <Home className="mr-2 h-4 w-4" />
                             <Trans>Go Home</Trans>
                         </Button>
@@ -58,7 +59,11 @@ interface ErrorBoundaryProps extends PropsWithChildren {
     onError?: (error: Error, errorInfo: React.ErrorInfo) => void;
 }
 
-export function ErrorBoundary({ children, fallback: FallbackComponent = ErrorFallback, onError }: ErrorBoundaryProps) {
+export function ErrorBoundary({
+    children,
+    fallback: FallbackComponent = ErrorFallback,
+    onError,
+}: Readonly<ErrorBoundaryProps>) {
     const handleError = (error: Error, errorInfo: React.ErrorInfo) => {
         console.error('ErrorBoundary caught an error:', error, errorInfo);
 
@@ -73,5 +78,3 @@ export function ErrorBoundary({ children, fallback: FallbackComponent = ErrorFal
         </ReactErrorBoundary>
     );
 }
-
-export { useErrorBoundary };

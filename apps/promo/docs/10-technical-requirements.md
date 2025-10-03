@@ -1,28 +1,33 @@
 # Technical Requirements Specification
 
 ## Overview
+
 This document outlines the technical requirements, performance standards, infrastructure needs, and implementation guidelines for the SaaS promotional website.
 
 ## Technology Stack
 
 ### Core Framework
+
 - **Astro**: v5.x (Static Site Generator)
 - **Node.js**: v18+ LTS
 - **Package Manager**: npm or pnpm
 
 ### Styling & UI
+
 - **Tailwind CSS**: v4.x with Vite plugin
 - **CSS**: Modern CSS with custom properties
 - **Icons**: Lucide Icons via @lucide/astro
 - **Fonts**: Variable fonts for performance
 
 ### Content & Data
+
 - **Markdown/MDX**: For content authoring
 - **Content Collections**: Type-safe content management
 - **Images**: Sharp for optimization
 - **Data Fetching**: Native fetch API
 
 ### Build & Development
+
 - **Vite**: Build tool and dev server
 - **TypeScript**: For type safety
 - **ESLint**: Code quality
@@ -31,7 +36,8 @@ This document outlines the technical requirements, performance standards, infras
 ## Environment Variables
 
 ### Required Variables
-```
+
+````
 # Application URLs
 PUBLIC_APP_URL=                    # Main application URL for CTAs
 
@@ -417,9 +423,10 @@ PUBLIC_APP_URL=                    # Main application URL for CTAs
 - Tablet: 640px - 1023px
 - Desktop: 1024px - 1439px
 - Wide: 1440px+
-```
+````
 
 ### Mobile-First Approach
+
 - Base styles for mobile
 - Progressive enhancement
 - Touch-optimized interfaces
@@ -427,6 +434,7 @@ PUBLIC_APP_URL=                    # Main application URL for CTAs
 - Viewport meta tag
 
 ### Performance on Mobile
+
 - Reduced JavaScript
 - Optimized images
 - Simplified animations
@@ -436,6 +444,7 @@ PUBLIC_APP_URL=                    # Main application URL for CTAs
 ## Maintenance Requirements
 
 ### Content Updates
+
 - Easy content editing
 - Version control
 - Preview capabilities
@@ -443,6 +452,7 @@ PUBLIC_APP_URL=                    # Main application URL for CTAs
 - Rollback options
 
 ### Technical Maintenance
+
 - Dependency updates
 - Security patches
 - Performance optimization
@@ -452,6 +462,7 @@ PUBLIC_APP_URL=                    # Main application URL for CTAs
 ## Quality Assurance
 
 ### Code Quality
+
 - Code reviews
 - Automated testing
 - Static analysis
@@ -459,6 +470,7 @@ PUBLIC_APP_URL=                    # Main application URL for CTAs
 - Security scanning
 
 ### Content Quality
+
 - Editorial review
 - SEO validation
 - Accessibility checking
@@ -466,6 +478,7 @@ PUBLIC_APP_URL=                    # Main application URL for CTAs
 - Image optimization
 
 ### User Experience
+
 - Usability testing
 - A/B testing
 - Feedback collection

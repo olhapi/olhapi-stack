@@ -22,7 +22,13 @@ interface AvatarCropDialogProps {
     onCancel?: () => void;
 }
 
-export function AvatarCropDialog({ open, onOpenChange, imageSrc, onCropComplete, onCancel }: AvatarCropDialogProps) {
+export function AvatarCropDialog({
+    open,
+    onOpenChange,
+    imageSrc,
+    onCropComplete,
+    onCancel,
+}: Readonly<AvatarCropDialogProps>) {
     const { _ } = useLingui();
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [rotation, setRotation] = useState(0);

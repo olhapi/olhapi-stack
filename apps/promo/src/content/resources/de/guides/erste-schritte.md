@@ -1,29 +1,29 @@
 ---
-title: "Erste Schritte Anleitung"
-description: "Lernen Sie, wie Sie in nur 15 Minuten mit unserer Plattform starten können"
-type: "guide"
-category: "Getting Started"
+title: 'Erste Schritte Anleitung'
+description: 'Lernen Sie, wie Sie in nur 15 Minuten mit unserer Plattform starten können'
+type: 'guide'
+category: 'Getting Started'
 pubDate: 2024-01-15
-difficulty: "beginner"
+difficulty: 'beginner'
 duration:
-  minutes: 15
-  format: "15 Min Lesezeit"
-format: "article"
+    minutes: 15
+    format: '15 Min Lesezeit'
+format: 'article'
 thumbnail:
-  src: "/images/resources/getting-started-thumb.png"
-  alt: "Erste Schritte Anleitung"
-  type: "illustration"
+    src: '/images/resources/getting-started-thumb.png'
+    alt: 'Erste Schritte Anleitung'
+    type: 'illustration'
 gated: false
 learningObjectives:
-  - "Konto und Arbeitsbereich einrichten"
-  - "Ihr erstes Projekt erstellen"
-  - "Die Benutzeroberfläche verstehen"
-  - "Ihre erste Anwendung bereitstellen"
-tags: ["erste-schritte", "tutorial", "anfänger", "setup"]
+    - 'Konto und Arbeitsbereich einrichten'
+    - 'Ihr erstes Projekt erstellen'
+    - 'Die Benutzeroberfläche verstehen'
+    - 'Ihre erste Anwendung bereitstellen'
+tags: ['erste-schritte', 'tutorial', 'anfänger', 'setup']
 author:
-  name: "Alex Johnson"
-  title: "Developer Relations Engineer"
-  bio: "Alex hilft Entwicklern, das Beste aus unserer Plattform herauszuholen"
+    name: 'Alex Johnson'
+    title: 'Developer Relations Engineer'
+    bio: 'Alex hilft Entwicklern, das Beste aus unserer Plattform herauszuholen'
 ---
 
 # Erste Schritte Anleitung
