@@ -4,17 +4,21 @@ import type { HTMLAttributes } from 'astro/types';
 type Props = HTMLAttributes<'a'>;
 
 const { href, class: className, ...props } = Astro.props;
-const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
+const pathname = Astro.url.pathname;
 
 // Handle locale-aware active states
-// Remove locale prefix from pathname for comparison
-const pathWithoutLocale = pathname.replace(/^\/(en|de)/, '') || '/';
-const hrefWithoutLocale = href?.replace(/^\/(en|de)/, '') || '/';
-const isActive = hrefWithoutLocale === pathWithoutLocale ||
-                 (pathWithoutLocale === '/' && hrefWithoutLocale === '/');
+// Remove locale prefix and trailing slashes from pathname for comparison
+const pathWithoutLocale = pathname.replace(/^\/(en|de)/, '').replace(/\/$/, '') || '/';
+const hrefWithoutLocale = href?.replace(/^\/(en|de)/, '').replace(/\/$/, '') || '/';
+const isActive = hrefWithoutLocale === pathWithoutLocale;
+
+// Pre-compute class name (same pattern as MegaMenu)
+const finalClass = isActive
+  ? (className ? `${className} active` : 'active')
+  : (className || '');
 ---
 
-<a href={href} class:list={[className, { active: isActive }]} {...props}>
+<a href={href} class={finalClass} {...props}>
 	<slot />
 </a>
 <style>
@@ -33,7 +37,8 @@ const isActive = hrefWithoutLocale === pathWithoutLocale ||
 		background-color: var(--color-background-secondary);
 	}
 	a.active {
-		font-weight: bolder;
-		text-decoration: underline;
+		color: var(--color-primary-blue);
+		background-color: var(--color-background-secondary);
+		font-weight: 600;
 	}
 </style>

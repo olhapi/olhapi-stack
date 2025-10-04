@@ -45,6 +45,15 @@ const $t = useTranslations(translations, lang);
 
 // Check if we have PUBLIC_APP_URL for the CTA button
 const appUrl = import.meta.env.PUBLIC_APP_URL || "#";
+
+// Get current pathname for active route highlighting
+const currentPath = Astro.url.pathname;
+const pathWithoutLocale = currentPath.replace(/^\/(en|de)/, '').replace(/\/$/, '') || '/';
+
+// Check if mega menu buttons should be active
+const isProductActive = pathWithoutLocale.startsWith('/features') || pathWithoutLocale.startsWith('/integrations');
+const isSolutionsActive = pathWithoutLocale.startsWith('/solutions');
+const isResourcesActive = pathWithoutLocale.startsWith('/resources');
 ---
 
 <!-- Announcement Bar -->
@@ -78,7 +87,7 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || "#";
 
                     <!-- Product Mega Menu -->
                     <div class="nav-dropdown" data-mega-menu-trigger="product">
-                        <button class="nav-dropdown-trigger" aria-expanded="false" data-mega-toggle="product">
+                        <button class:list={["nav-dropdown-trigger", { active: isProductActive }]} aria-expanded="false" data-mega-toggle="product">
                             {$t("product")}
                             <ChevronDown size={16} />
                         </button>
@@ -87,7 +96,7 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || "#";
 
                     <!-- Solutions Mega Menu -->
                     <div class="nav-dropdown" data-mega-menu-trigger="solutions">
-                        <button class="nav-dropdown-trigger" aria-expanded="false" data-mega-toggle="solutions">
+                        <button class:list={["nav-dropdown-trigger", { active: isSolutionsActive }]} aria-expanded="false" data-mega-toggle="solutions">
                             {$t("solutions")}
                             <ChevronDown size={16} />
                         </button>
@@ -96,7 +105,7 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || "#";
 
                     <!-- Resources Mega Menu -->
                     <div class="nav-dropdown" data-mega-menu-trigger="resources">
-                        <button class="nav-dropdown-trigger" aria-expanded="false" data-mega-toggle="resources">
+                        <button class:list={["nav-dropdown-trigger", { active: isResourcesActive }]} aria-expanded="false" data-mega-toggle="resources">
                             {$t("resources")}
                             <ChevronDown size={16} />
                         </button>
@@ -328,6 +337,12 @@ const appUrl = import.meta.env.PUBLIC_APP_URL || "#";
     .nav-dropdown-trigger:hover {
         color: var(--color-primary-blue);
         background-color: var(--color-background-secondary);
+    }
+
+    .nav-dropdown-trigger.active {
+        color: var(--color-primary-blue);
+        background-color: var(--color-background-secondary);
+        font-weight: 600;
     }
 
     .nav-dropdown-content {
