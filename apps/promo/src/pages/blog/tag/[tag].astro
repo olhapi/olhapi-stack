@@ -1,44 +1,49 @@
 ---
-import Layout from '../../../../layouts/Layout.astro';
-import BlogListSection from '../../../../components/sections/BlogListSection.astro';
-import BlogHeroSection from '../../../../components/sections/BlogHeroSection.astro';
+import Layout from '../../../layouts/Layout.astro';
+import BlogListSection from '../../../components/sections/BlogListSection.astro';
+import BlogHeroSection from '../../../components/sections/BlogHeroSection.astro';
 import { getCollection } from 'astro:content';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../../../consts';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../../consts';
 
 export async function getStaticPaths() {
-  const currentLang = 'de';
+  const currentLang = 'en';
 
-  // Get all blog posts for German
+  // Get all blog posts for English
   const allPosts = await getCollection('blog');
   const posts = allPosts
     .filter(post => post.id.startsWith(`${currentLang}/`))
     .filter(post => !post.data.draft);
 
-  // Get unique categories
-  const categories = [...new Set(posts.map(post => post.data.category).filter(Boolean))];
+  // Get unique tags
+  const tagsSet = new Set<string>();
+  posts.forEach(post => {
+    if (post.data.tags) {
+      post.data.tags.forEach(tag => tagsSet.add(tag));
+    }
+  });
 
-  // Create paths for each category
-  return categories.map(category => ({
+  // Create paths for each tag
+  return Array.from(tagsSet).map(tag => ({
     params: {
-      category: category.toLowerCase().replaceAll(/\s+/g, '-')
+      tag: tag.toLowerCase().replaceAll(/\s+/g, '-')
     },
     props: {
-      categoryName: category,
+      tagName: tag,
       currentLang
     }
   }));
 }
 
-const { category } = Astro.params;
-const { categoryName, currentLang } = Astro.props;
+const { tag } = Astro.params;
+const { tagName, currentLang } = Astro.props;
 const pageSize = 10;
 
-// Get all blog posts for German
+// Get all blog posts for English
 const allPosts = await getCollection('blog');
 const posts = allPosts
   .filter(post => post.id.startsWith(`${currentLang}/`))
   .filter(post => !post.data.draft)
-  .filter(post => post.data.category === categoryName)
+  .filter(post => post.data.tags && post.data.tags.includes(tagName))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 // Get first page of posts
@@ -51,15 +56,15 @@ const pagination = {
   lastPage: totalPages,
   url: {
     prev: undefined,
-    next: totalPages > 1 ? `/de/blog/category/${category}/page/2` : undefined,
+    next: totalPages > 1 ? `/blog/tag/${tag}/page/2` : undefined,
   },
 };
 ---
 
-<Layout title={`${SITE_TITLE} - ${categoryName}`} description={SITE_DESCRIPTION}>
+<Layout title={`${SITE_TITLE} - #${tagName}`} description={SITE_DESCRIPTION}>
   <BlogHeroSection
     lang={currentLang}
-    activeCategory={categoryName}
+    activeTag={tagName}
     filteredPostCount={posts.length}
   />
 
@@ -67,6 +72,5 @@ const pagination = {
     lang={currentLang}
     posts={firstPagePosts}
     pagination={totalPages > 1 ? pagination : undefined}
-    activeCategory={categoryName}
   />
 </Layout>

@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import type { CollectionEntry } from 'astro:content';
 import Layout from './Layout.astro';
 import Container from '../components/ui/Container.astro';
@@ -41,6 +42,10 @@ const translations = {
 };
 
 const $t = useTranslations(translations, currentLang);
+
+// Create category and tag slugs
+const categorySlug = category ? category.toLowerCase().replaceAll(/\s+/g, '-') : '';
+const categoryUrl = categorySlug ? getRelativeLocaleUrl(currentLang, `blog/category/${categorySlug}`) : '';
 
 // Format author info
 const authorName = typeof author === 'string' ? author : author?.name;
@@ -106,9 +111,12 @@ const ogImage = post.data.seo?.image || post.data.heroImage?.src;
           <Breadcrumbs lang={currentLang} items={breadcrumbItems} />
           <!-- Category and metadata -->
           <div class="flex items-center gap-4 mb-6">
-            <span class="inline-flex items-center px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full">
+            <a
+              href={categoryUrl}
+              class="inline-flex items-center px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
+            >
               {category}
-            </span>
+            </a>
             <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
               <FormattedDate date={pubDate} />
               {post.data.readTime && (
@@ -162,11 +170,18 @@ const ogImage = post.data.seo?.image || post.data.heroImage?.src;
           <!-- Tags -->
           {tags && tags.length > 0 && (
             <div class="flex flex-wrap gap-2 mb-8">
-              {tags.map(tag => (
-                <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-md">
-                  #{tag}
-                </span>
-              ))}
+              {tags.map(tag => {
+                const tagSlug = tag.toLowerCase().replaceAll(/\s+/g, '-');
+                const tagUrl = getRelativeLocaleUrl(currentLang, `blog/tag/${tagSlug}`);
+                return (
+                  <a
+                    href={tagUrl}
+                    class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    #{tag}
+                  </a>
+                );
+              })}
             </div>
           )}
         </div>

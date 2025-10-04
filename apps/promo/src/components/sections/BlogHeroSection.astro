@@ -7,9 +7,11 @@ import { List, Package, GraduationCap, FileText, Wrench, FolderOpen } from '@luc
 interface Props {
   lang: string;
   activeCategory?: string;
+  activeTag?: string;
+  filteredPostCount?: number;
 }
 
-const { lang, activeCategory } = Astro.props;
+const { lang, activeCategory, activeTag, filteredPostCount } = Astro.props;
 
 const translations = {
   en: {
@@ -20,6 +22,12 @@ const translations = {
     browseByCategory: 'Browse by Category',
     postsCount: 'posts',
     postCount: 'post',
+    categoryLabel: 'Category',
+    tagLabel: 'Tag',
+    categorySubtitle: '{count} {articles} in this category',
+    tagSubtitle: '{count} {articles} tagged with {tag}',
+    article: 'article',
+    articles: 'articles',
   },
   de: {
     title: 'Unser Blog',
@@ -29,6 +37,12 @@ const translations = {
     browseByCategory: 'Nach Kategorie durchsuchen',
     postsCount: 'Artikel',
     postCount: 'Artikel',
+    categoryLabel: 'Kategorie',
+    tagLabel: 'Tag',
+    categorySubtitle: '{count} {articles} in dieser Kategorie',
+    tagSubtitle: '{count} {articles} mit dem Tag {tag}',
+    article: 'Artikel',
+    articles: 'Artikel',
   },
 };
 
@@ -41,6 +55,26 @@ const posts = allPosts
   .filter(post => !post.data.draft);
 
 const totalPosts = posts.length;
+
+// Determine display values based on page type
+let displayTitle = $t('title');
+let displaySubtitle = $t('subtitle');
+let displayBadge = null;
+let displayCount = totalPosts;
+
+if (activeCategory) {
+  displayBadge = $t('categoryLabel');
+  displayTitle = activeCategory;
+  displayCount = filteredPostCount || totalPosts;
+  const articleWord = displayCount === 1 ? $t('article') : $t('articles');
+  displaySubtitle = $t('categorySubtitle', { count: displayCount, articles: articleWord });
+} else if (activeTag) {
+  displayBadge = $t('tagLabel');
+  displayTitle = `#${activeTag}`;
+  displayCount = filteredPostCount || totalPosts;
+  const articleWord = displayCount === 1 ? $t('article') : $t('articles');
+  displaySubtitle = $t('tagSubtitle', { count: displayCount, articles: articleWord, tag: activeTag });
+}
 
 // Get categories with post counts
 const categoryMap = new Map();
@@ -87,47 +121,56 @@ const getIconComponent = (category: string) => {
 <section class="from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-20">
   <Container size="lg">
     <div class="text-center mb-12">
+      {displayBadge && (
+        <div class="inline-flex items-center px-4 py-2 mb-6 text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full">
+          {displayBadge}
+        </div>
+      )}
       <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-6">
-        {$t('title')}
+        {displayTitle}
       </h1>
       <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
-        {$t('subtitle')}
+        {displaySubtitle}
       </p>
-      <div class="text-sm text-gray-500 dark:text-gray-400">
-        {totalPosts} {$t('totalPosts')}
-      </div>
+      {!activeCategory && !activeTag && (
+        <div class="text-sm text-gray-500 dark:text-gray-400">
+          {totalPosts} {$t('totalPosts')}
+        </div>
+      )}
     </div>
 
-    <!-- Category Cards -->
-    <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-8">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
-          {$t('browseByCategory')}
-        </h2>
-      </div>
+    <!-- Category Cards (hide on tag pages) -->
+    {!activeTag && (
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-8">
+          <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
+            {$t('browseByCategory')}
+          </h2>
+        </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {categories.map(({ category, count, href, isActive }) => {
-          const IconComponent = getIconComponent(category);
-          return (
-            <a
-              href={href}
-              class={`category-card ${isActive ? 'category-card--active' : ''}`}
-            >
-              <div class="category-card__icon">
-                <IconComponent class="w-6 h-6" />
-              </div>
-              <h3 class="category-card__title">
-                {category === 'All' ? $t('allPosts') : category}
-              </h3>
-              <span class="category-card__count">
-                {count} {count === 1 ? $t('postCount') : $t('postsCount')}
-              </span>
-            </a>
-          );
-        })}
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {categories.map(({ category, count, href, isActive }) => {
+            const IconComponent = getIconComponent(category);
+            return (
+              <a
+                href={href}
+                class={`category-card ${isActive ? 'category-card--active' : ''}`}
+              >
+                <div class="category-card__icon">
+                  <IconComponent class="w-6 h-6" />
+                </div>
+                <h3 class="category-card__title">
+                  {category === 'All' ? $t('allPosts') : category}
+                </h3>
+                <span class="category-card__count">
+                  {count} {count === 1 ? $t('postCount') : $t('postsCount')}
+                </span>
+              </a>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    )}
   </Container>
 </section>
 

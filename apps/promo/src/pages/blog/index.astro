@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import BlogListSection from '../../components/sections/BlogListSection.astro';
+import BlogHeroSection from '../../components/sections/BlogHeroSection.astro';
 import { getCollection } from 'astro:content';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 
@@ -38,6 +39,8 @@ const pagination = {
 ---
 
 <Layout title={`${SITE_TITLE} - Blog`} description={SITE_DESCRIPTION}>
+  <BlogHeroSection lang={currentLang} />
+
   <BlogListSection
     lang={currentLang}
     posts={firstPagePosts}
