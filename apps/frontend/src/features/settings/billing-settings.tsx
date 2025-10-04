@@ -1,4 +1,4 @@
-import { useActionState, useOptimistic, startTransition, useState } from 'react';
+import { useActionState, useOptimistic, startTransition, useState, useCallback } from 'react';
 import { useCustomer } from 'autumn-js/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,17 +18,93 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { CLIENT_ORIGIN } from '../auth/auth-constants';
+import type { MessageDescriptor } from '@lingui/core';
+import { getFormString } from '@/utils/form-helpers';
 
 type BillingActionState = {
     success?: boolean;
     error?: string;
 };
 
+type Product = {
+    id: string;
+    status: string;
+    name?: string;
+    current_period_start?: number;
+    current_period_end?: number;
+    display?: {
+        name?: string;
+    };
+    items?: Array<{
+        type?: string;
+        price?: number;
+        interval?: string;
+        display?: {
+            primary_text?: string;
+            secondary_text?: string;
+        };
+    }>;
+    properties?: {
+        interval_group?: string;
+    };
+};
+
+type Invoice = {
+    id: string;
+    created: number;
+    created_at: number;
+    total: number;
+    currency: string;
+    status: string;
+    stripe_id: string;
+    hosted_invoice_url?: string;
+};
+
+type CustomerData = {
+    products: Product[];
+    invoices: Invoice[];
+};
+
+function isCustomerData(value: unknown): value is CustomerData {
+    if (!value || typeof value !== 'object') {
+        return false;
+    }
+    const data = value as Record<string, unknown>;
+    return Array.isArray(data.products) && Array.isArray(data.invoices);
+}
+
+const formatDate = (timestamp: number) => {
+    return new Date(timestamp).toLocaleDateString();
+};
+
+const formatAmount = (amount: number, currency: string) => {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: currency.toUpperCase(),
+    }).format(amount / 100);
+};
+
+const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+        case 'active':
+            return 'bg-green-100 text-green-800 hover:bg-green-200';
+        case 'canceled':
+        case 'cancelled':
+            return 'bg-red-100 text-red-800 hover:bg-red-200';
+        case 'trialing':
+            return 'bg-blue-100 text-blue-800 hover:bg-blue-200';
+        case 'past_due':
+            return 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200';
+        default:
+            return 'bg-gray-100 text-gray-800 hover:bg-gray-200';
+    }
+};
+
 async function openBillingPortalAction(
     _prevState: BillingActionState,
     _formData: FormData,
-    openBillingPortal: any,
-    translate: (msg: any) => string,
+    openBillingPortal: ReturnType<typeof useCustomer>['openBillingPortal'],
+    translate: (msg: MessageDescriptor) => string,
 ): Promise<BillingActionState> {
     try {
         const result = await openBillingPortal();
@@ -54,14 +130,14 @@ async function openBillingPortalAction(
 async function cancelSubscriptionAction(
     _prevState: BillingActionState,
     formData: FormData,
-    cancel: any,
-    translate: (msg: any) => string,
+    cancel: ReturnType<typeof useCustomer>['cancel'],
+    translate: (msg: MessageDescriptor) => string,
 ): Promise<BillingActionState> {
-    const productId = formData.get('productId') as string;
+    const productId = getFormString(formData, 'productId');
 
     try {
         const result = await cancel({ productId });
-        if (result.success) {
+        if (result.data && result.error === null) {
             toast.success(translate(msg`Subscription cancelled successfully`));
             return { success: true };
         } else {
@@ -85,6 +161,9 @@ export function BillingSettings() {
     const [showCancelDialog, setShowCancelDialog] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<string>('');
 
+    // Type-safe customer data using type guard
+    const customerData = isCustomerData(customer) ? customer : null;
+
     const [_portalState, openPortalAction, isPortalPending] = useActionState(
         (prevState: BillingActionState, formData: FormData) =>
             openBillingPortalAction(
@@ -103,52 +182,39 @@ export function BillingSettings() {
 
     // Optimistic updates for subscription status
     const [optimisticSubscriptions, setOptimisticSubscriptions] = useOptimistic(
-        (customer as any)?.products || [],
-        (currentSubs: any[], cancelledProductId: string) =>
+        customerData?.products ?? [],
+        (currentSubs: Product[], cancelledProductId: string) =>
             currentSubs.map((sub) => (sub.id === cancelledProductId ? { ...sub, status: 'cancelled' } : sub)),
     );
 
-    const handleCancelSubscription = (productId: string) => {
+    const handleCancelSubscription = useCallback((productId: string) => {
         setSelectedProduct(productId);
         setShowCancelDialog(true);
-    };
+    }, []);
 
-    const confirmCancellation = (formData: FormData) => {
-        // Add optimistic update
-        startTransition(() => {
-            setOptimisticSubscriptions(selectedProduct);
-        });
+    const confirmCancellation = useCallback(
+        (formData: FormData) => {
+            // Add optimistic update
+            startTransition(() => {
+                setOptimisticSubscriptions(selectedProduct);
+            });
 
+            setShowCancelDialog(false);
+            return cancelAction(formData);
+        },
+        [selectedProduct, cancelAction, setOptimisticSubscriptions],
+    );
+
+    const handleKeepSubscription = useCallback(() => {
         setShowCancelDialog(false);
-        return cancelAction(formData);
-    };
+    }, []);
 
-    const formatDate = (timestamp: number) => {
-        return new Date(timestamp).toLocaleDateString();
-    };
-
-    const formatAmount = (amount: number, currency: string) => {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: currency.toUpperCase(),
-        }).format(amount / 100);
-    };
-
-    const getStatusColor = (status: string) => {
-        switch (status.toLowerCase()) {
-            case 'active':
-                return 'bg-green-100 text-green-800 hover:bg-green-200';
-            case 'cancelled':
-            case 'canceled':
-                return 'bg-red-100 text-red-800 hover:bg-red-200';
-            case 'past_due':
-                return 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200';
-            case 'trialing':
-                return 'bg-blue-100 text-blue-800 hover:bg-blue-200';
-            default:
-                return 'bg-gray-100 text-gray-800 hover:bg-gray-200';
-        }
-    };
+    const createCancelHandler = useCallback(
+        (productId: string) => () => {
+            handleCancelSubscription(productId);
+        },
+        [handleCancelSubscription],
+    );
 
     return (
         <div className="space-y-6">
@@ -170,7 +236,7 @@ export function BillingSettings() {
                             <h3 className="text-sm font-medium">
                                 <Trans>Current Subscriptions</Trans>
                             </h3>
-                            {optimisticSubscriptions.map((product: any, index: number) => (
+                            {optimisticSubscriptions.map((product: Product, index: number) => (
                                 <div
                                     key={product.id || `product-${index}`}
                                     className="flex items-center justify-between p-3 border rounded-lg"
@@ -194,7 +260,7 @@ export function BillingSettings() {
                                             product.items.length > 0 &&
                                             product.items[0].type === 'price' && (
                                                 <div className="text-sm font-medium">
-                                                    {formatAmount(product.items[0].price * 100, 'EUR')} /{' '}
+                                                    {formatAmount((product.items[0].price ?? 0) * 100, 'EUR')} /{' '}
                                                     {product.items[0].interval}
                                                 </div>
                                             )}
@@ -203,7 +269,7 @@ export function BillingSettings() {
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            onClick={() => handleCancelSubscription(product.id)}
+                                            onClick={createCancelHandler(product.id)}
                                             disabled={isCancelPending}
                                             className="text-red-600 hover:text-red-700"
                                         >
@@ -232,7 +298,7 @@ export function BillingSettings() {
             </Card>
 
             {/* Invoice History */}
-            {(customer as any)?.invoices && (customer as any).invoices.length > 0 && (
+            {customerData?.invoices && customerData.invoices.length > 0 && (
                 <Card>
                     <CardHeader>
                         <CardTitle>
@@ -261,7 +327,7 @@ export function BillingSettings() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {(customer as any).invoices.map((invoice: any) => (
+                                {customerData.invoices.map((invoice: Invoice) => (
                                     <TableRow key={invoice.stripe_id}>
                                         <TableCell>{formatDate(invoice.created_at)}</TableCell>
                                         <TableCell>{formatAmount(invoice.total * 100, invoice.currency)}</TableCell>
@@ -311,7 +377,7 @@ export function BillingSettings() {
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter className="gap-2">
-                        <Button variant="outline" onClick={() => setShowCancelDialog(false)} disabled={isCancelPending}>
+                        <Button variant="outline" onClick={handleKeepSubscription} disabled={isCancelPending}>
                             <Trans>Keep Subscription</Trans>
                         </Button>
                         <form action={confirmCancellation}>

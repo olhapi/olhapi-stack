@@ -1,4 +1,4 @@
-import { useState, useCallback, Suspense, lazy, useOptimistic } from 'react';
+import { useState, useCallback, Suspense, lazy, useOptimistic, memo } from 'react';
 import { useUploadFile } from 'better-upload/client';
 import { UploadButton } from '@/components/ui/upload-button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -7,12 +7,27 @@ import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { User } from 'lucide-react';
 import { toast } from 'sonner';
+import type { AvatarUploadedFile } from '@/types/upload';
+import { getFileReaderResultAsString } from '@/utils/file-helpers';
+
+const CropDialogLoading = memo(() => (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg p-6 flex items-center space-x-3">
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+            <span className="text-sm">
+                <Trans>Loading image editor...</Trans>
+            </span>
+        </div>
+    </div>
+));
 
 const AvatarCropDialog = lazy(() =>
     import('@/components/ui/avatar-crop-dialog').then((module) => ({
         default: module.AvatarCropDialog,
     })),
 );
+
+const cropDialogLoadingFallback = <CropDialogLoading />;
 
 interface AvatarUploadProps {
     currentImage?: string;
@@ -55,11 +70,12 @@ export function AvatarUpload({ currentImage, onUploadSuccess, onUploadError }: R
         api: `${import.meta.env.VITE_AUTH_URL}/api/upload`,
         route: 'avatar',
         onUploadComplete: (data) => {
-            const uploadedFile = data.file;
-            if (uploadedFile) {
+            if (data.file && typeof data.file === 'object') {
+                // Type assertion is safe here as we've validated the object structure
+                const uploadedFile = data.file as AvatarUploadedFile;
                 // Use the full URL if provided by the server, otherwise construct it
                 const fileUrl =
-                    (uploadedFile as any).url || `${import.meta.env.VITE_S3_PUBLIC_URL}/${uploadedFile.objectKey}`;
+                    uploadedFile.url || `${import.meta.env.VITE_S3_PUBLIC_URL}/${uploadedFile.objectKey}`;
 
                 setOptimisticAvatarUrl(fileUrl);
                 setPreviousUrl(fileUrl); // Update previous URL to new uploaded image
@@ -72,26 +88,30 @@ export function AvatarUpload({ currentImage, onUploadSuccess, onUploadError }: R
     const handleFileSelection = useCallback(
         (file: File) => {
             const reader = new FileReader();
-            reader.onload = (e) => {
-                const result = e.target?.result as string;
-                setSelectedImageSrc(result);
-                setPreviousUrl(optimisticAvatarUrl);
-                setOptimisticAvatarUrl(result);
-                setCropDialogOpen(true);
-            };
+            reader.addEventListener('load', (e) => {
+                const result = getFileReaderResultAsString(e.target?.result ?? null);
+                if (result) {
+                    setSelectedImageSrc(result);
+                    setPreviousUrl(optimisticAvatarUrl);
+                    setOptimisticAvatarUrl(result);
+                    setCropDialogOpen(true);
+                }
+            });
             reader.readAsDataURL(file);
         },
-        [optimisticAvatarUrl],
+        [optimisticAvatarUrl, setOptimisticAvatarUrl],
     );
 
     const handleCropComplete = useCallback(
         (croppedFile: File) => {
             // Show optimistic preview of cropped image immediately
             const reader = new FileReader();
-            reader.onload = (e) => {
-                const croppedImageUrl = e.target?.result as string;
-                setOptimisticAvatarUrl(croppedImageUrl);
-            };
+            reader.addEventListener('load', (e) => {
+                const croppedImageUrl = getFileReaderResultAsString(e.target?.result ?? null);
+                if (croppedImageUrl) {
+                    setOptimisticAvatarUrl(croppedImageUrl);
+                }
+            });
             reader.readAsDataURL(croppedFile);
 
             // Upload the cropped file
@@ -120,6 +140,15 @@ export function AvatarUpload({ currentImage, onUploadSuccess, onUploadError }: R
         setOptimisticAvatarUrl(previousUrl);
     }, [previousUrl, setOptimisticAvatarUrl]);
 
+    const handleUploadOverride = useCallback(
+        (file: File) => {
+            handleFileSelection(file);
+            // Don't upload immediately, let the crop dialog handle it
+            return Promise.resolve();
+        },
+        [handleFileSelection],
+    );
+
     return (
         <div className="flex flex-col items-center space-y-4">
             <div className="relative">
@@ -141,11 +170,7 @@ export function AvatarUpload({ currentImage, onUploadSuccess, onUploadError }: R
                 <UploadButton
                     control={control}
                     accept="image/jpeg,image/png,image/webp"
-                    uploadOverride={(file) => {
-                        handleFileSelection(file);
-                        // Don't upload immediately, let the crop dialog handle it
-                        return Promise.resolve();
-                    }}
+                    uploadOverride={handleUploadOverride}
                 />
                 <p className="text-xs text-muted-foreground text-center">
                     <Trans>JPG, PNG or WebP. Max 2MB.</Trans>
@@ -153,18 +178,7 @@ export function AvatarUpload({ currentImage, onUploadSuccess, onUploadError }: R
             </div>
 
             {selectedImageSrc && (
-                <Suspense
-                    fallback={
-                        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                            <div className="bg-white rounded-lg p-6 flex items-center space-x-3">
-                                <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-                                <span className="text-sm">
-                                    <Trans>Loading image editor...</Trans>
-                                </span>
-                            </div>
-                        </div>
-                    }
-                >
+                <Suspense fallback={cropDialogLoadingFallback}>
                     <AvatarCropDialog
                         open={cropDialogOpen}
                         onOpenChange={setCropDialogOpen}

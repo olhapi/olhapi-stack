@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect, useMemo, useCallback } 
 import type { ReactNode } from 'react';
 import { authClient } from '@/features/auth/auth-client';
 // Better auth types
-interface User {
+export interface User {
     id: string;
     email: string;
     name?: string;
@@ -83,7 +83,7 @@ export function AuthProvider({ children }: Readonly<AuthProviderProps>) {
                 unsubscribe();
             }
         };
-    }, []);
+    }, [refreshSession]);
 
     const loginWithMagicLink = useCallback(async (email: string) => {
         const { error } = await authClient.signIn.magicLink({

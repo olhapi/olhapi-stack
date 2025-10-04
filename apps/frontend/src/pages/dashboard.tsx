@@ -39,6 +39,7 @@ export function Dashboard() {
                             </Trans>
                         </p>
                         <button
+                            type="button"
                             className={`mt-3 px-4 py-2 rounded-md ${
                                 buttonStyle === 'primary'
                                     ? 'bg-blue-600 text-white hover:bg-blue-700'

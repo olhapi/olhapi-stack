@@ -1,7 +1,7 @@
 import { Globe } from 'lucide-react';
 import { cn } from '@/utils/style-utils';
 import { locales, loadTranslation, saveLocale } from '@/i18n';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLingui } from '@lingui/react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
@@ -20,7 +20,7 @@ export function LanguageSwitcher() {
         setCurrentLocale(savedLocale);
     }, []);
 
-    const handleLanguageChange = async (locale: string) => {
+    const handleLanguageChange = useCallback(async (locale: string) => {
         try {
             setCurrentLocale(locale);
             saveLocale(locale);
@@ -29,7 +29,7 @@ export function LanguageSwitcher() {
         } catch (error) {
             console.error('Failed to change language:', error);
         }
-    };
+    }, []);
 
     if (!currentLocale) return null;
 

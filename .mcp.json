@@ -1,14 +1,23 @@
 {
-  "mcpServers": {
-    "playwright": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["@playwright/mcp@latest", "--config", "config/playwright.json"],
-      "env": {}
-    },
-    "context7": {
-      "type": "http",
-      "url": "https://mcp.context7.com/mcp"
+    "mcpServers": {
+        "playwright": {
+            "type": "stdio",
+            "command": "npx",
+            "args": ["@playwright/mcp@latest", "--config", "config/playwright.json"],
+            "env": {}
+        },
+        "context7": {
+            "type": "http",
+            "url": "https://mcp.context7.com/mcp"
+        },
+        "sonarqube": {
+            "command": "npx",
+            "args": ["-y", "sonarqube-mcp-server@latest"],
+            "env": {
+                "SONARQUBE_URL": "https://sonarcloud.io",
+                "SONARQUBE_TOKEN": "50128387b7830ccf93ada6c50c7b40e7eb836dbd",
+                "SONARQUBE_ORGANIZATION": "olhapi"
+            }
+        }
     }
-  }
 }

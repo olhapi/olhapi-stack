@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { handleMagicLinkAuth } from './auth-utils';
 import { Input } from '@/components/ui/input';
-import { useRef, useActionState } from 'react';
+import { useRef, useActionState, useCallback } from 'react';
 import { Loader2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -43,9 +43,9 @@ export function AuthForm() {
     });
     const formRef = useRef<HTMLFormElement>(null);
 
-    function handleSubmitButton() {
+    const handleSubmitButton = useCallback(() => {
         formRef.current?.requestSubmit();
-    }
+    }, []);
 
     // Show error toast when state.error changes
     if (state.error) {

@@ -18,13 +18,24 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { locales, loadTranslation, saveLocale } from '@/i18n';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLingui } from '@lingui/react';
 
 const languageFlags: Record<string, string> = {
     en: '🇺🇸',
     es: '🇪🇸',
     fr: '🇫🇷',
+};
+
+const getUserInitials = (email: string, name?: string) => {
+    if (name) {
+        return name
+            .split(' ')
+            .map((n) => n[0])
+            .join('')
+            .toUpperCase();
+    }
+    return email.charAt(0).toUpperCase();
 };
 
 export function NavUser({
@@ -48,7 +59,7 @@ export function NavUser({
         setCurrentLocale(savedLocale);
     }, []);
 
-    const handleLanguageChange = async (locale: string) => {
+    const handleLanguageChange = useCallback(async (locale: string) => {
         try {
             setCurrentLocale(locale);
             saveLocale(locale);
@@ -56,27 +67,23 @@ export function NavUser({
         } catch (error) {
             console.error('Failed to change language:', error);
         }
-    };
+    }, []);
 
-    const getUserInitials = (email: string, name?: string) => {
-        if (name) {
-            return name
-                .split(' ')
-                .map((n) => n[0])
-                .join('')
-                .toUpperCase();
-        }
-        return email.charAt(0).toUpperCase();
-    };
+    const createLanguageClickHandler = useCallback(
+        (code: string) => () => {
+            handleLanguageChange(code);
+        },
+        [handleLanguageChange],
+    );
 
     // Check if user has an active paid subscription
     const hasActivePaidSubscription = () => {
         if (!customerData?.products) return false;
 
-        const activeProducts = customerData.products.filter((product: any) => product.status === 'active');
+        const activeProducts = customerData.products.filter((product: { status: string }) => product.status === 'active');
 
         // If no active products or only free products, user is on free plan
-        return activeProducts.some((product: any) => product.id !== 'free');
+        return activeProducts.some((product: { id: string }) => product.id !== 'free');
     };
 
     const showUpgradeOption = hasActivePaidSubscription() === false;
@@ -161,7 +168,7 @@ export function NavUser({
                                 {Object.entries(locales).map(([code, name]) => (
                                     <DropdownMenuItem
                                         key={code}
-                                        onClick={() => handleLanguageChange(code)}
+                                        onClick={createLanguageClickHandler(code)}
                                         className={currentLocale === code ? 'bg-accent text-accent-foreground' : ''}
                                     >
                                         <span className="text-lg leading-none mr-2">{languageFlags[code]}</span>

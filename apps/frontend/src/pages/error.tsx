@@ -3,8 +3,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Link } from '@tanstack/react-router';
 import { AlertCircle, Home } from 'lucide-react';
 import { Trans } from '@lingui/react/macro';
+import { useCallback } from 'react';
 
 export function ErrorPage() {
+    const handleReload = useCallback(() => {
+        globalThis.location.reload();
+    }, []);
+
     return (
         <div className="min-h-screen flex items-center justify-center p-4">
             <Card className="max-w-md w-full">
@@ -30,7 +35,7 @@ export function ErrorPage() {
                                 <Trans>Go Home</Trans>
                             </Link>
                         </Button>
-                        <Button onClick={() => globalThis.location.reload()} className="flex-1">
+                        <Button onClick={handleReload} className="flex-1">
                             <Trans>Try Again</Trans>
                         </Button>
                     </div>

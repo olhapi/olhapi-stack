@@ -35,7 +35,7 @@ export function useUsernameCheck(): UsernameCheckResult {
         setIsChecking(false);
     }, []);
 
-    const checkUsernameApi = async (username: string) => {
+    const checkUsernameApi = useCallback(async (username: string) => {
         if (!username || username.length < 3) {
             resetState();
             return;
@@ -65,13 +65,13 @@ export function useUsernameCheck(): UsernameCheckResult {
         } finally {
             setIsChecking(false);
         }
-    };
+    }, [_, resetState]);
 
     const debouncedCheckApi = useMemo(
         () =>
             funnel(checkUsernameApi, {
                 minQuietPeriodMs: 500,
-                reducer: (_: any, username: string) => username,
+                reducer: (_prev: unknown, username: string) => username,
             }),
         [checkUsernameApi],
     );

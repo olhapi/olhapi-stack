@@ -1,6 +1,6 @@
 'use client';
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { cn } from '@/utils/style-utils';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogTitle } from '@/components/ui/dialog';
@@ -18,11 +18,11 @@ export interface CheckoutDialogProps {
     checkoutResult: CheckoutResult;
 }
 
-const formatCurrency = ({ amount, currency }: Readonly<{ amount: number; currency: string }>) => {
+const formatCurrency = (params: Readonly<{ amount: number; currency: string }>) => {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: currency,
-    }).format(amount);
+        currency: params.currency,
+    }).format(params.amount);
 };
 
 export default function CheckoutDialog(props: Readonly<CheckoutDialogProps>) {
@@ -36,6 +36,26 @@ export default function CheckoutDialog(props: Readonly<CheckoutDialogProps>) {
     }, [props.checkoutResult]);
 
     const [loading, setLoading] = useState(false);
+
+    const handleConfirm = useCallback(async () => {
+        if (!checkoutResult) return;
+
+        setLoading(true);
+
+        const options = checkoutResult.options.map((option) => {
+            return {
+                featureId: option.feature_id,
+                quantity: option.quantity,
+            };
+        });
+
+        await attach({
+            productId: checkoutResult.product.id,
+            options,
+        });
+        props.setOpen(false);
+        setLoading(false);
+    }, [checkoutResult, attach, props]);
 
     if (!checkoutResult) {
         return <></>;
@@ -58,28 +78,7 @@ export default function CheckoutDialog(props: Readonly<CheckoutDialogProps>) {
                 )}
 
                 <DialogFooter className="flex flex-col sm:flex-row justify-between gap-x-4 py-2 pl-6 pr-3 bg-secondary border-t shadow-inner">
-                    <Button
-                        size="sm"
-                        onClick={async () => {
-                            setLoading(true);
-
-                            const options = checkoutResult.options.map((option) => {
-                                return {
-                                    featureId: option.feature_id,
-                                    quantity: option.quantity,
-                                };
-                            });
-
-                            await attach({
-                                productId: checkoutResult.product.id,
-                                options,
-                            });
-                            setOpen(false);
-                            setLoading(false);
-                        }}
-                        disabled={loading}
-                        className="min-w-16 flex items-center gap-2"
-                    >
+                    <Button size="sm" onClick={handleConfirm} disabled={loading} className="min-w-16 flex items-center gap-2">
                         {loading ? (
                             <Loader2 className="w-4 h-4 animate-spin" />
                         ) : (
@@ -274,7 +273,11 @@ const PrepaidItem = ({ item, checkoutResult, setCheckoutResult }: Readonly<Prepa
     const [open, setOpen] = useState(false);
     const scenario = checkoutResult.product.scenario;
 
-    const handleSave = async () => {
+    const handleQuantityChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setQuantityInput(e.target.value);
+    }, []);
+
+    const handleSave = useCallback(async () => {
         setLoading(true);
         try {
             const newOptions = checkoutResult.options
@@ -307,7 +310,7 @@ const PrepaidItem = ({ item, checkoutResult, setCheckoutResult }: Readonly<Prepa
             setLoading(false);
             setOpen(false);
         }
-    };
+    }, [checkoutResult, item.feature_id, quantityInput, billingUnits, checkout, setCheckoutResult]);
 
     const disableSelection = scenario === 'renew';
 
@@ -339,7 +342,7 @@ const PrepaidItem = ({ item, checkoutResult, setCheckoutResult }: Readonly<Prepa
                                 <Input
                                     className="h-7 w-16 focus:!ring-2"
                                     value={quantityInput}
-                                    onChange={(e) => setQuantityInput(e.target.value)}
+                                    onChange={handleQuantityChange}
                                 />
                                 <p className="text-muted-foreground">
                                     {billingUnits > 1 && `x ${billingUnits} `}

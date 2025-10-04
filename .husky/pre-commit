@@ -5,7 +5,7 @@ STAGED_FILES_TEMP=$(mktemp)
 git diff --cached --name-only -z > "$STAGED_FILES_TEMP"
 
 # Run the necessary commands
-#pnpm run verify
+pnpm run verify
 pnpm run format
 
 # # Reset and re-add only what was originally staged to not commit everything

@@ -1,5 +1,5 @@
 import { GrowthBook, GrowthBookProvider } from '@growthbook/growthbook-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import { toast } from 'sonner';
 import { t } from '@lingui/core/macro';
@@ -13,36 +13,36 @@ export function GrowthBookContextProvider({ children }: Readonly<GrowthBookConte
     const [growthBook, setGrowthBook] = useState<GrowthBook>();
     const { _ } = useLingui();
 
-    useEffect(() => {
-        const initGrowthBook = async () => {
-            try {
-                const response = await fetch('/feature-flags.json');
+    const initGrowthBook = useCallback(async () => {
+        try {
+            const response = await fetch('/feature-flags.json');
 
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-
-                const features = await response.json();
-
-                const gb = new GrowthBook({
-                    features,
-                });
-
-                setGrowthBook(gb);
-            } catch (error) {
-                console.error('Failed to load feature flags:', error);
-                toast.error(_(t`Failed to load feature flags. Using default values.`));
-
-                // Initialize with empty features as fallback
-                const gb = new GrowthBook({
-                    features: {},
-                });
-                setGrowthBook(gb);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
-        };
 
+            const features = await response.json();
+
+            const gb = new GrowthBook({
+                features,
+            });
+
+            setGrowthBook(gb);
+        } catch (error) {
+            console.error('Failed to load feature flags:', error);
+            toast.error(_(t`Failed to load feature flags. Using default values.`));
+
+            // Initialize with empty features as fallback
+            const gb = new GrowthBook({
+                features: {},
+            });
+            setGrowthBook(gb);
+        }
+    }, [_]);
+
+    useEffect(() => {
         initGrowthBook();
-    }, []);
+    }, [initGrowthBook]);
 
     // Always render children even if GrowthBook isn't loaded yet
     // GrowthBook will use default values for feature flags

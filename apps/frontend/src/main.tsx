@@ -1,4 +1,4 @@
-import { StrictMode, lazy, Suspense } from 'react';
+import { StrictMode, lazy, Suspense, memo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRootRoute, createRoute, createRouter, redirect } from '@tanstack/react-router';
 
@@ -9,6 +9,10 @@ import { RootLayout } from './layouts/root-layout';
 import { PublicLayout } from './layouts/public-layout';
 import { SecuredLayout } from './layouts/secured-layout';
 import { LoadingFallback } from './components/ui/loading-fallback';
+
+// Memoized loading fallback to avoid recreating JSX
+const MemoizedLoadingFallback = memo(LoadingFallback);
+const loadingFallback = <MemoizedLoadingFallback />;
 
 // Lazy load all page components for better code splitting
 const Login = lazy(() => import('./pages/login').then((m) => ({ default: m.Login })));
@@ -50,7 +54,7 @@ const loginRoute = createRoute({
     getParentRoute: () => publicLayoutRoute,
     path: '/login',
     component: () => (
-        <Suspense fallback={<LoadingFallback />}>
+        <Suspense fallback={loadingFallback}>
             <Login />
         </Suspense>
     ),
@@ -60,7 +64,7 @@ const dashboardRoute = createRoute({
     getParentRoute: () => securedLayoutRoute,
     path: '/dashboard',
     component: () => (
-        <Suspense fallback={<LoadingFallback />}>
+        <Suspense fallback={loadingFallback}>
             <Dashboard />
         </Suspense>
     ),
@@ -70,7 +74,7 @@ const welcomeRoute = createRoute({
     getParentRoute: () => securedLayoutRoute,
     path: '/welcome',
     component: () => (
-        <Suspense fallback={<LoadingFallback />}>
+        <Suspense fallback={loadingFallback}>
             <Welcome />
         </Suspense>
     ),
@@ -80,7 +84,7 @@ const accountRoute = createRoute({
     getParentRoute: () => securedLayoutRoute,
     path: '/account',
     component: () => (
-        <Suspense fallback={<LoadingFallback />}>
+        <Suspense fallback={loadingFallback}>
             <Account />
         </Suspense>
     ),
@@ -90,7 +94,7 @@ const billingRoute = createRoute({
     getParentRoute: () => securedLayoutRoute,
     path: '/billing',
     component: () => (
-        <Suspense fallback={<LoadingFallback />}>
+        <Suspense fallback={loadingFallback}>
             <Billing />
         </Suspense>
     ),
@@ -100,7 +104,7 @@ const pricingRoute = createRoute({
     getParentRoute: () => securedLayoutRoute,
     path: '/pricing',
     component: () => (
-        <Suspense fallback={<LoadingFallback />}>
+        <Suspense fallback={loadingFallback}>
             <Pricing />
         </Suspense>
     ),
@@ -110,7 +114,7 @@ const errorRoute = createRoute({
     getParentRoute: () => publicLayoutRoute,
     path: '/error',
     component: () => (
-        <Suspense fallback={<LoadingFallback />}>
+        <Suspense fallback={loadingFallback}>
             <ErrorPage />
         </Suspense>
     ),
@@ -129,7 +133,7 @@ const router = createRouter({
     defaultStructuralSharing: true,
     defaultPreloadStaleTime: 0,
     defaultNotFoundComponent: () => (
-        <Suspense fallback={<LoadingFallback />}>
+        <Suspense fallback={loadingFallback}>
             <NotFound />
         </Suspense>
     ),

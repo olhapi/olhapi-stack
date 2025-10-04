@@ -4,6 +4,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
 
+// Helper function to get delay from data attribute
+const getDelay = (element: Element): number => {
+    const delay = element.getAttribute('data-delay');
+    return delay ? Number.parseInt(delay) / 1000 : 0;
+};
+
 // Animation utilities
 export class AnimationController {
     private static instance: AnimationController;
@@ -20,12 +26,15 @@ export class AnimationController {
     }
 
     // Utility method to add performance optimizations to ScrollTrigger config
-    private addPerformanceOptimizations(element: string | Element, config: any): any {
+    private addPerformanceOptimizations(
+        element: string | Element,
+        config: Record<string, unknown>,
+    ): Record<string, unknown> {
         const optimizedConfig = {
             ...config,
             once: config.once !== false, // Default to true unless explicitly set to false
             anticipatePin: config.anticipatePin || 1,
-            onToggle: (self: any) => {
+            onToggle: (self: { isActive: boolean }) => {
                 const target = typeof element === 'string' ? document.querySelector(element) : element;
                 if (target instanceof HTMLElement) {
                     if (self.isActive) {
@@ -239,8 +248,8 @@ export class AnimationController {
 
         // Add performance optimizations for stagger elements
         if (config.scrollTrigger) {
-            const originalOnToggle = config.scrollTrigger.onToggle;
-            config.scrollTrigger.onToggle = (self: any) => {
+            const originalOnToggle = (config.scrollTrigger as Record<string, unknown>).onToggle;
+            (config.scrollTrigger as Record<string, unknown>).onToggle = (self: { isActive: boolean }) => {
                 const elementsArray = Array.isArray(elements) ? elements : [elements];
                 for (const element of elementsArray) {
                     const target = typeof element === 'string' ? document.querySelector(element) : element;
@@ -453,12 +462,6 @@ export class AnimationController {
 
     // Private method to setup batch animations for better performance
     private setupBatchAnimations(): void {
-        // Helper function to get delay from data attribute
-        const getDelay = (element: Element): number => {
-            const delay = element.getAttribute('data-delay');
-            return delay ? Number.parseInt(delay) / 1000 : 0;
-        };
-
         // Batch fade-in and fade-up animations together
         const fadeElements = document.querySelectorAll('[data-animate="fade-in"], [data-animate="fade-up"]');
         if (fadeElements.length > 0) {
@@ -602,12 +605,6 @@ export class AnimationController {
 
     // Private method to setup counter animations
     private setupCounters(): void {
-        // Helper function to get delay from data attribute
-        const getDelay = (element: Element): number => {
-            const delay = element.getAttribute('data-delay');
-            return delay ? Number.parseInt(delay) / 1000 : 0;
-        };
-
         // Handle counter animations
         const counterElements = document.querySelectorAll('[data-counter]');
 

@@ -13,3 +13,7 @@
 - use `useActionState` for forms with async actions (auth forms, settings forms, uploads) - replaces useState + async handlers
 - use `useOptimistic` for immediate UI feedback (profile updates, avatar uploads, username validation) - shows changes before server confirms
 - use `use()` with Suspense for async data fetching (auth state, feature flags) - only when transitioning from promise-based patterns
+- wrap React props in Readonly
+- avoid type casting is possible, try to use type guards
+- do not destructure React component props, use `props.size` for example
+- use only specific props/object values in the hook deps

@@ -42,21 +42,24 @@ function useSidebar() {
     return context;
 }
 
-function SidebarProvider({
-    defaultOpen = true,
-    open: openProp,
-    onOpenChange: setOpenProp,
-    className,
-    style,
-    children,
-    ...props
-}: Readonly<
-    React.ComponentProps<'div'> & {
-        defaultOpen?: boolean;
-        open?: boolean;
-        onOpenChange?: (open: boolean) => void;
-    }
->) {
+function SidebarProvider(
+    props: Readonly<
+        React.ComponentProps<'div'> & {
+            defaultOpen?: boolean;
+            open?: boolean;
+            onOpenChange?: (open: boolean) => void;
+        }
+    >,
+) {
+    const {
+        defaultOpen = true,
+        open: openProp,
+        onOpenChange: setOpenProp,
+        className,
+        style,
+        children,
+        ...restProps
+    } = props;
     const isMobile = useIsMobile();
     const [openMobile, setOpenMobile] = React.useState(false);
 
@@ -114,23 +117,27 @@ function SidebarProvider({
         [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar],
     );
 
+    const wrapperStyle = React.useMemo(
+        () =>
+            ({
+                '--sidebar-width': SIDEBAR_WIDTH,
+                '--sidebar-width-icon': SIDEBAR_WIDTH_ICON,
+                ...style,
+            }) as React.CSSProperties,
+        [style],
+    );
+
     return (
         <SidebarContext.Provider value={contextValue}>
             <TooltipProvider delayDuration={0}>
                 <div
                     data-slot="sidebar-wrapper"
-                    style={
-                        {
-                            '--sidebar-width': SIDEBAR_WIDTH,
-                            '--sidebar-width-icon': SIDEBAR_WIDTH_ICON,
-                            ...style,
-                        } as React.CSSProperties
-                    }
+                    style={wrapperStyle}
                     className={cn(
                         'group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full',
                         className,
                     )}
-                    {...props}
+                    {...restProps}
                 >
                     {children}
                 </div>
@@ -155,6 +162,14 @@ function Sidebar({
 >) {
     const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
 
+    const mobileStyle = React.useMemo(
+        () =>
+            ({
+                '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
+            }) as React.CSSProperties,
+        [],
+    );
+
     if (collapsible === 'none') {
         return (
             <div
@@ -175,11 +190,7 @@ function Sidebar({
                     data-slot="sidebar"
                     data-mobile="true"
                     className="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
-                    style={
-                        {
-                            '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
-                        } as React.CSSProperties
-                    }
+                    style={mobileStyle}
                     side={side}
                 >
                     <SheetHeader className="sr-only">
@@ -243,6 +254,14 @@ function Sidebar({
 function SidebarTrigger({ className, onClick, ...props }: Readonly<React.ComponentProps<typeof Button>>) {
     const { toggleSidebar } = useSidebar();
 
+    const handleClick = React.useCallback(
+        (event: React.MouseEvent<HTMLButtonElement>) => {
+            onClick?.(event);
+            toggleSidebar();
+        },
+        [onClick, toggleSidebar],
+    );
+
     return (
         <Button
             data-sidebar="trigger"
@@ -250,10 +269,7 @@ function SidebarTrigger({ className, onClick, ...props }: Readonly<React.Compone
             variant="ghost"
             size="icon"
             className={cn('size-7', className)}
-            onClick={(event) => {
-                onClick?.(event);
-                toggleSidebar();
-            }}
+            onClick={handleClick}
             {...props}
         >
             <PanelLeftIcon />
@@ -267,6 +283,7 @@ function SidebarRail({ className, ...props }: Readonly<React.ComponentProps<'but
 
     return (
         <button
+            type="button"
             data-sidebar="rail"
             data-slot="sidebar-rail"
             aria-label="Toggle Sidebar"
@@ -575,6 +592,14 @@ function SidebarMenuSkeleton({
         return `${Math.floor(Math.random() * 40) + 50}%`;
     }, []);
 
+    const skeletonStyle = React.useMemo(
+        () =>
+            ({
+                '--skeleton-width': width,
+            }) as React.CSSProperties,
+        [width],
+    );
+
     return (
         <div
             data-slot="sidebar-menu-skeleton"
@@ -586,11 +611,7 @@ function SidebarMenuSkeleton({
             <Skeleton
                 className="h-4 max-w-(--skeleton-width) flex-1"
                 data-sidebar="menu-skeleton-text"
-                style={
-                    {
-                        '--skeleton-width': width,
-                    } as React.CSSProperties
-                }
+                style={skeletonStyle}
             />
         </div>
     );

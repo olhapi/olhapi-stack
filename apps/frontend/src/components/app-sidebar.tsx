@@ -12,40 +12,43 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const { user, logout } = useAuth();
     const location = useLocation();
 
-    const navItems = [
-        {
-            title: <Trans>Dashboard</Trans>,
-            url: '/dashboard',
-            icon: Home,
-            isActive: location.pathname === '/dashboard',
-        },
-        {
-            title: <Trans>Account</Trans>,
-            url: '/account',
-            icon: User,
-            isActive: location.pathname === '/account',
-        },
-        {
-            title: <Trans>Billing</Trans>,
-            url: '/billing',
-            icon: CreditCard,
-            isActive: location.pathname === '/billing',
-        },
-        {
-            title: <Trans>Pricing</Trans>,
-            url: '/pricing',
-            icon: DollarSign,
-            isActive: location.pathname === '/pricing',
-        },
-    ];
+    const navItems = React.useMemo(
+        () => [
+            {
+                title: <Trans>Dashboard</Trans>,
+                url: '/dashboard',
+                icon: Home,
+                isActive: location.pathname === '/dashboard',
+            },
+            {
+                title: <Trans>Account</Trans>,
+                url: '/account',
+                icon: User,
+                isActive: location.pathname === '/account',
+            },
+            {
+                title: <Trans>Billing</Trans>,
+                url: '/billing',
+                icon: CreditCard,
+                isActive: location.pathname === '/billing',
+            },
+            {
+                title: <Trans>Pricing</Trans>,
+                url: '/pricing',
+                icon: DollarSign,
+                isActive: location.pathname === '/pricing',
+            },
+        ],
+        [location.pathname],
+    );
 
-    const handleLogout = async () => {
+    const handleLogout = React.useCallback(async () => {
         try {
             await logout();
         } catch (error) {
             console.error('Logout failed:', error);
         }
-    };
+    }, [logout]);
 
     return (
         <Sidebar collapsible="icon" {...props}>

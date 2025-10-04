@@ -7,7 +7,7 @@
     "dev:services": "docker-compose -f docker-compose.dev.yml up -d",
     "dev:apps": "turbo run dev",
     "dev:stop": "docker-compose -f docker-compose.dev.yml down",
-    "lint": "oxlint .",
+    "lint": "oxlint --react-plugin --react-perf-plugin --jsx-a11y-plugin .",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check:types": "turbo run check:types",
     "verify": "turbo run lint check:types --parallel",

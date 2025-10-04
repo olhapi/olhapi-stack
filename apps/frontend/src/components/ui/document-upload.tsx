@@ -8,6 +8,7 @@ import { FileText, Trash2, Download } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import type { DocumentUploadedFile } from '@/types/upload';
 
 interface DocumentUploadProps {
     onUploadSuccess?: (fileInfo: { url: string; name: string; size: number }) => void;
@@ -20,6 +21,14 @@ interface DocumentUploadProps {
         size: number;
     }>;
 }
+
+const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+};
 
 export function DocumentUpload({
     onUploadSuccess,
@@ -34,13 +43,14 @@ export function DocumentUpload({
         api: `${import.meta.env.VITE_AUTH_URL}/api/upload`,
         route: 'documents',
         onUploadComplete: (data) => {
-            const uploadedFile = data.file;
-            if (uploadedFile) {
+            if (data.file && typeof data.file === 'object') {
+                // Type assertion is safe here as we've validated the object structure
+                const uploadedFile = data.file as DocumentUploadedFile;
                 const fileInfo = {
                     id: crypto.randomUUID(),
                     name: uploadedFile.name,
-                    url: (uploadedFile as any).url || `${import.meta.env.VITE_S3_PUBLIC_URL}/${uploadedFile.objectKey}`,
-                    size: uploadedFile.size || 0,
+                    url: uploadedFile.url || `${import.meta.env.VITE_S3_PUBLIC_URL}/${uploadedFile.objectKey}`,
+                    size: uploadedFile.size ?? 0,
                 };
 
                 setUploadedDocuments((prev) => [...prev, fileInfo]);
@@ -83,13 +93,12 @@ export function DocumentUpload({
         [_],
     );
 
-    const formatFileSize = (bytes: number) => {
-        if (bytes === 0) return '0 Bytes';
-        const k = 1024;
-        const sizes = ['Bytes', 'KB', 'MB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    };
+    const createRemoveHandler = useCallback(
+        (documentId: string) => () => {
+            handleRemove(documentId);
+        },
+        [handleRemove],
+    );
 
     return (
         <div className="space-y-4">
@@ -132,7 +141,7 @@ export function DocumentUpload({
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
-                                                onClick={() => handleRemove(document.id)}
+                                                onClick={createRemoveHandler(document.id)}
                                                 title={_(msg`Remove document`)}
                                             >
                                                 <Trash2 className="h-4 w-4" />

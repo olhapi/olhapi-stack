@@ -1,4 +1,4 @@
-import { useActionState, useOptimistic, startTransition } from 'react';
+import { useActionState, useOptimistic, startTransition, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AvatarUpload } from '@/components/ui/avatar-upload';
@@ -10,20 +10,28 @@ import { useAuth } from '@/hooks/use-auth';
 import { useUsernameCheck } from '@/hooks/use-username-check';
 import { CheckCircle2, XCircle, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import type { MessageDescriptor } from '@lingui/core';
+import { getFormString } from '@/utils/form-helpers';
 
 type UpdateUserState = {
     success?: boolean;
     error?: string;
 };
 
+type UpdateUserData = {
+    name?: string;
+    username?: string;
+    image?: string;
+};
+
 async function updateUserAction(
     _prevState: UpdateUserState,
     formData: FormData,
-    updateUserFn: (data: any) => Promise<void>,
-    translate: (msg: any) => string,
+    updateUserFn: (data: UpdateUserData) => Promise<void>,
+    translate: (msg: MessageDescriptor) => string,
 ): Promise<UpdateUserState> {
-    const name = formData.get('name') as string;
-    const username = formData.get('username') as string;
+    const name = getFormString(formData, 'name');
+    const username = getFormString(formData, 'username');
 
     try {
         await updateUserFn({ name, username });
@@ -66,37 +74,62 @@ export function UserSettingsForm() {
                 : null,
     );
 
-    const handleFormSubmit = (formData: FormData) => {
-        // Prevent submission if username is not available
-        const username = formData.get('username') as string;
-        if (username && username.length >= 3 && isAvailable === false) {
-            return;
-        }
+    const handleFormSubmit = useCallback(
+        (formData: FormData) => {
+            // Prevent submission if username is not available
+            const username = getFormString(formData, 'username');
+            if (username && username.length >= 3 && isAvailable === false) {
+                return;
+            }
 
-        // Add optimistic update for immediate UI feedback
-        startTransition(() => {
-            addOptimisticUser({
-                name: formData.get('name') as string,
-                username: username,
+            // Add optimistic update for immediate UI feedback
+            startTransition(() => {
+                addOptimisticUser({
+                    name: getFormString(formData, 'name'),
+                    username: username,
+                });
             });
-        });
 
-        return submitAction(formData);
-    };
+            return submitAction(formData);
+        },
+        [isAvailable, addOptimisticUser, submitAction],
+    );
 
-    const handleAvatarUploadSuccess = async (url: string) => {
-        // Add optimistic update for avatar
-        startTransition(() => {
-            addOptimisticUser({ image: url });
-        });
+    const handleAvatarUploadSuccess = useCallback(
+        async (url: string) => {
+            // Add optimistic update for avatar
+            startTransition(() => {
+                addOptimisticUser({ image: url });
+            });
 
-        // Auto-save avatar to user data immediately
-        try {
-            await updateUser({ image: url });
-        } catch (error) {
-            console.error('Failed to auto-save avatar:', error);
+            // Auto-save avatar to user data immediately
+            try {
+                await updateUser({ image: url });
+            } catch (error) {
+                console.error('Failed to auto-save avatar:', error);
+            }
+        },
+        [addOptimisticUser, updateUser],
+    );
+
+    const handleUsernameChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const newUsername = e.target.value;
+            const currentUsername = user?.username ?? '';
+            startTransition(() => {
+                checkUsername(newUsername, currentUsername);
+            });
+        },
+        [user, checkUsername],
+    );
+
+    const handleReset = useCallback(() => {
+        const form = document.querySelector('form');
+        if (form instanceof HTMLFormElement) {
+            form.reset();
         }
-    };
+        resetState();
+    }, [resetState]);
 
     return (
         <Card>
@@ -144,15 +177,9 @@ export function UserSettingsForm() {
                             <Input
                                 id="username"
                                 name="username"
-                                defaultValue={(optimisticUser as any)?.username || ''}
+                                defaultValue={optimisticUser?.username ?? ''}
                                 placeholder={_(msg`Enter your username`)}
-                                onChange={(e) => {
-                                    const newUsername = e.target.value;
-                                    const currentUsername = (user as any)?.username || '';
-                                    startTransition(() => {
-                                        checkUsername(newUsername, currentUsername);
-                                    });
-                                }}
+                                onChange={handleUsernameChange}
                                 className={
                                     (optimisticAvailable ?? isAvailable) === true
                                         ? 'pr-10 border-green-500 focus:border-green-500'
@@ -187,16 +214,7 @@ export function UserSettingsForm() {
                     </div>
 
                     <div className="flex justify-end space-x-2">
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => {
-                                const form = document.querySelector('form') as HTMLFormElement;
-                                form?.reset();
-                                resetState();
-                            }}
-                            disabled={isPending}
-                        >
+                        <Button type="button" variant="outline" onClick={handleReset} disabled={isPending}>
                             <Trans>Reset</Trans>
                         </Button>
                         <Button

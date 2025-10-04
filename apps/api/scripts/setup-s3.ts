@@ -63,7 +63,7 @@ async function checkBucketExists(bucketName: string): Promise<boolean> {
         await adminS3Client.send(new HeadBucketCommand({ Bucket: bucketName }));
         return true;
     } catch (error) {
-        if ((error as any)?.name === 'NotFound') {
+        if (error && typeof error === 'object' && 'name' in error && error.name === 'NotFound') {
             return false;
         }
         throw error;
@@ -79,7 +79,7 @@ async function setupPrivateBucket() {
         const exists = await checkBucketExists(PRIVATE_BUCKET_NAME!);
 
         if (!exists) {
-            console.log('   Creating new private bucket...');
+            console.log('Creating new private bucket...');
             await adminS3Client.send(new CreateBucketCommand({ Bucket: PRIVATE_BUCKET_NAME }));
             console.log('✅ Private bucket created');
         } else {
@@ -87,12 +87,12 @@ async function setupPrivateBucket() {
         }
 
         // Configure private access (Scaleway doesn't support PutPublicAccessBlock)
-        console.log('   Configuring private access settings...');
+        console.log('Configuring private access settings...');
         console.log("   ⚠️  Scaleway doesn't support PutPublicAccessBlock - using bucket policy approach");
-        console.log('   ✅ Private access will be controlled via bucket policies and CORS');
+        console.log('✅ Private access will be controlled via bucket policies and CORS');
 
         // Configure CORS for private bucket
-        console.log('   Applying CORS configuration...');
+        console.log('Applying CORS configuration...');
         await adminS3Client.send(
             new PutBucketCorsCommand({
                 Bucket: PRIVATE_BUCKET_NAME,
@@ -126,9 +126,9 @@ async function setupPublicBucket() {
         }
 
         // Configure public access (Scaleway doesn't support PutPublicAccessBlock)
-        console.log('   Configuring public access settings...');
+        console.log('Configuring public access settings...');
         console.log("   ⚠️  Scaleway doesn't support PutPublicAccessBlock - using bucket policy approach");
-        console.log('   ✅ Public access will be configured via bucket policy');
+        console.log('✅ Public access will be configured via bucket policy');
 
         // Set bucket policy for public read access (Scaleway format)
         const bucketPolicy = {
@@ -144,7 +144,7 @@ async function setupPublicBucket() {
             ],
         };
 
-        console.log('   Setting bucket policy for public read access...');
+        console.log('Setting bucket policy for public read access...');
         await adminS3Client.send(
             new PutBucketPolicyCommand({
                 Bucket: PUBLIC_BUCKET_NAME,
@@ -154,7 +154,7 @@ async function setupPublicBucket() {
         console.log(' ✅ Bucket policy set for public read access');
 
         // Configure CORS for public bucket
-        console.log('   Applying CORS configuration...');
+        console.log('Applying CORS configuration...');
         await adminS3Client.send(
             new PutBucketCorsCommand({
                 Bucket: PUBLIC_BUCKET_NAME,
@@ -184,7 +184,7 @@ async function verifyConfiguration() {
             await adminS3Client.send(new GetBucketPolicyCommand({ Bucket: PRIVATE_BUCKET_NAME }));
             console.log('⚠️  Bucket has a policy (should typically be empty for private bucket)');
         } catch (error) {
-            if ((error as any)?.name === 'NoSuchBucketPolicy') {
+            if (error && typeof error === 'object' && 'name' in error && error.name === 'NoSuchBucketPolicy') {
                 console.log('✅ No public bucket policy (correct for private bucket)');
             }
         }
@@ -196,14 +196,14 @@ async function verifyConfiguration() {
 
         try {
             await adminS3Client.send(new GetBucketPolicyCommand({ Bucket: PUBLIC_BUCKET_NAME }));
-            console.log('   ✅ Public read policy is set');
+            console.log('✅ Public read policy is set');
         } catch (error) {
-            if ((error as any)?.name === 'NoSuchBucketPolicy') {
-                console.log('   ⚠️  No bucket policy found (public read access might not work)');
+            if (error && typeof error === 'object' && 'name' in error && error.name === 'NoSuchBucketPolicy') {
+                console.log('⚠️  No bucket policy found (public read access might not work)');
             }
         }
     } catch (error) {
-        console.error('   ⚠️  Could not verify all configurations:', error);
+        console.error('⚠️  Could not verify all configurations:', error);
     }
 }
 
@@ -212,27 +212,27 @@ async function validateAppCredentials() {
 
     try {
         // Test that app credentials can list the buckets
-        console.log('   Testing bucket access with app credentials...');
+        console.log('Testing bucket access with app credentials...');
 
         // Check if app can access private bucket
         try {
             await appS3Client.send(new HeadBucketCommand({ Bucket: PRIVATE_BUCKET_NAME }));
-            console.log('   ✅ App can access private bucket');
+            console.log('✅ App can access private bucket');
         } catch (error) {
-            console.log('   ❌ App cannot access private bucket:', (error as any).message);
+            console.log('❌ App cannot access private bucket:', error instanceof Error ? error.message : String(error));
         }
 
         // Check if app can access public bucket
         try {
             await appS3Client.send(new HeadBucketCommand({ Bucket: PUBLIC_BUCKET_NAME }));
-            console.log('   ✅ App can access public bucket');
+            console.log('✅ App can access public bucket');
         } catch (error) {
-            console.log('   ❌ App cannot access public bucket:', (error as any).message);
+            console.log('❌ App cannot access public bucket:', error instanceof Error ? error.message : String(error));
         }
 
-        console.log('   ✅ Application credentials validation completed');
+        console.log('✅ Application credentials validation completed');
     } catch (error) {
-        console.error('   ⚠️  Application credentials validation failed:', error);
+        console.error('⚠️  Application credentials validation failed:', error);
     }
 }
 
@@ -259,8 +259,8 @@ async function main() {
 
         console.log('\n✨ S3 bucket setup completed successfully!');
         console.log('\n📋 Environment Variables Summary:');
-        console.log('   Add these to your .env files if not already present:\n');
-        console.log('   # API .env');
+        console.log('Add these to your .env files if not already present:\n');
+        console.log('# API .env');
         console.log(`   S3_BUCKET_NAME=${PRIVATE_BUCKET_NAME}`);
         console.log(`   S3_PUBLIC_BUCKET_NAME=${PUBLIC_BUCKET_NAME}`);
         console.log(`   S3_PUBLIC_URL=https://${PUBLIC_BUCKET_NAME}.s3.${S3_REGION}.scw.cloud`);

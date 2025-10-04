@@ -1,5 +1,5 @@
 import { useCustomer, usePricingTable, type ProductDetails } from 'autumn-js/react';
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useMemo, useCallback } from 'react';
 import { cn } from '@/utils/style-utils';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
@@ -7,6 +7,38 @@ import CheckoutDialog from '@/components/autumn/checkout-dialog';
 import { getPricingTableContent } from '@/lib/autumn/pricing-table-content';
 import type { Product, ProductItem } from 'autumn-js';
 import { Loader2 } from 'lucide-react';
+
+// Wrapper component to memoize buttonProps
+interface PricingCardWithButtonProps {
+    product: Product;
+    productId: string;
+    checkout: ReturnType<typeof useCustomer>['checkout'];
+}
+
+const PricingCardMemoized = (props: Readonly<PricingCardWithButtonProps>) => {
+    const { product, checkout, productId } = props;
+
+    const handleClick = useCallback(async () => {
+        if (product.id) {
+            await checkout({
+                productId: product.id,
+                dialog: CheckoutDialog,
+            });
+        } else if (product.display?.button_url) {
+            window.open(product.display?.button_url, '_blank', 'noopener,noreferrer');
+        }
+    }, [product.id, product.display?.button_url, checkout]);
+
+    const buttonProps = useMemo(
+        () => ({
+            disabled: (product.scenario === 'active' && !product.properties.updateable) || product.scenario === 'scheduled',
+            onClick: handleClick,
+        }),
+        [product.scenario, product.properties.updateable, handleClick],
+    );
+
+    return <PricingCard productId={productId} buttonProps={buttonProps} />;
+};
 
 interface PricingTableProps {
     productDetails?: ProductDetails[];
@@ -59,25 +91,11 @@ export default function PricingTable({ productDetails }: Readonly<PricingTablePr
                     multiInterval={multiInterval}
                 >
                     {products.filter(intervalFilter).map((product) => (
-                        <PricingCard
+                        <PricingCardMemoized
                             key={product.id}
+                            product={product}
                             productId={product.id}
-                            buttonProps={{
-                                disabled:
-                                    (product.scenario === 'active' && !product.properties.updateable) ||
-                                    product.scenario === 'scheduled',
-
-                                onClick: async () => {
-                                    if (product.id) {
-                                        await checkout({
-                                            productId: product.id,
-                                            dialog: CheckoutDialog,
-                                        });
-                                    } else if (product.display?.button_url) {
-                                        window.open(product.display?.button_url, '_blank', 'noopener,noreferrer');
-                                    }
-                                },
-                            }}
+                            checkout={checkout}
                         />
                     ))}
                 </PricingTableContainer>
@@ -93,7 +111,7 @@ const PricingTableContext = createContext<{
     showFeatures: boolean;
 }>({
     isAnnualToggle: false,
-    setIsAnnualToggle: () => {},
+    setIsAnnualToggle: () => { },
     products: [],
     showFeatures: true,
 });
@@ -127,6 +145,12 @@ export const PricingTableContainer = ({
     setIsAnnualToggle,
     multiInterval,
 }: Readonly<PricingTableContainerProps>) => {
+    const hasRecommended = products?.some((p) => p.display?.recommend_text);
+    const contextValue = React.useMemo(
+        () => ({ isAnnualToggle, setIsAnnualToggle, products: products ?? [], showFeatures }),
+        [isAnnualToggle, setIsAnnualToggle, products, showFeatures],
+    );
+
     if (!products) {
         throw new Error('products is required in <PricingTable />');
     }
@@ -134,12 +158,6 @@ export const PricingTableContainer = ({
     if (products.length === 0) {
         return <></>;
     }
-
-    const hasRecommended = products?.some((p) => p.display?.recommend_text);
-    const contextValue = React.useMemo(
-        () => ({ isAnnualToggle, setIsAnnualToggle, products, showFeatures }),
-        [isAnnualToggle, setIsAnnualToggle, products, showFeatures],
-    );
 
     return (
         <PricingTableContext.Provider value={contextValue}>
@@ -183,11 +201,11 @@ export const PricingCard = ({ productId, className, buttonProps }: Readonly<Pric
 
     const { buttonText } = getPricingTableContent(product);
 
-    const isRecommended = productDisplay?.recommend_text ? true : false;
+    const isRecommended = !!productDisplay?.recommend_text;
     const mainPriceDisplay = product.properties?.is_free
         ? {
-              primary_text: 'Free',
-          }
+            primary_text: 'Free',
+        }
         : product.items[0].display;
 
     const featureItems = product.properties?.is_free ? product.items : product.items.slice(1);
@@ -197,7 +215,7 @@ export const PricingCard = ({ productId, className, buttonProps }: Readonly<Pric
             className={cn(
                 ' w-full h-full py-6 text-foreground border rounded-lg shadow-sm max-w-xl',
                 isRecommended &&
-                    'lg:-translate-y-6 lg:shadow-lg dark:shadow-zinc-800/80 lg:h-[calc(100%+48px)] bg-secondary/40',
+                'lg:-translate-y-6 lg:shadow-lg dark:shadow-zinc-800/80 lg:h-[calc(100%+48px)] bg-secondary/40',
                 className,
             )}
         >
@@ -236,7 +254,7 @@ export const PricingCard = ({ productId, className, buttonProps }: Readonly<Pric
                     )}
                 </div>
                 <div className={cn(' px-6 ', isRecommended && 'lg:-translate-y-12')}>
-                    <PricingCardButton recommended={productDisplay?.recommend_text ? true : false} {...buttonProps}>
+                    <PricingCardButton recommended={!!productDisplay?.recommend_text} {...buttonProps}>
                         {productDisplay?.button_text || buttonText}
                     </PricingCardButton>
                 </div>
@@ -285,16 +303,19 @@ export const PricingCardButton = React.forwardRef<HTMLButtonElement, PricingCard
     ({ recommended, children, className, onClick, ...props }, ref) => {
         const [loading, setLoading] = useState(false);
 
-        const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
-            setLoading(true);
-            try {
-                await onClick?.(e);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        };
+        const handleClick = useCallback(
+            async (e: React.MouseEvent<HTMLButtonElement>) => {
+                setLoading(true);
+                try {
+                    await onClick?.(e);
+                } catch (error) {
+                    console.error(error);
+                } finally {
+                    setLoading(false);
+                }
+            },
+            [onClick],
+        );
 
         return (
             <Button

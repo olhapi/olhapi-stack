@@ -1,13 +1,15 @@
-export type Translations = Record<string, Record<string, any>>;
+export type Translations = Record<string, Record<string, string | Record<string, unknown>>>;
 
-function getNestedValue(obj: any, path: string): string | null {
-    return path.split('.').reduce((current, key) => {
-        return current && typeof current === 'object' ? current[key] : null;
-    }, obj);
+function getNestedValue(obj: unknown, path: string): string | null {
+    return path.split('.').reduce((current: unknown, key: string) => {
+        return current && typeof current === 'object' && current !== null && key in current
+            ? (current as Record<string, unknown>)[key]
+            : null;
+    }, obj) as string | null;
 }
 
 export function useTranslations(translations: Translations, currentLang: string) {
-    return function $t(key: string, values?: Record<string, string | number>): any {
+    return function $t(key: string, values?: Record<string, string | number>): string | Record<string, unknown> {
         // Try to get translation from current language
         let translation = getNestedValue(translations[currentLang], key);
 
