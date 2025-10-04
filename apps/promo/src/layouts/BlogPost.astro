@@ -99,7 +99,7 @@ const ogImage = post.data.seo?.image || post.data.heroImage?.src;
 
   <article class="min-h-screen">
     <!-- Hero Section -->
-    <header class="pt-24 pb-16 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <header class="pt-24 pb-16">
       <Container size="md">
         <div class="max-w-4xl mx-auto">
           <!-- Breadcrumbs -->
@@ -203,9 +203,9 @@ const ogImage = post.data.seo?.image || post.data.heroImage?.src;
     <!-- Main Content -->
     <div class="py-16">
       <Container size="lg">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="blog-content-grid grid grid-cols-1 lg:grid-cols-12 gap-8">
           <!-- Table of Contents -->
-          <div class="lg:col-span-3 order-2 lg:order-1">
+          <div class="lg:col-span-3 order-2 lg:order-1 relative">
             <TableOfContents lang={currentLang} />
           </div>
 
@@ -238,6 +238,11 @@ const ogImage = post.data.seo?.image || post.data.heroImage?.src;
 </Layout>
 
 <style>
+  /* Grid layout for blog content with sticky TOC support */
+  .blog-content-grid {
+    align-items: start;
+  }
+
   /* Enhanced prose styles */
   .prose h1,
   .prose h2,
@@ -247,7 +252,7 @@ const ogImage = post.data.seo?.image || post.data.heroImage?.src;
   .prose h6 {
     color: #111827;
     font-weight: 700;
-    scroll-margin-top: 6rem; /* Account for sticky header */
+    scroll-margin-top: 7rem; /* Account for sticky header + TOC offset */
   }
 
   :global([data-theme="dark"]) .prose h1,
