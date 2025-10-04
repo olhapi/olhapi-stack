@@ -1,10 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
-import { getRelativeLocaleUrl } from 'astro:i18n';
-import { Image } from 'astro:assets';
 import { useTranslations } from '../utils/i18n';
-import FormattedDate from './FormattedDate.astro';
-import Card from './ui/Card.astro';
+import BlogCard from './BlogCard.astro';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -111,49 +108,13 @@ if (relatedPosts.length < maxPosts) {
     </div>
 
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {relatedPosts.map((post) => {
-        const slug = post.id.replace(`${lang}/`, '');
-        return (
-          <Card
-            variant="default"
-            hover={true}
-            padding="none"
-            href={getRelativeLocaleUrl(lang, `blog/${slug}`)}
-            class="overflow-hidden group h-full flex flex-col"
-          >
-            {post.data.heroImage && (
-              <div class="aspect-video overflow-hidden">
-                <Image
-                  src={post.data.heroImage.src}
-                  alt={post.data.heroImage.alt || ''}
-                  width={300}
-                  height={168}
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-            )}
-            <div class="p-4 flex-1 flex flex-col">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 rounded-full">
-                  {post.data.category}
-                </span>
-              </div>
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
-                {post.data.title}
-              </h3>
-              <p class="text-gray-600 dark:text-gray-300 text-sm mb-3 line-clamp-2 flex-1">
-                {post.data.description}
-              </p>
-              <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mt-auto">
-                <FormattedDate date={post.data.pubDate} />
-                {post.data.readTime && (
-                  <span>{post.data.readTime} min read</span>
-                )}
-              </div>
-            </div>
-          </Card>
-        );
-      })}
+      {relatedPosts.map((post) => (
+        <BlogCard
+          post={post}
+          lang={lang}
+          variant="related"
+        />
+      ))}
     </div>
   </section>
 )}
