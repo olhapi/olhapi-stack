@@ -1,7 +1,7 @@
 import { Globe } from 'lucide-react';
 import { cn } from '@/utils/style-utils';
-import { locales, loadTranslation, saveLocale } from '@/i18n';
-import { useState, useEffect, useCallback } from 'react';
+import { loadTranslation, locales, saveLocale } from '@/i18n';
+import { useCallback, useEffect, useState } from 'react';
 import { useLingui } from '@lingui/react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 

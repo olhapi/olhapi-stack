@@ -8,18 +8,14 @@ const root: FastifyPluginAsyncZod = async (fastify, _opts): Promise<void> => {
             schema: {
                 response: {
                     200: z.object({
-                        message: z.string(),
-                        version: z.string(),
-                        timestamp: z.string(),
+                        message: z.string(), timestamp: z.string(), version: z.string(),
                     }),
                 },
             },
         },
         async function (_request, _reply) {
             return {
-                message: 'olhapi-stack API is running',
-                version: '1.0.0',
-                timestamp: new Date().toISOString(),
+                message: 'olhapi-stack API is running', timestamp: new Date().toISOString(), version: '1.0.0',
             };
         },
     );

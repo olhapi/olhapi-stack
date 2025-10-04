@@ -1,5 +1,5 @@
 import fp from 'fastify-plugin';
-import { type FastifyPluginAsync, type FastifyRequest, type FastifyReply } from 'fastify';
+import { type FastifyPluginAsync, type FastifyReply, type FastifyRequest } from 'fastify';
 import { handleRequest } from 'better-upload/server';
 import { uploadRouter } from '../config/upload-router.ts';
 import { auth } from '../lib/auth/auth.ts';

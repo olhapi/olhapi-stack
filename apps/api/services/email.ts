@@ -1,7 +1,7 @@
 import { SendGridTransport } from '@upyo/sendgrid';
 import { z } from 'zod';
 import { config } from '../config/app.ts';
-import { renderMagicLinkEmail, renderContactFormEmail } from '@olhapi/email-templates/src/templates';
+import { renderContactFormEmail, renderMagicLinkEmail } from '@olhapi/email-templates/src/templates';
 
 // Email validation schema that matches the SendGrid transport requirements
 const EmailSchema = z.custom<`${string}@${string}`>(
@@ -46,20 +46,10 @@ export async function sendEmail(options: EmailOptions): Promise<void> {
         const toEmail = EmailSchema.parse(options.to);
 
         const receipt = await transport.send({
-            sender: {
+            attachments: [], bccRecipients: [], ccRecipients: [], content: { html: options.html, text: options.text || '' }, headers: new Headers(), priority: 'normal' as const, recipients: [{ address: toEmail }], replyRecipients: [], sender: {
                 address: fromEmail,
                 name: config.SENDGRID_FROM_NAME || 'Your App',
-            },
-            recipients: [{ address: toEmail }],
-            ccRecipients: [],
-            bccRecipients: [],
-            replyRecipients: [],
-            subject: options.subject,
-            content: { text: options.text || '', html: options.html },
-            attachments: [],
-            priority: 'normal' as const,
-            tags: [],
-            headers: new Headers(),
+            }, subject: options.subject, tags: [],
         });
         if (!receipt.successful) {
             throw new Error(`Failed to send email: ${receipt.errorMessages.join(', ')}`);
@@ -74,7 +64,7 @@ export async function sendMagicLinkEmail(email: string, magicLink: string): Prom
     const subject = 'Sign in to your account';
     const appName = config.SENDGRID_FROM_NAME || 'Your App';
 
-    const html = await renderMagicLinkEmail({ magicLink, appName });
+    const html = await renderMagicLinkEmail({ appName, magicLink });
 
     const text = `Sign in to your ${appName} account
 
@@ -84,10 +74,7 @@ ${magicLink}
 This link will expire in 15 minutes. If you didn't request this, you can safely ignore this email.`;
 
     await sendEmail({
-        to: email,
-        subject,
-        text,
-        html,
+        html, subject, text, to: email,
     });
 }
 
@@ -121,9 +108,6 @@ This message was sent through the ${companyName} website contact form.
 Reply directly to this email to respond to ${contactData.name}.`;
 
     await sendEmail({
-        to: recipient,
-        subject,
-        text,
-        html,
+        html, subject, text, to: recipient,
     });
 }

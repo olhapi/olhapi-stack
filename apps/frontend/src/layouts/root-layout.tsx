@@ -4,7 +4,7 @@ import { AuthProvider } from '@/contexts/auth-context';
 import { GrowthBookContextProvider } from '@/contexts/growthbook-context';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { I18nProvider } from '@lingui/react';
-import { i18n, loadTranslation, getSavedLocale, initializeI18n } from '@/i18n';
+import { getSavedLocale, i18n, initializeI18n, loadTranslation } from '@/i18n';
 import { AutumnProvider } from 'autumn-js/react';
 import { useEffect } from 'react';
 

@@ -1,11 +1,11 @@
 import {
     CreateBucketCommand,
+    GetBucketCorsCommand,
+    GetBucketPolicyCommand,
+    HeadBucketCommand,
     PutBucketCorsCommand,
     PutBucketPolicyCommand,
     S3Client,
-    HeadBucketCommand,
-    GetBucketCorsCommand,
-    GetBucketPolicyCommand,
 } from '@aws-sdk/client-s3';
 
 // Load environment variables
@@ -20,40 +20,30 @@ const PUBLIC_BUCKET_NAME = process.env.S3_PUBLIC_BUCKET_NAME;
 
 // Create S3Client for admin operations (bucket creation, policy management)
 const adminS3Client = new S3Client({
-    region: S3_REGION,
-    endpoint: S3_ENDPOINT,
     credentials: {
         accessKeyId: S3_ADMIN_ACCESS_KEY_ID!,
         secretAccessKey: S3_ADMIN_SECRET_KEY!,
-    },
-    forcePathStyle: true, // Required for Scaleway
+    }, endpoint: S3_ENDPOINT, forcePathStyle: true, region: S3_REGION, // Required for Scaleway
 });
 
 // Create S3Client for regular application operations (to validate app credentials)
 const appS3Client = new S3Client({
-    region: S3_REGION,
-    endpoint: S3_ENDPOINT,
     credentials: {
         accessKeyId: S3_ACCESS_KEY_ID!,
         secretAccessKey: S3_SECRET_ACCESS_KEY!,
-    },
-    forcePathStyle: true, // Required for Scaleway
+    }, endpoint: S3_ENDPOINT, forcePathStyle: true, region: S3_REGION, // Required for Scaleway
 });
 
 // CORS configuration for both buckets
 const corsConfiguration = {
     CORSRules: [
         {
-            AllowedOrigins: [
+            AllowedHeaders: ['*'], AllowedMethods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'], AllowedOrigins: [
                 'http://localhost:3000', // Frontend development
                 'http://localhost:3001', // API development
                 // Add production domains here when needed
                 // 'https://yourdomain.com',
-            ],
-            AllowedHeaders: ['*'],
-            AllowedMethods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
-            ExposeHeaders: ['ETag', 'x-amz-server-side-encryption'],
-            MaxAgeSeconds: 3000,
+            ], ExposeHeaders: ['ETag', 'x-amz-server-side-encryption'], MaxAgeSeconds: 3000,
         },
     ],
 };
@@ -132,16 +122,11 @@ async function setupPublicBucket() {
 
         // Set bucket policy for public read access (Scaleway format)
         const bucketPolicy = {
-            Version: '2012-10-17',
             Statement: [
                 {
-                    Sid: 'PublicReadGetObject',
-                    Effect: 'Allow',
-                    Principal: '*',
-                    Action: 's3:GetObject',
-                    Resource: `${PUBLIC_BUCKET_NAME}/*`,
+                    Action: 's3:GetObject', Effect: 'Allow', Principal: '*', Resource: `${PUBLIC_BUCKET_NAME}/*`, Sid: 'PublicReadGetObject',
                 },
-            ],
+            ], Version: '2012-10-17',
         };
 
         console.log('Setting bucket policy for public read access...');

@@ -2,13 +2,13 @@ import type { StorybookConfig } from '@storybook/react-vite';
 import path from 'node:path';
 
 const config: StorybookConfig = {
-    stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
-    staticDirs: ['../public'],
     addons: ['@storybook/addon-links', '@storybook/addon-vitest', '@chromatic-com/storybook'],
     framework: {
         name: '@storybook/react-vite',
         options: {},
     },
+    staticDirs: ['../public'],
+    stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
     async viteFinal(config) {
         // Add path alias support
         config.resolve = config.resolve || {};

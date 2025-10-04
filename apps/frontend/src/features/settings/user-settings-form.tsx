@@ -1,4 +1,4 @@
-import { useActionState, useOptimistic, startTransition, useCallback } from 'react';
+import { startTransition, useActionState, useCallback, useOptimistic } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AvatarUpload } from '@/components/ui/avatar-upload';
@@ -8,7 +8,7 @@ import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { useAuth } from '@/hooks/use-auth';
 import { useUsernameCheck } from '@/hooks/use-username-check';
-import { CheckCircle2, XCircle, Loader2 } from 'lucide-react';
+import { CheckCircle2, Loader2, XCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import type { MessageDescriptor } from '@lingui/core';
 import { getFormString } from '@/utils/form-helpers';

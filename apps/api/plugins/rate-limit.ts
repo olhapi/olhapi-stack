@@ -17,22 +17,12 @@ export default fp<RateLimitPluginOptions>(async (fastify) => {
         : undefined;
 
     fastify.register(rateLimit, {
-        max: config.RATE_LIMIT_MAX,
-        timeWindow: '1 minute',
-        redis,
-        errorResponseBuilder: (req, context) => {
+        ban: 2, errorResponseBuilder: (req, context) => {
             return {
-                code: 429,
-                error: 'Too Many Requests',
-                message: `Rate limit exceeded, retry in ${context.ttl} milliseconds.`,
-                date: Date.now(),
-                expiresIn: context.ttl,
+                code: 429, date: Date.now(), error: 'Too Many Requests', expiresIn: context.ttl, message: `Rate limit exceeded, retry in ${context.ttl} milliseconds.`,
             };
-        },
-        keyGenerator: (req) => {
+        }, keyGenerator: (req) => {
             return req.ip;
-        },
-        skipOnError: false,
-        ban: 2,
+        }, max: config.RATE_LIMIT_MAX, redis, skipOnError: false, timeWindow: '1 minute',
     });
 });

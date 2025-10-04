@@ -1,4 +1,4 @@
-import { Html, Head, Preview, Body, Container, Section, Text, Button, Hr } from '@react-email/components';
+import { Body, Button, Container, Head, Hr, Html, Preview, Section, Text } from '@react-email/components';
 
 export interface MagicLinkEmailProps {
     magicLink: string;
@@ -53,9 +53,7 @@ const main = {
 };
 
 const container = {
-    margin: '0 auto',
-    padding: '20px 0 48px',
-    maxWidth: '560px',
+    margin: '0 auto', maxWidth: '560px', padding: '20px 0 48px',
 };
 
 const logoContainer = {
@@ -63,11 +61,7 @@ const logoContainer = {
 };
 
 const heading = {
-    fontSize: '32px',
-    lineHeight: '1.3',
-    fontWeight: '700',
-    color: '#484848',
-    margin: '0 0 20px',
+    color: '#484848', fontSize: '32px', fontWeight: '700', lineHeight: '1.3', margin: '0 0 20px',
 };
 
 const body = {
@@ -76,35 +70,19 @@ const body = {
 };
 
 const paragraph = {
-    fontSize: '16px',
-    lineHeight: '26px',
-    color: '#484848',
-    margin: '0 0 16px',
+    color: '#484848', fontSize: '16px', lineHeight: '26px', margin: '0 0 16px',
 };
 
 const buttonContainer = {
-    textAlign: 'center' as const,
-    margin: '32px 0',
+    margin: '32px 0', textAlign: 'center' as const,
 };
 
 const button = {
-    backgroundColor: '#007cba',
-    borderRadius: '6px',
-    color: '#fff',
-    fontSize: '16px',
-    textDecoration: 'none',
-    textAlign: 'center' as const,
-    display: 'block',
-    padding: '12px 30px',
-    fontWeight: 'bold',
+    backgroundColor: '#007cba', borderRadius: '6px', color: '#fff', display: 'block', fontSize: '16px', fontWeight: 'bold', padding: '12px 30px', textAlign: 'center' as const, textDecoration: 'none',
 };
 
 const link = {
-    fontSize: '14px',
-    color: '#007cba',
-    textDecoration: 'underline',
-    wordBreak: 'break-all' as const,
-    margin: '0 0 16px',
+    color: '#007cba', fontSize: '14px', margin: '0 0 16px', textDecoration: 'underline', wordBreak: 'break-all' as const,
 };
 
 const hr = {

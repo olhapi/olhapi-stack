@@ -1,4 +1,4 @@
-import { Html, Head, Preview, Body, Container, Section, Text, Hr } from '@react-email/components';
+import { Body, Container, Head, Hr, Html, Preview, Section, Text } from '@react-email/components';
 
 export interface ContactFormEmailProps {
     name: string;
@@ -64,9 +64,7 @@ const main = {
 };
 
 const container = {
-    margin: '0 auto',
-    padding: '20px 0 48px',
-    maxWidth: '560px',
+    margin: '0 auto', maxWidth: '560px', padding: '20px 0 48px',
 };
 
 const logoContainer = {
@@ -74,11 +72,7 @@ const logoContainer = {
 };
 
 const heading = {
-    fontSize: '28px',
-    lineHeight: '1.3',
-    fontWeight: '700',
-    color: '#484848',
-    margin: '0 0 30px',
+    color: '#484848', fontSize: '28px', fontWeight: '700', lineHeight: '1.3', margin: '0 0 30px',
 };
 
 const body = {
@@ -87,42 +81,19 @@ const body = {
 };
 
 const paragraph = {
-    fontSize: '16px',
-    lineHeight: '26px',
-    color: '#484848',
-    margin: '0 0 20px',
+    color: '#484848', fontSize: '16px', lineHeight: '26px', margin: '0 0 20px',
 };
 
 const fieldLabel = {
-    fontSize: '14px',
-    fontWeight: '600',
-    color: '#666666',
-    margin: '20px 0 5px',
-    textTransform: 'uppercase' as const,
-    letterSpacing: '0.5px',
+    color: '#666666', fontSize: '14px', fontWeight: '600', letterSpacing: '0.5px', margin: '20px 0 5px', textTransform: 'uppercase' as const,
 };
 
 const fieldValue = {
-    fontSize: '16px',
-    lineHeight: '24px',
-    color: '#484848',
-    margin: '0 0 10px',
-    padding: '8px 12px',
-    backgroundColor: '#f8f9fa',
-    borderRadius: '4px',
-    border: '1px solid #e9ecef',
+    backgroundColor: '#f8f9fa', border: '1px solid #e9ecef', borderRadius: '4px', color: '#484848', fontSize: '16px', lineHeight: '24px', margin: '0 0 10px', padding: '8px 12px',
 };
 
 const messageValue = {
-    fontSize: '16px',
-    lineHeight: '24px',
-    color: '#484848',
-    margin: '0 0 10px',
-    padding: '12px 16px',
-    backgroundColor: '#f8f9fa',
-    borderRadius: '4px',
-    border: '1px solid #e9ecef',
-    whiteSpace: 'pre-wrap' as const,
+    backgroundColor: '#f8f9fa', border: '1px solid #e9ecef', borderRadius: '4px', color: '#484848', fontSize: '16px', lineHeight: '24px', margin: '0 0 10px', padding: '12px 16px', whiteSpace: 'pre-wrap' as const,
 };
 
 const hr = {
@@ -131,8 +102,5 @@ const hr = {
 };
 
 const footer = {
-    color: '#898989',
-    fontSize: '12px',
-    margin: '20px 0 0',
-    lineHeight: '18px',
+    color: '#898989', fontSize: '12px', lineHeight: '18px', margin: '20px 0 0',
 };

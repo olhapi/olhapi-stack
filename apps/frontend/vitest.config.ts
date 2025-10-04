@@ -28,11 +28,7 @@ export default defineConfig({
         },
     },
     test: {
-        globals: true,
         coverage: {
-            provider: 'v8',
-            reporter: ['text', 'json', 'html'],
-            include: ['src/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
             exclude: [
                 'node_modules',
                 'dist',
@@ -41,27 +37,18 @@ export default defineConfig({
                 '**/*.stories.{js,jsx,ts,tsx}',
                 '**/*.test.{js,jsx,ts,tsx}',
                 '**/*.spec.{js,jsx,ts,tsx}',
-            ],
-        },
-        projects: [
+            ], include: ['src/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'], provider: 'v8', reporter: ['text', 'json', 'html'],
+        }, globals: true, projects: [
             {
                 test: {
-                    name: 'unit',
-                    environment: 'node',
-                    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-                    exclude: ['src/**/*.stories.tsx'],
+                    environment: 'node', exclude: ['src/**/*.stories.tsx'], include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'], name: 'unit',
                 },
             },
             {
                 test: {
-                    name: 'storybook',
                     browser: {
-                        enabled: true,
-                        provider: 'playwright',
-                        headless: true,
-                        instances: [{ browser: 'chromium' }],
-                    },
-                    setupFiles: [path.join(dirname, '.storybook/vitest.setup.ts')],
+                        enabled: true, headless: true, instances: [{ browser: 'chromium' }], provider: 'playwright',
+                    }, name: 'storybook', setupFiles: [path.join(dirname, '.storybook/vitest.setup.ts')],
                 },
             },
         ],

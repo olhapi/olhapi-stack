@@ -1,18 +1,11 @@
 const config = {
-    locales: ['en', 'es', 'fr'],
-    sourceLocale: 'en',
     catalogs: [
         {
-            path: '<rootDir>/src/locales/{locale}/messages',
-            include: ['src'],
-            exclude: ['**/node_modules/**'],
+            exclude: ['**/node_modules/**'], include: ['src'], path: '<rootDir>/src/locales/{locale}/messages',
         },
-    ],
-    format: 'po',
-    formatOptions: {
+    ], compileNamespace: 'es', format: 'po', formatOptions: {
         lineNumbers: false,
-    },
-    compileNamespace: 'es',
+    }, locales: ['en', 'es', 'fr'], sourceLocale: 'en',
 };
 
 export default config;

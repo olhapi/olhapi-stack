@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { handleMagicLinkAuth } from './auth-utils';
 import { Input } from '@/components/ui/input';
-import { useRef, useActionState, useCallback } from 'react';
+import { useActionState, useCallback, useRef } from 'react';
 import { Loader2Icon } from 'lucide-react';
 import { toast } from 'sonner';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';

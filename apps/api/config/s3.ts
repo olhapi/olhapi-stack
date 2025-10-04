@@ -8,11 +8,10 @@ interface S3Config extends S3ClientConfig {
 
 export function createS3Client() {
     const s3Config: S3Config = {
-        region: config.S3_REGION,
         credentials: {
             accessKeyId: config.S3_ACCESS_KEY_ID,
             secretAccessKey: config.S3_SECRET_ACCESS_KEY,
-        },
+        }, region: config.S3_REGION,
     };
 
     if (config.S3_ENDPOINT) {

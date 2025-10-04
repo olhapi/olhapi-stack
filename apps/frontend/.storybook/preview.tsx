@@ -9,14 +9,6 @@ import '../src/index.css';
 i18n.activate('en');
 
 const preview: Preview = {
-    parameters: {
-        controls: {
-            matchers: {
-                color: /(background|color)$/i,
-                date: /Date$/,
-            },
-        },
-    },
     decorators: [
         (Story, context) => {
             return (
@@ -29,7 +21,14 @@ const preview: Preview = {
                 </I18nProvider>
             );
         },
-    ],
+    ], parameters: {
+        controls: {
+            matchers: {
+                color: /(background|color)$/i,
+                date: /Date$/,
+            },
+        },
+    },
 };
 
 export default preview;

@@ -12,33 +12,26 @@ export default fp(async (fastify: FastifyInstance) => {
     // Initialize Sentry if DSN is provided
     if (config.SENTRY_DSN) {
         Sentry.init({
-            dsn: config.SENTRY_DSN,
-            environment: config.NODE_ENV,
-            tracesSampleRate: config.NODE_ENV === 'production' ? 0.1 : 1,
-            integrations: [Sentry.httpIntegration(), Sentry.expressIntegration()],
+            dsn: config.SENTRY_DSN, environment: config.NODE_ENV, integrations: [Sentry.httpIntegration(), Sentry.expressIntegration()], tracesSampleRate: config.NODE_ENV === 'production' ? 0.1 : 1,
         });
 
         // Add Sentry request handler
         fastify.addHook('onRequest', async (request) => {
             Sentry.setContext('request', {
-                method: request.method,
-                url: request.url,
-                headers: request.headers,
-                ip: request.ip,
+                headers: request.headers, ip: request.ip, method: request.method, url: request.url,
             });
         });
 
         // Add Sentry error handler
         fastify.addHook('onError', async (request, reply, error) => {
             Sentry.captureException(error, {
-                tags: {
-                    method: request.method,
-                    url: request.url,
-                },
                 extra: {
                     headers: request.headers,
                     params: request.params,
                     query: request.query,
+                }, tags: {
+                    method: request.method,
+                    url: request.url,
                 },
             });
         });

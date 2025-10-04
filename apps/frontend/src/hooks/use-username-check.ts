@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useOptimistic, startTransition } from 'react';
+import { startTransition, useCallback, useMemo, useOptimistic, useState } from 'react';
 import { funnel } from 'remeda';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
@@ -131,11 +131,6 @@ export function useUsernameCheck(): UsernameCheckResult {
     );
 
     return {
-        isChecking,
-        isAvailable,
-        message,
-        optimisticAvailable,
-        checkUsername,
-        resetState,
+        checkUsername, isAvailable, isChecking, message, optimisticAvailable, resetState,
     };
 }

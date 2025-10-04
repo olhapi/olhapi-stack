@@ -9,10 +9,7 @@ export function formatCurrency(amount: number, options: FormatCurrencyOptions = 
     const { currency = 'EUR', locale = 'en-US', minimumFractionDigits = 2, maximumFractionDigits = 2 } = options;
 
     return new Intl.NumberFormat(locale, {
-        style: 'currency',
-        currency,
-        minimumFractionDigits,
-        maximumFractionDigits,
+        currency, maximumFractionDigits, minimumFractionDigits, style: 'currency',
     }).format(amount);
 }
 
@@ -20,10 +17,7 @@ export function formatCurrencyCompact(amount: number, options: FormatCurrencyOpt
     const { currency = 'EUR', locale = 'en-US' } = options;
 
     return new Intl.NumberFormat(locale, {
-        style: 'currency',
-        currency,
-        notation: 'compact',
-        maximumFractionDigits: 1,
+        currency, maximumFractionDigits: 1, notation: 'compact', style: 'currency',
     }).format(amount);
 }
 

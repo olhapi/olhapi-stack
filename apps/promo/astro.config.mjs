@@ -8,28 +8,22 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-    site: 'https://example.com',
-    integrations: [
+    i18n: {
+        defaultLocale: 'en', locales: ['en', 'de'], routing: {
+            prefixDefaultLocale: false,
+        },
+    }, integrations: [
         mdx(),
         sitemap({
             // Enhanced sitemap configuration
             i18n: {
                 defaultLocale: 'en',
                 locales: {
-                    en: 'en',
-                    de: 'de',
+                    de: 'de', en: 'en',
                 },
             },
         }),
-    ],
-    i18n: {
-        locales: ['en', 'de'],
-        defaultLocale: 'en',
-        routing: {
-            prefixDefaultLocale: false,
-        },
-    },
-    vite: {
+    ], site: 'https://example.com', vite: {
         plugins: [tailwindcss()],
     },
 });

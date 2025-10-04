@@ -26,8 +26,7 @@ export function fastifyToWebRequest(request: FastifyRequest): Request {
     const url = new URL(request.url, `${request.protocol}://${request.hostname}`);
 
     const requestInit: RequestInit = {
-        method: request.method,
-        headers: convertHeaders(request.headers),
+        headers: convertHeaders(request.headers), method: request.method,
     };
 
     // Only add body for non-GET requests
@@ -45,8 +44,7 @@ export function fastifyToWebRequest(request: FastifyRequest): Request {
  */
 export function createRequestInit(request: FastifyRequest): RequestInit {
     const requestInit: RequestInit = {
-        method: request.method,
-        headers: convertHeaders(request.headers),
+        headers: convertHeaders(request.headers), method: request.method,
     };
 
     // Only add body for non-GET requests

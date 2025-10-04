@@ -1,10 +1,10 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useUploadFile } from 'better-upload/client';
 import { UploadButton } from '@/components/ui/upload-button';
 import { Trans } from '@lingui/react/macro';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
-import { FileText, Trash2, Download } from 'lucide-react';
+import { Download, FileText, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -40,24 +40,19 @@ export function DocumentUpload({
     const { _ } = useLingui();
 
     const { control } = useUploadFile({
-        api: `${import.meta.env.VITE_AUTH_URL}/api/upload`,
-        route: 'documents',
-        onUploadComplete: (data) => {
+        api: `${import.meta.env.VITE_AUTH_URL}/api/upload`, onUploadComplete: (data) => {
             if (data.file && typeof data.file === 'object') {
                 // Type assertion is safe here as we've validated the object structure
                 const uploadedFile = data.file as DocumentUploadedFile;
                 const fileInfo = {
-                    id: crypto.randomUUID(),
-                    name: uploadedFile.name,
-                    url: uploadedFile.url || `${import.meta.env.VITE_S3_PUBLIC_URL}/${uploadedFile.objectKey}`,
-                    size: uploadedFile.size ?? 0,
+                    id: crypto.randomUUID(), name: uploadedFile.name, size: uploadedFile.size ?? 0, url: uploadedFile.url || `${import.meta.env.VITE_S3_PUBLIC_URL}/${uploadedFile.objectKey}`,
                 };
 
                 setUploadedDocuments((prev) => [...prev, fileInfo]);
                 onUploadSuccess?.(fileInfo);
                 toast.success(_(msg`Document uploaded successfully`));
             }
-        },
+        }, route: 'documents',
     });
 
     const handleUpload = useCallback(

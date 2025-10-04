@@ -13,12 +13,7 @@ export interface SanitizedError {
  * Generic error messages to prevent information leakage
  */
 const GENERIC_ERROR_MESSAGES = {
-    INTERNAL_ERROR: 'An internal server error occurred',
-    VALIDATION_ERROR: 'Invalid request data',
-    AUTHENTICATION_ERROR: 'Authentication failed',
-    AUTHORIZATION_ERROR: 'Access denied',
-    NOT_FOUND_ERROR: 'Resource not found',
-    UPLOAD_ERROR: 'File upload failed',
+    AUTHENTICATION_ERROR: 'Authentication failed', AUTHORIZATION_ERROR: 'Access denied', INTERNAL_ERROR: 'An internal server error occurred', NOT_FOUND_ERROR: 'Resource not found', UPLOAD_ERROR: 'File upload failed', VALIDATION_ERROR: 'Invalid request data',
 } as const;
 
 /**
@@ -38,8 +33,7 @@ export function sanitizeError(
     // Log the full error details server-side for debugging
     logger.error(
         {
-            error: error instanceof Error ? error.stack : String(error),
-            context,
+            context, error: error instanceof Error ? error.stack : String(error),
         },
         `Error in ${context}`,
     );
@@ -73,8 +67,7 @@ export function createSanitizedError(
     if (originalError) {
         logger.error(
             {
-                error: originalError instanceof Error ? originalError.stack : String(originalError),
-                context,
+                context, error: originalError instanceof Error ? originalError.stack : String(originalError),
             },
             `Error in ${context}: ${errorType}`,
         );
@@ -119,11 +112,11 @@ export function getValidationErrorMessage(
             .replace(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/g, '[IP]') // Remove IP addresses
             .replace(/\b[a-zA-Z]:[\\/ ].*?\b/g, '[PATH]'); // Remove file paths
 
-        logger.warn({ error: error.stack, context }, `Validation error in ${context}`);
+        logger.warn({ context, error: error.stack }, `Validation error in ${context}`);
         return message;
     }
 
     // For non-validation errors, log and return generic message
-    logger.error({ error: String(error), context }, `Non-validation error in ${context}`);
+    logger.error({ context, error: String(error) }, `Non-validation error in ${context}`);
     return GENERIC_ERROR_MESSAGES.VALIDATION_ERROR;
 }

@@ -26,7 +26,7 @@ const app: FastifyPluginAsync<AppOptions> = async (fastify, opts): Promise<void>
 
     // Configure CORS policies (must be registered before routes)
     await fastify.register(fastifyCors, {
-        origin: (origin, callback) => {
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'], credentials: true, maxAge: 86400, methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], origin: (origin, callback) => {
             if (!origin) {
                 // Allow requests without origin (direct browser navigation, so magic links work)
                 return callback(null, true);
@@ -40,16 +40,10 @@ const app: FastifyPluginAsync<AppOptions> = async (fastify, opts): Promise<void>
             // Reject the origin
             return callback(new Error('Not allowed by CORS'), false);
         },
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-        credentials: true,
-        maxAge: 86400,
     });
 
     // Register authentication endpoint
     fastify.route({
-        method: ['GET', 'POST'],
-        url: '/api/auth/*',
         async handler(request, reply) {
             try {
                 // Convert Fastify request to Web API request
@@ -74,7 +68,7 @@ const app: FastifyPluginAsync<AppOptions> = async (fastify, opts): Promise<void>
                 );
                 reply.status(500).send(sanitizedError);
             }
-        },
+        }, method: ['GET', 'POST'], url: '/api/auth/*',
     });
 
     // Do not touch the following lines

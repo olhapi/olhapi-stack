@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { BadgeCheck, ChevronsUpDown, LogOut, Settings, Sparkles, Globe } from 'lucide-react';
+import { BadgeCheck, ChevronsUpDown, Globe, LogOut, Settings, Sparkles } from 'lucide-react';
 import { Trans } from '@lingui/react/macro';
 import { useCustomer } from 'autumn-js/react';
 
@@ -17,8 +17,8 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
-import { locales, loadTranslation, saveLocale } from '@/i18n';
-import { useState, useEffect, useCallback } from 'react';
+import { loadTranslation, locales, saveLocale } from '@/i18n';
+import { useCallback, useEffect, useState } from 'react';
 import { useLingui } from '@lingui/react';
 
 const languageFlags: Record<string, string> = {

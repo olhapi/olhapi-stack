@@ -21,8 +21,7 @@ export function rotateSize(width: number, height: number, rotation: number) {
     const rotRad = getRadianAngle(rotation);
 
     return {
-        width: Math.abs(Math.cos(rotRad) * width) + Math.abs(Math.sin(rotRad) * height),
-        height: Math.abs(Math.sin(rotRad) * width) + Math.abs(Math.cos(rotRad) * height),
+        height: Math.abs(Math.sin(rotRad) * width) + Math.abs(Math.cos(rotRad) * height), width: Math.abs(Math.cos(rotRad) * width) + Math.abs(Math.sin(rotRad) * height),
     };
 }
 
@@ -102,17 +101,12 @@ export default async function getCroppedImg(
 
     // Create a File from the blob
     const file = new File([blob], fileName, {
-        type: outputFormat,
-        lastModified: Date.now(),
+        lastModified: Date.now(), type: outputFormat,
     });
 
     // Compress the file
     const compressionOptions = {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 512,
-        useWebWorker: true,
-        fileType: outputFormat,
-        initialQuality: 0.6, // 60% quality
+        fileType: outputFormat, initialQuality: 0.6, maxSizeMB: 1, maxWidthOrHeight: 512, useWebWorker: true, // 60% quality
     };
 
     try {

@@ -1,6 +1,6 @@
 'use client';
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/style-utils';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogTitle } from '@/components/ui/dialog';
@@ -20,8 +20,7 @@ export interface CheckoutDialogProps {
 
 const formatCurrency = (params: Readonly<{ amount: number; currency: string }>) => {
     return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: params.currency,
+        currency: params.currency, style: 'currency',
     }).format(params.amount);
 };
 
@@ -50,8 +49,7 @@ export default function CheckoutDialog(props: Readonly<CheckoutDialogProps>) {
         });
 
         await attach({
-            productId: checkoutResult.product.id,
-            options,
+            options, productId: checkoutResult.product.id,
         });
         props.setOpen(false);
         setLoading(false);
@@ -225,8 +223,7 @@ function CheckoutLines({ checkoutResult }: Readonly<CheckoutLinesProps>) {
                                     <p className="text-muted-foreground">{line.description}</p>
                                     <p className="text-muted-foreground">
                                         {new Intl.NumberFormat('en-US', {
-                                            style: 'currency',
-                                            currency: checkoutResult?.currency,
+                                            currency: checkoutResult?.currency, style: 'currency',
                                         }).format(line.amount)}
                                     </p>
                                 </div>
@@ -295,8 +292,7 @@ const PrepaidItem = ({ item, checkoutResult, setCheckoutResult }: Readonly<Prepa
             });
 
             const { data, error } = await checkout({
-                productId: checkoutResult.product.id,
-                options: newOptions,
+                options: newOptions, productId: checkoutResult.product.id,
             });
 
             if (error) {

@@ -1,5 +1,5 @@
-import { useCustomer, usePricingTable, type ProductDetails } from 'autumn-js/react';
-import React, { createContext, useContext, useState, useMemo, useCallback } from 'react';
+import { type ProductDetails, useCustomer, usePricingTable } from 'autumn-js/react';
+import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { cn } from '@/utils/style-utils';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
@@ -21,8 +21,7 @@ const PricingCardMemoized = (props: Readonly<PricingCardWithButtonProps>) => {
     const handleClick = useCallback(async () => {
         if (product.id) {
             await checkout({
-                productId: product.id,
-                dialog: CheckoutDialog,
+                dialog: CheckoutDialog, productId: product.id,
             });
         } else if (product.display?.button_url) {
             window.open(product.display?.button_url, '_blank', 'noopener,noreferrer');
@@ -110,10 +109,7 @@ const PricingTableContext = createContext<{
     products: Product[];
     showFeatures: boolean;
 }>({
-    isAnnualToggle: false,
-    setIsAnnualToggle: () => { },
-    products: [],
-    showFeatures: true,
+    isAnnualToggle: false, products: [], setIsAnnualToggle: () => { }, showFeatures: true,
 });
 
 export const usePricingTableContext = (componentName: string) => {
@@ -147,7 +143,7 @@ export const PricingTableContainer = ({
 }: Readonly<PricingTableContainerProps>) => {
     const hasRecommended = products?.some((p) => p.display?.recommend_text);
     const contextValue = React.useMemo(
-        () => ({ isAnnualToggle, setIsAnnualToggle, products: products ?? [], showFeatures }),
+        () => ({ isAnnualToggle, products: products ?? [], setIsAnnualToggle, showFeatures }),
         [isAnnualToggle, setIsAnnualToggle, products, showFeatures],
     );
 

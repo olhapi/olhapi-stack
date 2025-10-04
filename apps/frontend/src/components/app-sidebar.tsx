@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useLocation } from '@tanstack/react-router';
-import { Home, DollarSign, User, CreditCard, Building2 } from 'lucide-react';
+import { Building2, CreditCard, DollarSign, Home, User } from 'lucide-react';
 import { Trans } from '@lingui/react/macro';
 
 import { NavMain } from '@/components/nav-main';
@@ -15,28 +15,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const navItems = React.useMemo(
         () => [
             {
-                title: <Trans>Dashboard</Trans>,
-                url: '/dashboard',
-                icon: Home,
-                isActive: location.pathname === '/dashboard',
+                icon: Home, isActive: location.pathname === '/dashboard', title: <Trans>Dashboard</Trans>, url: '/dashboard',
             },
             {
-                title: <Trans>Account</Trans>,
-                url: '/account',
-                icon: User,
-                isActive: location.pathname === '/account',
+                icon: User, isActive: location.pathname === '/account', title: <Trans>Account</Trans>, url: '/account',
             },
             {
-                title: <Trans>Billing</Trans>,
-                url: '/billing',
-                icon: CreditCard,
-                isActive: location.pathname === '/billing',
+                icon: CreditCard, isActive: location.pathname === '/billing', title: <Trans>Billing</Trans>, url: '/billing',
             },
             {
-                title: <Trans>Pricing</Trans>,
-                url: '/pricing',
-                icon: DollarSign,
-                isActive: location.pathname === '/pricing',
+                icon: DollarSign, isActive: location.pathname === '/pricing', title: <Trans>Pricing</Trans>, url: '/pricing',
             },
         ],
         [location.pathname],

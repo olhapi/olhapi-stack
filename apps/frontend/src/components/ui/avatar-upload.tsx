@@ -1,4 +1,4 @@
-import { useState, useCallback, Suspense, lazy, useOptimistic, memo } from 'react';
+import { Suspense, lazy, memo, useCallback, useOptimistic, useState } from 'react';
 import { useUploadFile } from 'better-upload/client';
 import { UploadButton } from '@/components/ui/upload-button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -67,9 +67,7 @@ export function AvatarUpload({ currentImage, onUploadSuccess, onUploadError }: R
     );
 
     const { control } = useUploadFile({
-        api: `${import.meta.env.VITE_AUTH_URL}/api/upload`,
-        route: 'avatar',
-        onUploadComplete: (data) => {
+        api: `${import.meta.env.VITE_AUTH_URL}/api/upload`, onUploadComplete: (data) => {
             if (data.file && typeof data.file === 'object') {
                 // Type assertion is safe here as we've validated the object structure
                 const uploadedFile = data.file as AvatarUploadedFile;
@@ -82,7 +80,7 @@ export function AvatarUpload({ currentImage, onUploadSuccess, onUploadError }: R
                 onUploadSuccess?.(fileUrl);
                 toast.success(_(msg`Avatar uploaded successfully`));
             }
-        },
+        }, route: 'avatar',
     });
 
     const handleFileSelection = useCallback(

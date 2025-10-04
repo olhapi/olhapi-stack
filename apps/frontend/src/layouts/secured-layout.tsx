@@ -1,4 +1,4 @@
-import { Outlet, useNavigate, useLocation, Link } from '@tanstack/react-router';
+import { Link, Outlet, useLocation, useNavigate } from '@tanstack/react-router';
 import { useAuth } from '@/hooks/use-auth';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { useEffect } from 'react';
@@ -17,11 +17,7 @@ import {
 
 // Route display names mapping
 const routeNames: Record<string, string> = {
-    '/dashboard': 'Dashboard',
-    '/pricing': 'Pricing',
-    '/settings': 'Settings',
-    '/profile': 'Profile',
-    '/welcome': 'Welcome',
+    '/dashboard': 'Dashboard', '/pricing': 'Pricing', '/profile': 'Profile', '/settings': 'Settings', '/welcome': 'Welcome',
 };
 
 // Function to generate breadcrumb items from pathname
@@ -32,18 +28,14 @@ const generateBreadcrumbs = (pathname: string) => {
     // If we're on the dashboard, just show Dashboard
     if (pathname === '/dashboard') {
         breadcrumbs.push({
-            label: 'Dashboard',
-            path: '/dashboard',
-            isLast: true,
+            isLast: true, label: 'Dashboard', path: '/dashboard',
         });
         return breadcrumbs;
     }
 
     // Always start with Home for other pages
     breadcrumbs.push({
-        label: 'Home',
-        path: '/dashboard',
-        isLast: false,
+        isLast: false, label: 'Home', path: '/dashboard',
     });
 
     // Build path progressively for each segment
@@ -53,9 +45,7 @@ const generateBreadcrumbs = (pathname: string) => {
         const isLast = index === segments.length - 1;
 
         breadcrumbs.push({
-            label: routeNames[currentPath] || segment.charAt(0).toUpperCase() + segment.slice(1),
-            path: currentPath,
-            isLast,
+            isLast, label: routeNames[currentPath] || segment.charAt(0).toUpperCase() + segment.slice(1), path: currentPath,
         });
     }
 

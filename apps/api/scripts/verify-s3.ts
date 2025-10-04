@@ -1,5 +1,5 @@
-import { PutObjectCommand, GetObjectCommand, DeleteObjectCommand, HeadBucketCommand } from '@aws-sdk/client-s3';
-import { createS3Client, bucketName, publicBucketName, publicBucketUrl } from '../config/s3.ts';
+import { DeleteObjectCommand, GetObjectCommand, HeadBucketCommand, PutObjectCommand } from '@aws-sdk/client-s3';
+import { bucketName, createS3Client, publicBucketName, publicBucketUrl } from '../config/s3.ts';
 
 async function testBucketOperations() {
     const s3Client = createS3Client();
@@ -20,10 +20,7 @@ async function testBucketOperations() {
         // Test upload
         await s3Client.send(
             new PutObjectCommand({
-                Bucket: bucketName,
-                Key: testKey,
-                Body: testContent,
-                ContentType: 'text/plain',
+                Body: testContent, Bucket: bucketName, ContentType: 'text/plain', Key: testKey,
             }),
         );
         console.log('✅ Can upload to private bucket');
@@ -61,10 +58,7 @@ async function testBucketOperations() {
         // Test upload
         await s3Client.send(
             new PutObjectCommand({
-                Bucket: publicBucketName,
-                Key: testKey,
-                Body: testContent,
-                ContentType: 'text/plain',
+                Body: testContent, Bucket: publicBucketName, ContentType: 'text/plain', Key: testKey,
             }),
         );
         console.log('✅ Can upload to public bucket');

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { authClient } from '@/features/auth/auth-client';
 // Better auth types
@@ -87,10 +87,7 @@ export function AuthProvider({ children }: Readonly<AuthProviderProps>) {
 
     const loginWithMagicLink = useCallback(async (email: string) => {
         const { error } = await authClient.signIn.magicLink({
-            email,
-            callbackURL: '/dashboard',
-            newUserCallbackURL: '/welcome',
-            errorCallbackURL: '/error',
+            callbackURL: '/dashboard', email, errorCallbackURL: '/error', newUserCallbackURL: '/welcome',
         });
 
         if (error) {
@@ -133,14 +130,7 @@ export function AuthProvider({ children }: Readonly<AuthProviderProps>) {
 
     const value: AuthContextType = useMemo(
         () => ({
-            user,
-            session,
-            isLoading,
-            isAuthenticated: !!session && !!user,
-            loginWithMagicLink,
-            logout,
-            refreshSession,
-            updateUser,
+            isAuthenticated: !!session && !!user, isLoading, loginWithMagicLink, logout, refreshSession, session, updateUser, user,
         }),
         [user, session, isLoading, loginWithMagicLink, logout, refreshSession, updateUser],
     );

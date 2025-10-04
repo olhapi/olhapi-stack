@@ -1,5 +1,5 @@
 import { type Router, route } from 'better-upload/server';
-import { s3Client, bucketName, publicBucketName } from './s3.ts';
+import { bucketName, publicBucketName, s3Client } from './s3.ts';
 
 // Unified upload router with declarative configuration
 export const uploadRouter: Router = {

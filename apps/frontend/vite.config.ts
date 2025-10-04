@@ -8,7 +8,7 @@ import { resolve } from 'node:path';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-    plugins: [
+    assetsInclude: ['**/*.wasm', '**/*.woff2'], plugins: [
         viteReact({
             babel: {
                 plugins: ['babel-plugin-react-compiler', '@lingui/babel-plugin-lingui-macro'],
@@ -19,19 +19,13 @@ export default defineConfig(({ mode }) => ({
         // Add bundle analyzer for analyze mode
         mode === 'analyze' &&
             visualizer({
-                filename: 'dist/bundle-analysis.html',
-                open: true,
-                gzipSize: true,
-                brotliSize: true,
+                brotliSize: true, filename: 'dist/bundle-analysis.html', gzipSize: true, open: true,
             }),
-    ].filter(Boolean),
-    resolve: {
+    ].filter(Boolean), resolve: {
         alias: {
             '@': resolve(__dirname, './src'),
         },
-    },
-    server: {
+    }, server: {
         allowedHosts: ['localhost', '127.0.0.1', '0.0.0.0'],
-    },
-    assetsInclude: ['**/*.wasm', '**/*.woff2'], // Include WASM and font files as assets
+    }, // Include WASM and font files as assets
 }));

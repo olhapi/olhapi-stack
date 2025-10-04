@@ -1,4 +1,4 @@
-import { StrictMode, lazy, Suspense, memo } from 'react';
+import { StrictMode, Suspense, lazy, memo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createRootRoute, createRoute, createRouter, redirect } from '@tanstack/react-router';
 
@@ -29,95 +29,75 @@ const rootRoute = createRootRoute({
 });
 
 const publicLayoutRoute = createRoute({
-    getParentRoute: () => rootRoute,
-    id: 'public',
-    component: PublicLayout,
+    component: PublicLayout, getParentRoute: () => rootRoute, id: 'public',
 });
 
 const securedLayoutRoute = createRoute({
-    getParentRoute: () => rootRoute,
-    id: 'secured',
-    component: SecuredLayout,
+    component: SecuredLayout, getParentRoute: () => rootRoute, id: 'secured',
 });
 
 const indexRoute = createRoute({
-    getParentRoute: () => publicLayoutRoute,
-    path: '/',
     beforeLoad: async () => {
         throw redirect({
             to: '/login',
         });
-    },
+    }, getParentRoute: () => publicLayoutRoute, path: '/',
 });
 
 const loginRoute = createRoute({
-    getParentRoute: () => publicLayoutRoute,
-    path: '/login',
     component: () => (
         <Suspense fallback={loadingFallback}>
             <Login />
         </Suspense>
-    ),
+    ), getParentRoute: () => publicLayoutRoute, path: '/login',
 });
 
 const dashboardRoute = createRoute({
-    getParentRoute: () => securedLayoutRoute,
-    path: '/dashboard',
     component: () => (
         <Suspense fallback={loadingFallback}>
             <Dashboard />
         </Suspense>
-    ),
+    ), getParentRoute: () => securedLayoutRoute, path: '/dashboard',
 });
 
 const welcomeRoute = createRoute({
-    getParentRoute: () => securedLayoutRoute,
-    path: '/welcome',
     component: () => (
         <Suspense fallback={loadingFallback}>
             <Welcome />
         </Suspense>
-    ),
+    ), getParentRoute: () => securedLayoutRoute, path: '/welcome',
 });
 
 const accountRoute = createRoute({
-    getParentRoute: () => securedLayoutRoute,
-    path: '/account',
     component: () => (
         <Suspense fallback={loadingFallback}>
             <Account />
         </Suspense>
-    ),
+    ), getParentRoute: () => securedLayoutRoute, path: '/account',
 });
 
 const billingRoute = createRoute({
-    getParentRoute: () => securedLayoutRoute,
-    path: '/billing',
     component: () => (
         <Suspense fallback={loadingFallback}>
             <Billing />
         </Suspense>
-    ),
+    ), getParentRoute: () => securedLayoutRoute, path: '/billing',
 });
 
 const pricingRoute = createRoute({
-    getParentRoute: () => securedLayoutRoute,
-    path: '/pricing',
     component: () => (
         <Suspense fallback={loadingFallback}>
             <Pricing />
         </Suspense>
-    ),
+    ), getParentRoute: () => securedLayoutRoute, path: '/pricing',
 });
 
 const errorRoute = createRoute({
-    getParentRoute: () => publicLayoutRoute,
-    path: '/error',
     component: () => (
         <Suspense fallback={loadingFallback}>
             <ErrorPage />
         </Suspense>
-    ),
+    ), getParentRoute: () => publicLayoutRoute, path: '/error',
 });
 
 const routeTree = rootRoute.addChildren([
@@ -126,17 +106,11 @@ const routeTree = rootRoute.addChildren([
 ]);
 
 const router = createRouter({
-    routeTree,
-    context: {},
-    defaultPreload: 'intent',
-    scrollRestoration: true,
-    defaultStructuralSharing: true,
-    defaultPreloadStaleTime: 0,
-    defaultNotFoundComponent: () => (
+    context: {}, defaultNotFoundComponent: () => (
         <Suspense fallback={loadingFallback}>
             <NotFound />
         </Suspense>
-    ),
+    ), defaultPreload: 'intent', defaultPreloadStaleTime: 0, defaultStructuralSharing: true, routeTree, scrollRestoration: true,
 });
 
 declare module '@tanstack/react-router' {

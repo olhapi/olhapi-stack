@@ -8,29 +8,12 @@ import { sendMagicLinkEmail } from '../../services/email.ts';
 import * as authSchema from './auth-schema.ts';
 
 export const auth = betterAuth({
-    database: drizzleAdapter(db, {
+    baseURL: config.AUTH_URL, database: drizzleAdapter(db, {
         provider: 'pg',
         schema: {
             ...authSchema,
         },
-    }),
-    user: {
-        additionalFields: {
-            username: {
-                type: 'string',
-                required: false,
-                defaultValue: '',
-            },
-        },
-    },
-    secret: config.AUTH_SECRET,
-    baseURL: config.AUTH_URL,
-    trustedOrigins: config.CLIENT_ORIGIN,
-    session: {
-        expiresIn: 60 * 60 * 24 * 7, // 7 days
-        updateAge: 60 * 60 * 24, // 1 day
-    },
-    plugins: [
+    }), plugins: [
         magicLink({
             sendMagicLink: async ({ email, url }) => {
                 try {
@@ -44,5 +27,14 @@ export const auth = betterAuth({
             },
         }),
         autumn(),
-    ],
+    ], secret: config.AUTH_SECRET, session: {
+        expiresIn: 60 * 60 * 24 * 7, // 7 days
+        updateAge: 60 * 60 * 24, // 1 day
+    }, trustedOrigins: config.CLIENT_ORIGIN, user: {
+        additionalFields: {
+            username: {
+                defaultValue: '', required: false, type: 'string',
+            },
+        },
+    },
 });

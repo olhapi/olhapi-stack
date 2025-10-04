@@ -10,22 +10,12 @@ export default fp<FastifyHelmetOptions>(async (fastify) => {
     fastify.register(helmet, {
         contentSecurityPolicy: {
             directives: {
-                defaultSrc: ["'self'"],
-                styleSrc: ["'self'", "'unsafe-inline'"],
-                scriptSrc: ["'self'"],
-                imgSrc: ["'self'", 'data:', 'https:'],
-                connectSrc: ["'self'"],
-                fontSrc: ["'self'"],
-                objectSrc: ["'none'"],
-                mediaSrc: ["'self'"],
-                frameSrc: ["'none'"],
+                connectSrc: ["'self'"], defaultSrc: ["'self'"], fontSrc: ["'self'"], frameSrc: ["'none'"], imgSrc: ["'self'", 'data:', 'https:'], mediaSrc: ["'self'"], objectSrc: ["'none'"], scriptSrc: ["'self'"], styleSrc: ["'self'", "'unsafe-inline'"],
             },
         },
         crossOriginEmbedderPolicy: false,
         hsts: {
-            maxAge: 31536000,
-            includeSubDomains: true,
-            preload: true,
+            includeSubDomains: true, maxAge: 31536000, preload: true,
         },
     });
 });

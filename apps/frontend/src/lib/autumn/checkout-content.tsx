@@ -11,115 +11,103 @@ export const getCheckoutContent = (checkoutResult: CheckoutResult) => {
 
     if (is_one_off) {
         return {
-            title: <p>Purchase {productName}</p>,
             message: (
                 <p>By clicking confirm, you will purchase {productName} and your card will be charged immediately.</p>
-            ),
+            ), title: <p>Purchase {productName}</p>,
         };
     }
 
     if (scenario == 'active' && updateable) {
         if (updateable) {
             return {
-                title: <p>Update Plan</p>,
                 message: (
                     <p>
                         Update your prepaid quantity. You&apos;ll be charged or credited the prorated difference based
                         on your current billing cycle.
                     </p>
-                ),
+                ), title: <p>Update Plan</p>,
             };
         }
     }
 
     if (has_trial) {
         return {
-            title: <p>Start trial for {productName}</p>,
             message: (
                 <p>
                     By clicking confirm, you will start a free trial of {productName} which ends on {nextCycleAtStr}.
                 </p>
-            ),
+            ), title: <p>Start trial for {productName}</p>,
         };
     }
 
     switch (scenario) {
         case 'scheduled':
             return {
-                title: <p>{productName} product already scheduled</p>,
                 message: (
                     <p>
                         You are currently on product {current_product.name} and are scheduled to start {productName} on{' '}
                         {nextCycleAtStr}.
                     </p>
-                ),
+                ), title: <p>{productName} product already scheduled</p>,
             };
 
         case 'active':
             return {
-                title: <p>Product already active</p>,
-                message: <p>You are already subscribed to this product.</p>,
+                message: <p>You are already subscribed to this product.</p>, title: <p>Product already active</p>,
             };
 
         case 'new':
             if (is_free) {
                 return {
-                    title: <p>Enable {productName}</p>,
-                    message: <p>By clicking confirm, {productName} will be enabled immediately.</p>,
+                    message: <p>By clicking confirm, {productName} will be enabled immediately.</p>, title: <p>Enable {productName}</p>,
                 };
             }
 
             return {
-                title: <p>Subscribe to {productName}</p>,
                 message: (
                     <p>
                         By clicking confirm, you will be subscribed to {productName} and your card will be charged
                         immediately.
                     </p>
-                ),
+                ), title: <p>Subscribe to {productName}</p>,
             };
         case 'renew':
             return {
-                title: <p>Renew</p>,
-                message: <p>By clicking confirm, you will renew your subscription to {productName}.</p>,
+                message: <p>By clicking confirm, you will renew your subscription to {productName}.</p>, title: <p>Renew</p>,
             };
 
         case 'upgrade':
             return {
-                title: <p>Upgrade to {productName}</p>,
                 message: (
                     <p>
                         By clicking confirm, you will upgrade to {productName} and your payment method will be charged
                         immediately.
                     </p>
-                ),
+                ), title: <p>Upgrade to {productName}</p>,
             };
 
         case 'downgrade':
             return {
-                title: <p>Downgrade to {productName}</p>,
                 message: (
                     <p>
                         By clicking confirm, your current subscription to {current_product.name} will be cancelled and a
                         new subscription to {productName} will begin on {nextCycleAtStr}.
                     </p>
-                ),
+                ), title: <p>Downgrade to {productName}</p>,
             };
 
         case 'cancel':
             return {
-                title: <p>Cancel</p>,
                 message: (
                     <p>
                         By clicking confirm, your subscription to {current_product.name} will end on {nextCycleAtStr}.
                     </p>
-                ),
+                ), title: <p>Cancel</p>,
             };
 
         default:
             return {
-                title: <p>Change Subscription</p>,
-                message: <p>You are about to change your subscription.</p>,
+                message: <p>You are about to change your subscription.</p>, title: <p>Change Subscription</p>,
             };
     }
 };

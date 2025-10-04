@@ -1,4 +1,4 @@
-import { useActionState, useOptimistic, startTransition, useState, useCallback } from 'react';
+import { startTransition, useActionState, useCallback, useOptimistic, useState } from 'react';
 import { useCustomer } from 'autumn-js/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,7 +6,7 @@ import { Trans } from '@lingui/react/macro';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { toast } from 'sonner';
-import { CreditCard, ExternalLink, Loader2, AlertTriangle } from 'lucide-react';
+import { AlertTriangle, CreditCard, ExternalLink, Loader2 } from 'lucide-react';
 import {
     Dialog,
     DialogContent,
@@ -79,8 +79,7 @@ const formatDate = (timestamp: number) => {
 
 const formatAmount = (amount: number, currency: string) => {
     return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: currency.toUpperCase(),
+        currency: currency.toUpperCase(), style: 'currency',
     }).format(amount / 100);
 };
 

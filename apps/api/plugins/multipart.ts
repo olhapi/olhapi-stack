@@ -9,16 +9,14 @@ import { config } from '../config/app.ts';
  */
 export default fp<FastifyMultipartOptions>(async (fastify) => {
     fastify.register(multipart, {
-        limits: {
+        attachFieldsToBody: 'keyValues', limits: {
             fieldNameSize: 100,
             fieldSize: 100,
             fields: 10,
             fileSize: config.UPLOAD_SIZE_LIMIT,
             files: 5,
             headerPairs: 2000,
-        },
-        attachFieldsToBody: 'keyValues',
-        onFile: async (part) => {
+        }, onFile: async (part) => {
             // Log file upload attempts
             fastify.log.info(`File upload: ${part.filename} (${part.mimetype})`);
         },

@@ -1,4 +1,4 @@
-import { Outlet, Link } from '@tanstack/react-router';
+import { Link, Outlet } from '@tanstack/react-router';
 import { Trans } from '@lingui/react/macro';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { LanguageSwitcher } from '@/components/language-switcher';

@@ -83,16 +83,9 @@ export class AnimationController {
     // Fade in animations
     public fadeIn(element: string | Element, options: GSAPAnimationOptions = {}): gsap.core.Timeline {
         const defaults = {
-            duration: 0.8,
-            y: 30,
-            opacity: 0,
-            ease: 'power2.out',
-            delay: 0,
-            scrollTrigger: {
-                trigger: element,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse',
-            },
+            delay: 0, duration: 0.8, ease: 'power2.out', opacity: 0, scrollTrigger: {
+                start: 'top 85%', toggleActions: 'play none none reverse', trigger: element,
+            }, y: 30,
         };
 
         const config = { ...defaults, ...options };
@@ -106,13 +99,7 @@ export class AnimationController {
             element,
             { opacity: 0, y: config.y },
             {
-                opacity: 1,
-                y: 0,
-                duration: config.duration,
-                delay: config.delay,
-                ease: config.ease,
-                immediateRender: false,
-                scrollTrigger: config.scrollTrigger,
+                delay: config.delay, duration: config.duration, ease: config.ease, immediateRender: false, opacity: 1, scrollTrigger: config.scrollTrigger, y: 0,
             },
         );
     }
@@ -120,16 +107,9 @@ export class AnimationController {
     // Slide in from left
     public slideInLeft(element: string | Element, options: GSAPAnimationOptions = {}): gsap.core.Timeline {
         const defaults = {
-            duration: 0.8,
-            x: -50,
-            opacity: 0,
-            ease: 'power2.out',
-            delay: 0,
-            scrollTrigger: {
-                trigger: element,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse',
-            },
+            delay: 0, duration: 0.8, ease: 'power2.out', opacity: 0, scrollTrigger: {
+                start: 'top 85%', toggleActions: 'play none none reverse', trigger: element,
+            }, x: -50,
         };
 
         const config = { ...defaults, ...options };
@@ -143,13 +123,7 @@ export class AnimationController {
             element,
             { opacity: 0, x: config.x },
             {
-                opacity: 1,
-                x: 0,
-                duration: config.duration,
-                delay: config.delay,
-                ease: config.ease,
-                immediateRender: false,
-                scrollTrigger: config.scrollTrigger,
+                delay: config.delay, duration: config.duration, ease: config.ease, immediateRender: false, opacity: 1, scrollTrigger: config.scrollTrigger, x: 0,
             },
         );
     }
@@ -157,16 +131,9 @@ export class AnimationController {
     // Slide in from right
     public slideInRight(element: string | Element, options: GSAPAnimationOptions = {}): gsap.core.Timeline {
         const defaults = {
-            duration: 0.8,
-            x: 50,
-            opacity: 0,
-            ease: 'power2.out',
-            delay: 0,
-            scrollTrigger: {
-                trigger: element,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse',
-            },
+            delay: 0, duration: 0.8, ease: 'power2.out', opacity: 0, scrollTrigger: {
+                start: 'top 85%', toggleActions: 'play none none reverse', trigger: element,
+            }, x: 50,
         };
 
         const config = { ...defaults, ...options };
@@ -180,13 +147,7 @@ export class AnimationController {
             element,
             { opacity: 0, x: config.x },
             {
-                opacity: 1,
-                x: 0,
-                duration: config.duration,
-                delay: config.delay,
-                ease: config.ease,
-                immediateRender: false,
-                scrollTrigger: config.scrollTrigger,
+                delay: config.delay, duration: config.duration, ease: config.ease, immediateRender: false, opacity: 1, scrollTrigger: config.scrollTrigger, x: 0,
             },
         );
     }
@@ -194,15 +155,8 @@ export class AnimationController {
     // Scale in animation
     public scaleIn(element: string | Element, options: GSAPAnimationOptions = {}): gsap.core.Timeline {
         const defaults = {
-            duration: 0.6,
-            scale: 0.8,
-            opacity: 0,
-            ease: 'back.out(1.7)',
-            delay: 0,
-            scrollTrigger: {
-                trigger: element,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse',
+            delay: 0, duration: 0.6, ease: 'back.out(1.7)', opacity: 0, scale: 0.8, scrollTrigger: {
+                start: 'top 85%', toggleActions: 'play none none reverse', trigger: element,
             },
         };
 
@@ -217,13 +171,7 @@ export class AnimationController {
             element,
             { opacity: 0, scale: config.scale },
             {
-                opacity: 1,
-                scale: 1,
-                duration: config.duration,
-                delay: config.delay,
-                ease: config.ease,
-                immediateRender: false,
-                scrollTrigger: config.scrollTrigger,
+                delay: config.delay, duration: config.duration, ease: config.ease, immediateRender: false, opacity: 1, scale: 1, scrollTrigger: config.scrollTrigger,
             },
         );
     }
@@ -231,17 +179,9 @@ export class AnimationController {
     // Stagger animation for multiple elements
     public staggerIn(elements: string | Element[], options: GSAPStaggerOptions = {}): gsap.core.Timeline {
         const defaults = {
-            duration: 0.6,
-            stagger: 0.1,
-            y: 30,
-            opacity: 0,
-            ease: 'power2.out',
-            delay: 0,
-            scrollTrigger: {
-                trigger: elements,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse',
-            },
+            delay: 0, duration: 0.6, ease: 'power2.out', opacity: 0, scrollTrigger: {
+                start: 'top 85%', toggleActions: 'play none none reverse', trigger: elements,
+            }, stagger: 0.1, y: 30,
         };
 
         const config = { ...defaults, ...options };
@@ -269,14 +209,7 @@ export class AnimationController {
             elements,
             { opacity: 0, y: config.y },
             {
-                opacity: 1,
-                y: 0,
-                duration: config.duration,
-                delay: config.delay,
-                stagger: config.stagger,
-                ease: config.ease,
-                immediateRender: false,
-                scrollTrigger: config.scrollTrigger,
+                delay: config.delay, duration: config.duration, ease: config.ease, immediateRender: false, opacity: 1, scrollTrigger: config.scrollTrigger, stagger: config.stagger, y: 0,
             },
         );
     }
@@ -287,10 +220,7 @@ export class AnimationController {
             duration: 2,
             ease: 'power2.out',
             scrollTrigger: {
-                trigger: element,
-                start: 'top 95%',
-                toggleActions: 'play none none none',
-                once: true,
+                once: true, start: 'top 95%', toggleActions: 'play none none none', trigger: element,
             },
         };
 
@@ -332,40 +262,13 @@ export class AnimationController {
         // Create timeline and add ScrollTrigger to it
         const timeline = gsap.timeline({
             scrollTrigger: {
-                trigger: target,
-                start: 'top 95%',
-                toggleActions: 'play none none none',
-                once: true,
+                once: true, start: 'top 95%', toggleActions: 'play none none none', trigger: target,
             },
         });
 
         // Add the counter animation to the timeline
         timeline.to(counter, {
-            value: endValue,
-            duration: config.duration,
-            ease: config.ease,
-            onStart: () => {
-                // Store original value for fallback and start from 0 for animation
-                const fallbackValue = target.textContent;
-                target.setAttribute('data-original-value', fallbackValue || '');
-                target.textContent = '0' + suffix;
-            },
-            onUpdate: () => {
-                let currentValue: string;
-                if (hasDecimal) {
-                    currentValue = counter.value.toFixed(1);
-                } else {
-                    currentValue = Math.round(counter.value).toString();
-                }
-
-                // Add commas if original had them and number is >= 1000
-                if (hasCommas && Math.round(counter.value) >= 1000) {
-                    currentValue = Math.round(counter.value).toLocaleString();
-                }
-
-                target.textContent = currentValue + suffix;
-            },
-            onComplete: () => {
+            duration: config.duration, ease: config.ease, onComplete: () => {
                 // Ensure final value is correct
                 let finalValue: string;
                 if (hasDecimal) {
@@ -380,7 +283,26 @@ export class AnimationController {
                 }
 
                 target.textContent = finalValue + suffix;
-            },
+            }, onStart: () => {
+                // Store original value for fallback and start from 0 for animation
+                const fallbackValue = target.textContent;
+                target.setAttribute('data-original-value', fallbackValue || '');
+                target.textContent = '0' + suffix;
+            }, onUpdate: () => {
+                let currentValue: string;
+                if (hasDecimal) {
+                    currentValue = counter.value.toFixed(1);
+                } else {
+                    currentValue = Math.round(counter.value).toString();
+                }
+
+                // Add commas if original had them and number is >= 1000
+                if (hasCommas && Math.round(counter.value) >= 1000) {
+                    currentValue = Math.round(counter.value).toLocaleString();
+                }
+
+                target.textContent = currentValue + suffix;
+            }, value: endValue,
         });
 
         return timeline;
@@ -389,39 +311,26 @@ export class AnimationController {
     // Parallax effect
     public parallax(element: string | Element, options: ParallaxOptions = {}): ScrollTrigger {
         const defaults = {
-            speed: 0.5,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true,
+            end: 'bottom top', scrub: true, speed: 0.5, start: 'top bottom',
         };
 
         const config = { ...defaults, ...options };
 
         return ScrollTrigger.create({
-            trigger: element,
-            start: config.start,
-            end: config.end,
-            scrub: config.scrub,
-            onUpdate: (self) => {
+            end: config.end, onUpdate: (self) => {
                 const progress = self.progress;
                 const yPos = progress * 100 * config.speed;
                 gsap.set(element, { y: yPos });
-            },
+            }, scrub: config.scrub, start: config.start, trigger: element,
         });
     }
 
     // Reveal text animation
     public revealText(element: string | Element, options: TextRevealOptions = {}): gsap.core.Timeline {
         const defaults = {
-            duration: 1,
-            ease: 'power2.out',
-            stagger: 0.02,
-            delay: 0,
-            scrollTrigger: {
-                trigger: element,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse',
-            },
+            delay: 0, duration: 1, ease: 'power2.out', scrollTrigger: {
+                start: 'top 85%', toggleActions: 'play none none reverse', trigger: element,
+            }, stagger: 0.02,
         };
 
         const config = { ...defaults, ...options };
@@ -449,14 +358,7 @@ export class AnimationController {
         const chars = target.querySelectorAll('.char');
 
         return gsap.to(chars, {
-            opacity: 1,
-            y: 0,
-            duration: config.duration,
-            delay: config.delay,
-            stagger: config.stagger,
-            ease: config.ease,
-            immediateRender: false,
-            scrollTrigger: config.scrollTrigger,
+            delay: config.delay, duration: config.duration, ease: config.ease, immediateRender: false, opacity: 1, scrollTrigger: config.scrollTrigger, stagger: config.stagger, y: 0,
         });
     }
 
@@ -466,26 +368,18 @@ export class AnimationController {
         const fadeElements = document.querySelectorAll('[data-animate="fade-in"], [data-animate="fade-up"]');
         if (fadeElements.length > 0) {
             ScrollTrigger.batch(fadeElements, {
-                interval: 0.1,
-                batchMax: 3,
-                onEnter: (batch) => {
+                batchMax: 3, interval: 0.1, onEnter: (batch) => {
                     for (const [index, el] of batch.entries()) {
                         const delay = getDelay(el);
                         gsap.fromTo(
                             el,
                             { opacity: 0, y: 30 },
                             {
-                                opacity: 1,
-                                y: 0,
-                                duration: 0.8,
-                                delay: delay + index * 0.1,
-                                ease: 'power2.out',
+                                delay: delay + index * 0.1, duration: 0.8, ease: 'power2.out', opacity: 1, y: 0,
                             },
                         );
                     }
-                },
-                once: true,
-                start: 'top 85%',
+                }, once: true, start: 'top 85%',
             });
         }
 
@@ -493,52 +387,36 @@ export class AnimationController {
         const slideLeftElements = document.querySelectorAll('[data-animate="slide-left"]');
         if (slideLeftElements.length > 0) {
             ScrollTrigger.batch(slideLeftElements, {
-                interval: 0.1,
-                batchMax: 3,
-                onEnter: (batch) => {
+                batchMax: 3, interval: 0.1, onEnter: (batch) => {
                     for (const [index, el] of batch.entries()) {
                         const delay = getDelay(el);
                         gsap.fromTo(
                             el,
                             { opacity: 0, x: -50 },
                             {
-                                opacity: 1,
-                                x: 0,
-                                duration: 0.8,
-                                delay: delay + index * 0.1,
-                                ease: 'power2.out',
+                                delay: delay + index * 0.1, duration: 0.8, ease: 'power2.out', opacity: 1, x: 0,
                             },
                         );
                     }
-                },
-                once: true,
-                start: 'top 85%',
+                }, once: true, start: 'top 85%',
             });
         }
 
         const slideRightElements = document.querySelectorAll('[data-animate="slide-right"]');
         if (slideRightElements.length > 0) {
             ScrollTrigger.batch(slideRightElements, {
-                interval: 0.1,
-                batchMax: 3,
-                onEnter: (batch) => {
+                batchMax: 3, interval: 0.1, onEnter: (batch) => {
                     batch.forEach((el, index) => {
                         const delay = getDelay(el);
                         gsap.fromTo(
                             el,
                             { opacity: 0, x: 50 },
                             {
-                                opacity: 1,
-                                x: 0,
-                                duration: 0.8,
-                                delay: delay + index * 0.1,
-                                ease: 'power2.out',
+                                delay: delay + index * 0.1, duration: 0.8, ease: 'power2.out', opacity: 1, x: 0,
                             },
                         );
                     });
-                },
-                once: true,
-                start: 'top 85%',
+                }, once: true, start: 'top 85%',
             });
         }
 
@@ -546,26 +424,18 @@ export class AnimationController {
         const scaleElements = document.querySelectorAll('[data-animate="scale-in"]');
         if (scaleElements.length > 0) {
             ScrollTrigger.batch(scaleElements, {
-                interval: 0.1,
-                batchMax: 3,
-                onEnter: (batch) => {
+                batchMax: 3, interval: 0.1, onEnter: (batch) => {
                     batch.forEach((el, index) => {
                         const delay = getDelay(el);
                         gsap.fromTo(
                             el,
                             { opacity: 0, scale: 0.8 },
                             {
-                                opacity: 1,
-                                scale: 1,
-                                duration: 0.6,
-                                delay: delay + index * 0.1,
-                                ease: 'back.out(1.7)',
+                                delay: delay + index * 0.1, duration: 0.6, ease: 'back.out(1.7)', opacity: 1, scale: 1,
                             },
                         );
                     });
-                },
-                once: true,
-                start: 'top 85%',
+                }, once: true, start: 'top 85%',
             });
         }
 
@@ -581,23 +451,15 @@ export class AnimationController {
             if (children.length > 0) {
                 const delay = getDelay(container);
                 ScrollTrigger.create({
-                    trigger: container,
-                    start: 'top 85%',
-                    once: true,
                     onEnter: () => {
                         gsap.fromTo(
                             children,
                             { opacity: 0, y: 30 },
                             {
-                                opacity: 1,
-                                y: 0,
-                                duration: 0.6,
-                                delay: delay,
-                                stagger: 0.1,
-                                ease: 'power2.out',
+                                delay: delay, duration: 0.6, ease: 'power2.out', opacity: 1, stagger: 0.1, y: 0,
                             },
                         );
-                    },
+                    }, once: true, start: 'top 85%', trigger: container,
                 });
             }
         });
@@ -636,9 +498,6 @@ export class AnimationController {
             const hasCommas = originalText.includes(',');
 
             ScrollTrigger.create({
-                trigger: el,
-                start: 'top 95%',
-                once: true,
                 onEnter: () => {
                     const counter = { value: 0 };
 
@@ -647,26 +506,7 @@ export class AnimationController {
 
                     // Animate the counter
                     gsap.to(counter, {
-                        value: endValue,
-                        duration: 2,
-                        delay: delay,
-                        ease: 'power2.out',
-                        onUpdate: () => {
-                            let currentValue: string;
-                            if (hasDecimal) {
-                                currentValue = counter.value.toFixed(1);
-                            } else {
-                                currentValue = Math.round(counter.value).toString();
-                            }
-
-                            // Add commas if original had them and number is >= 1000
-                            if (hasCommas && Math.round(counter.value) >= 1000) {
-                                currentValue = Math.round(counter.value).toLocaleString();
-                            }
-
-                            el.textContent = currentValue + suffix;
-                        },
-                        onComplete: () => {
+                        delay: delay, duration: 2, ease: 'power2.out', onComplete: () => {
                             // Ensure final value is correct
                             let finalValue: string;
                             if (hasDecimal) {
@@ -681,9 +521,23 @@ export class AnimationController {
                             }
 
                             el.textContent = finalValue + suffix;
-                        },
+                        }, onUpdate: () => {
+                            let currentValue: string;
+                            if (hasDecimal) {
+                                currentValue = counter.value.toFixed(1);
+                            } else {
+                                currentValue = Math.round(counter.value).toString();
+                            }
+
+                            // Add commas if original had them and number is >= 1000
+                            if (hasCommas && Math.round(counter.value) >= 1000) {
+                                currentValue = Math.round(counter.value).toLocaleString();
+                            }
+
+                            el.textContent = currentValue + suffix;
+                        }, value: endValue,
                     });
-                },
+                }, once: true, start: 'top 95%', trigger: el,
             });
         });
     }
