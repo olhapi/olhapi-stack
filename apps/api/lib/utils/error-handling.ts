@@ -77,7 +77,7 @@ export function createSanitizedError(
         error: errorType
             .replaceAll('_', ' ')
             .toLowerCase()
-            .replace(/\b\w/g, (l) => l.toUpperCase()),
+            .replaceAll(/\b\w/g, (l) => l.toUpperCase()),
         message: GENERIC_ERROR_MESSAGES[errorType],
         ...(errorCode && { code: errorCode }),
     };
@@ -108,9 +108,9 @@ export function getValidationErrorMessage(
     if (isValidationError(error)) {
         // For validation errors, we can expose the message after sanitization
         const message = error.message
-            .replace(/\b(path|file|directory|server|internal|system)\b/gi, 'field')
-            .replace(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/g, '[IP]') // Remove IP addresses
-            .replace(/\b[a-zA-Z]:[\\/ ].*?\b/g, '[PATH]'); // Remove file paths
+            .replaceAll(/\b(path|file|directory|server|internal|system)\b/gi, 'field')
+            .replaceAll(/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/g, '[IP]') // Remove IP addresses
+            .replaceAll(/\b[a-zA-Z]:[\\/ ].*?\b/g, '[PATH]'); // Remove file paths
 
         logger.warn({ context, error: error.stack }, `Validation error in ${context}`);
         return message;

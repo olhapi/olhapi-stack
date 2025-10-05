@@ -181,32 +181,35 @@ export function UserSettingsForm() {
                                 placeholder={_(msg`Enter your username`)}
                                 onChange={handleUsernameChange}
                                 className={
-                                    (optimisticAvailable ?? isAvailable) === true
-                                        ? 'pr-10 border-green-500 focus:border-green-500'
-                                        : (optimisticAvailable ?? isAvailable) === false
-                                          ? 'pr-10 border-red-500 focus:border-red-500'
-                                          : 'pr-10'
+                                    (() => {
+                                        const availability = optimisticAvailable ?? isAvailable;
+                                        if (availability === true) return 'pr-10 border-green-500 focus:border-green-500';
+                                        if (availability === false) return 'pr-10 border-red-500 focus:border-red-500';
+                                        return 'pr-10';
+                                    })()
                                 }
                             />
                             <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                                {isChecking ? (
-                                    <Loader2 className="h-4 w-4 text-gray-400 animate-spin" />
-                                ) : (optimisticAvailable ?? isAvailable) === true ? (
-                                    <CheckCircle2 className="h-4 w-4 text-green-500" />
-                                ) : (optimisticAvailable ?? isAvailable) === false ? (
-                                    <XCircle className="h-4 w-4 text-red-500" />
-                                ) : null}
+                                {(() => {
+                                    if (isChecking) return <Loader2 className="h-4 w-4 text-gray-400 animate-spin" />;
+                                    const availability = optimisticAvailable ?? isAvailable;
+                                    if (availability === true) return <CheckCircle2 className="h-4 w-4 text-green-500" />;
+                                    if (availability === false) return <XCircle className="h-4 w-4 text-red-500" />;
+                                    return null;
+                                })()}
                             </div>
                         </div>
                         {message && (
                             <p
-                                className={`text-sm mt-1 ${
-                                    (optimisticAvailable ?? isAvailable) === true
+                                className={(() => {
+                                    const availability = optimisticAvailable ?? isAvailable;
+                                    const colorClass = availability === true
                                         ? 'text-green-600'
-                                        : (optimisticAvailable ?? isAvailable) === false
+                                        : availability === false
                                           ? 'text-red-600'
-                                          : 'text-gray-600'
-                                }`}
+                                          : 'text-gray-600';
+                                    return `text-sm mt-1 ${colorClass}`;
+                                })()}
                             >
                                 {message}
                             </p>

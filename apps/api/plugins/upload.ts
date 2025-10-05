@@ -18,7 +18,7 @@ const uploadPlugin: FastifyPluginAsync = async (fastify) => {
                     headers: fromNodeHeaders(request.headers),
                 });
 
-                if (!sessionResult || !sessionResult.user || !sessionResult.session) {
+                if (!sessionResult?.user || !sessionResult?.session) {
                     const sanitizedError = createSanitizedError(
                         'AUTHENTICATION_ERROR',
                         fastify.log,

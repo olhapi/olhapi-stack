@@ -6,7 +6,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Helper function to get delay from data attribute
 const getDelay = (element: Element): number => {
-    const delay = element.getAttribute('data-delay');
+    const delay = (element as HTMLElement).dataset.delay;
     return delay ? Number.parseInt(delay) / 1000 : 0;
 };
 
@@ -238,7 +238,7 @@ export class AnimationController {
         gsap.set(target, { opacity: 1 });
 
         // Store original text for non-numeric values like "< 100ms"
-        target.setAttribute('data-original-text', originalText.trim());
+        (target as HTMLElement).dataset.originalText = originalText.trim();
 
         // Check if this is a numeric counter that should animate
         const numericMatch = originalText.match(/^([0-9,]+\.?[0-9]*)/);
@@ -286,7 +286,7 @@ export class AnimationController {
             }, onStart: () => {
                 // Store original value for fallback and start from 0 for animation
                 const fallbackValue = target.textContent;
-                target.setAttribute('data-original-value', fallbackValue || '');
+                (target as HTMLElement).dataset.originalValue = fallbackValue || '';
                 target.textContent = '0' + suffix;
             }, onUpdate: () => {
                 let currentValue: string;
@@ -478,7 +478,7 @@ export class AnimationController {
             gsap.set(el, { opacity: 1 });
 
             // Store original text for non-numeric values like "< 100ms"
-            el.setAttribute('data-original-text', originalText);
+            (el as HTMLElement).dataset.originalText = originalText;
 
             // Check if this is a numeric counter that should animate
             const numericMatch = originalText.match(/^([0-9,]+\.?[0-9]*)/);
@@ -545,7 +545,7 @@ export class AnimationController {
     // Private method to setup parallax effects
     private setupParallax(): void {
         document.querySelectorAll('[data-parallax]').forEach((el) => {
-            const speed = Number.parseFloat(el.getAttribute('data-parallax') || '0.5');
+            const speed = Number.parseFloat((el as HTMLElement).dataset.parallax || '0.5');
             this.parallax(el, { speed });
         });
     }

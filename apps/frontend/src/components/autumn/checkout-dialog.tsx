@@ -80,9 +80,7 @@ export default function CheckoutDialog(props: Readonly<CheckoutDialogProps>) {
                         {loading ? (
                             <Loader2 className="w-4 h-4 animate-spin" />
                         ) : (
-                            <>
-                                <span className="whitespace-nowrap flex gap-1">Confirm</span>
-                            </>
+                            <span className="whitespace-nowrap flex gap-1">Confirm</span>
                         )}
                     </Button>
                 </DialogFooter>
@@ -168,11 +166,11 @@ function ProductItems({ checkoutResult, setCheckoutResult }: Readonly<ProductIte
             <p className="text-sm font-medium">Price</p>
             {checkoutResult?.product.items
                 .filter((item) => item.type !== 'feature')
-                .map((item, index) => {
+                .map((item) => {
                     if (item.usage_model == 'prepaid') {
                         return (
                             <PrepaidItem
-                                key={`prepaid-${index}`}
+                                key={`prepaid-${item.feature_id}`}
                                 item={item}
                                 checkoutResult={checkoutResult!}
                                 setCheckoutResult={setCheckoutResult}
@@ -185,7 +183,7 @@ function ProductItems({ checkoutResult, setCheckoutResult }: Readonly<ProductIte
                     }
 
                     return (
-                        <div key={`subscription-${index}`} className="flex justify-between">
+                        <div key={`subscription-${item.feature_id}`} className="flex justify-between">
                             <p className="text-muted-foreground">{item.feature ? item.feature.name : 'Subscription'}</p>
                             <p>
                                 {item.display?.primary_text} {item.display?.secondary_text}

@@ -52,7 +52,6 @@ function BreadcrumbSeparator({ children, className, ...props }: Readonly<React.C
     return (
         <li
             data-slot="breadcrumb-separator"
-            role="presentation"
             aria-hidden="true"
             className={cn('[&>svg]:size-3.5', className)}
             {...props}
@@ -66,7 +65,6 @@ function BreadcrumbEllipsis({ className, ...props }: Readonly<React.ComponentPro
     return (
         <span
             data-slot="breadcrumb-ellipsis"
-            role="presentation"
             aria-hidden="true"
             className={cn('flex size-9 items-center justify-center', className)}
             {...props}

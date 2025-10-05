@@ -1,4 +1,5 @@
-import { join } from 'node:path';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import AutoLoad, { type AutoloadPluginOptions } from '@fastify/autoload';
 import type { FastifyPluginAsync, FastifyServerOptions } from 'fastify';
 import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod';
@@ -8,9 +9,6 @@ import { config } from './config/app.ts';
 import closeWithGrace from 'close-with-grace';
 import { createSanitizedError } from './lib/utils/error-handling.ts';
 import { fastifyToWebRequest } from './lib/utils/request-conversion.ts';
-
-import { fileURLToPath } from 'node:url';
-import { dirname } from 'node:path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

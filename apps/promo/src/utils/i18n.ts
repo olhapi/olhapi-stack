@@ -14,14 +14,10 @@ export function useTranslations(translations: Translations, currentLang: string)
         let translation = getNestedValue(translations[currentLang], key);
 
         // Fallback to English
-        if (translation === null || translation === undefined) {
-            translation = getNestedValue(translations['en'], key);
-        }
+        translation ??= getNestedValue(translations['en'], key);
 
         // Final fallback to the key itself
-        if (translation === null || translation === undefined) {
-            translation = key;
-        }
+        translation ??= key;
 
         // If it's not a string, return as-is (could be an object)
         if (typeof translation !== 'string') {
@@ -32,7 +28,7 @@ export function useTranslations(translations: Translations, currentLang: string)
             return translation;
         }
 
-        return translation.replace(/\{(\w+)\}/g, (match, variable) => {
+        return translation.replaceAll(/\{(\w+)\}/g, (match, variable) => {
             return values[variable]?.toString() || match;
         });
     };

@@ -15,7 +15,7 @@
             "args": ["-y", "sonarqube-mcp-server@latest"],
             "env": {
                 "SONARQUBE_URL": "https://sonarcloud.io",
-                "SONARQUBE_TOKEN": "50128387b7830ccf93ada6c50c7b40e7eb836dbd",
+                "SONARQUBE_TOKEN": "${SONARQUBE_TOKEN}",
                 "SONARQUBE_ORGANIZATION": "olhapi"
             }
         }

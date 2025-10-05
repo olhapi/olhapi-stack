@@ -273,9 +273,6 @@ export const PricingFeatureList = ({ items, everythingFrom, className }: Readonl
             <div className="space-y-3">
                 {items.map((item, index) => (
                     <div key={`${item.display?.primary_text}-${index}`} className="flex items-start gap-2 text-sm">
-                        {/* {showIcon && (
-              <Check className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-            )} */}
                         <div className="flex flex-col">
                             <span>{item.display?.primary_text}</span>
                             {item.display?.secondary_text && (

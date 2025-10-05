@@ -20,7 +20,7 @@ export function detectBrowserLocale(): string {
 }
 
 export function getSavedLocale(): string {
-    if (typeof globalThis.window === 'undefined') return defaultLocale;
+    if (globalThis.window === undefined) return defaultLocale;
     return localStorage.getItem('language') || detectBrowserLocale();
 }
 
@@ -30,8 +30,8 @@ export function initializeI18n(): void {
 }
 
 export function saveLocale(locale: string): void {
-    if (typeof globalThis.window === 'undefined') return;
+    if (globalThis.window === undefined) return;
     localStorage.setItem('language', locale);
 }
 
-export { i18n };
+export { i18n } from '@lingui/core';
