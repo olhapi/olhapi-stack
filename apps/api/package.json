@@ -32,7 +32,7 @@
     "@fastify/rate-limit": "^10.3.0",
     "@fastify/sensible": "^6.0.0",
     "@olhapi/email-templates": "workspace:*",
-    "@sentry/node": "^10.11.0",
+    "@sentry/node": "^10.27.0",
     "@upyo/sendgrid": "^0.2.1",
     "autumn-js": "^0.1.34",
     "better-auth": "^1.3.9",
