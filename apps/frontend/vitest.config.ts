@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitest/config';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
+import { playwright } from '@vitest/browser-playwright';
 import viteReact from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { lingui } from '@lingui/vite-plugin';
@@ -47,7 +48,7 @@ export default defineConfig({
             {
                 test: {
                     browser: {
-                        enabled: true, headless: true, instances: [{ browser: 'chromium' }], provider: 'playwright',
+                        enabled: true, headless: true, instances: [{ browser: 'chromium' }], provider: playwright(),
                     }, name: 'storybook', setupFiles: [path.join(dirname, '.storybook/vitest.setup.ts')],
                 },
             },
