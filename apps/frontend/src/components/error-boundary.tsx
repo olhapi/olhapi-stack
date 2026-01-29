@@ -1,7 +1,11 @@
 'use client';
 
 import * as React from 'react';
-import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
+import {
+    ErrorBoundary as ReactErrorBoundary,
+    type FallbackProps,
+    type ErrorBoundaryProps as ReactErrorBoundaryProps,
+} from 'react-error-boundary';
 export { useErrorBoundary } from 'react-error-boundary';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,12 +14,7 @@ import { Trans } from '@lingui/react/macro';
 import { toast } from 'sonner';
 import { type PropsWithChildren, useEffect, useCallback } from 'react';
 
-interface ErrorFallbackProps {
-    error: Error;
-    resetErrorBoundary: () => void;
-}
-
-function ErrorFallback({ error, resetErrorBoundary }: Readonly<ErrorFallbackProps>) {
+function ErrorFallback({ error, resetErrorBoundary }: Readonly<FallbackProps>) {
     useEffect(() => {
         console.error('ErrorBoundary caught an error:', error);
         toast.error('Something went wrong. Please try again.');
@@ -60,8 +59,8 @@ function ErrorFallback({ error, resetErrorBoundary }: Readonly<ErrorFallbackProp
 }
 
 interface ErrorBoundaryProps extends PropsWithChildren {
-    fallback?: React.ComponentType<ErrorFallbackProps>;
-    onError?: (error: Error, errorInfo: React.ErrorInfo) => void;
+    fallback?: React.ComponentType<FallbackProps>;
+    onError?: (error: unknown, errorInfo: React.ErrorInfo) => void;
 }
 
 export function ErrorBoundary({
@@ -70,7 +69,7 @@ export function ErrorBoundary({
     onError,
 }: Readonly<ErrorBoundaryProps>) {
     const handleError = React.useCallback(
-        (error: Error, errorInfo: React.ErrorInfo) => {
+        (error: unknown, errorInfo: React.ErrorInfo) => {
             console.error('ErrorBoundary caught an error:', error, errorInfo);
 
             if (onError) {
@@ -80,9 +79,10 @@ export function ErrorBoundary({
         [onError],
     );
 
-    return (
-        <ReactErrorBoundary FallbackComponent={FallbackComponent} onError={handleError}>
-            {children}
-        </ReactErrorBoundary>
-    );
+    const boundaryProps: ReactErrorBoundaryProps = {
+        FallbackComponent,
+        onError: handleError,
+    };
+
+    return <ReactErrorBoundary {...boundaryProps}>{children}</ReactErrorBoundary>;
 }
