@@ -7,6 +7,7 @@
 - when running JS/TS `scripts` use only node with `--env-file` flag (no need for compiling or `loader`), nodejs supports typescript OOTB
 - use dynamic import to split big chunks of heavy components/pages
 - use aliased imports in `frontend` app, for example `@/hooks/use-auth.ts`
+- when creating git commits, do not add Co-Authored-By footer
 
 ## React 19 Hooks Usage
 
