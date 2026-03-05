@@ -1,16 +1,17 @@
 #!/bin/sh
 
-# Save what was staged using null-separated output
+# Save what was staged (newline-separated for POSIX sh compatibility)
 STAGED_FILES_TEMP=$(mktemp)
-git diff --cached --name-only -z > "$STAGED_FILES_TEMP"
+git diff --cached --name-only > "$STAGED_FILES_TEMP"
 
 # Run the necessary commands
 pnpm run verify
 pnpm run format
 
-# # Reset and re-add only what was originally staged to not commit everything
+# Reset and re-add only what was originally staged to not commit everything
 git reset
-while IFS= read -r -d '' file; do
+while IFS= read -r file; do
+    [ -n "$file" ] || continue
     git add -A "$file" 2>/dev/null || true
 done < "$STAGED_FILES_TEMP"
 
